@@ -452,7 +452,9 @@ class WishingWellLiveApp {
   }
 
   showChatBubble(nickname, comment, avatar) {
-    if (!comment || comment.trim() === '') return;
+    if (!comment || typeof comment !== 'string' || comment.trim() === '') return;
+    // Defense-in-depth safety guard: block any residual vulgarity or URL redirection
+    if (/[<>]|\b(fuck|shit|bitch|cunt|dick|pussy|nigger|nigga|kys|porn|telegram|whatsapp)\b/i.test(comment)) return;
     this.spawnWalkingWishmaker(nickname, avatar, `"${comment.trim()}"`, 1, false);
   }
 

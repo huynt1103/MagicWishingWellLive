@@ -6,6 +6,7 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 const { EdgeTTS } = require('node-edge-tts');
+const { isToxic, sanitizeNickname, sanitizeGiftName, sanitizeComment, sanitizeWish } = require('./moderation');
 
 // Support both tiktok-live-connector legacy and modern exports
 let WebcastPushConnection;
@@ -180,17 +181,19 @@ let appConfig = {
 // Update donor in leaderboard
 function recordDonation(user, coins) {
   if (!user || coins <= 0) return;
+  const safeName = sanitizeNickname(user.nickname);
+  user.nickname = safeName;
   const prevLeader = leaderboard[0] ? { ...leaderboard[0] } : null;
 
   const existing = leaderboard.find(item => item.uniqueId === user.uniqueId);
   if (existing) {
     existing.score += coins;
     if (user.avatar) existing.avatar = user.avatar;
-    if (user.nickname) existing.nickname = user.nickname;
+    existing.nickname = safeName;
   } else {
     leaderboard.push({
       uniqueId: user.uniqueId || `user_${Date.now()}`,
-      nickname: user.nickname || 'Kind Soul',
+      nickname: safeName,
       avatar: user.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face',
       score: coins
     });
@@ -300,6 +303,9 @@ const recentUserWishes = new Map();
 
 function recordUserWish(userId, commentText, nickname) {
   if (!commentText) return;
+  const cleanWish = sanitizeWish(commentText);
+  if (!cleanWish) return; // Do not record toxic or invalid comments as wishes!
+  const safeName = sanitizeNickname(nickname);
   const now = Date.now();
   // Auto-prune wishes older than 2 minutes
   for (const [key, val] of recentUserWishes.entries()) {
@@ -307,9 +313,9 @@ function recordUserWish(userId, commentText, nickname) {
       recentUserWishes.delete(key);
     }
   }
-  const data = { wish: commentText, nickname, timestamp: now };
+  const data = { wish: cleanWish, nickname: safeName, timestamp: now };
   if (userId) recentUserWishes.set(userId, data);
-  if (nickname) recentUserWishes.set(nickname.toLowerCase(), data);
+  if (safeName) recentUserWishes.set(safeName.toLowerCase(), data);
 }
 
 function getRecentUserWish(userId, nickname) {
@@ -327,45 +333,10 @@ function getRecentUserWish(userId, nickname) {
   return found.wish;
 }
 
-// Viewer wishes are read aloud by TTS and shown on stream, so they must pass this filter
-const WISH_MAX_LENGTH = 80;
-const WISH_MIN_LENGTH = 3;
-const BANNED_WISH_PATTERNS = [
-  /f+u+c+k+/i, /sh[i1]t/i, /b[i1]tch/i, /\bcunt/i, /\bdick/i, /puss(y|ies)/i, /\bass(hole)?\b/i,
-  /bastard/i, /\bslut/i, /whore/i, /n[i1]gg/i, /\bfag/i, /retard/i, /\bkys\b/i, /kill (yo)?urself/i,
-  /\brap(e|ist)/i, /\bnazi/i, /hitler/i, /porn/i, /\bsex/i, /\bnude/i, /\bnaked/i, /onlyfans/i,
-  /\bdie\b/i, /\bsuicide/i, /terroris/i, /\bdrugs?\b/i, /cocaine/i, /\bweed\b/i,
-  /paypal/i, /cash ?app/i, /venmo/i, /zelle/i, /crypto/i, /bitcoin/i, /telegram/i, /whatsapp/i,
-  /follow me/i, /my (page|profile|channel)/i
-];
-
-function sanitizeWish(rawWish) {
-  if (!rawWish || typeof rawWish !== 'string') return null;
-  if (/[<>]/.test(rawWish)) return null;
-
-  let wish = rawWish
-    .replace(/https?:\/\/\S+/gi, ' ')
-    .replace(/\bwww\.\S+/gi, ' ')
-    .replace(/\b\S+\.(com|net|org|io|me|ly|gg|tv|co|vn|xyz)\b\S*/gi, ' ')
-    .replace(/\d{6,}/g, ' ')
-    .replace(/[^\p{L}\p{N}\s.,!?'’-]/gu, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-
-  if (wish.length < WISH_MIN_LENGTH) return null;
-  if (BANNED_WISH_PATTERNS.some(pattern => pattern.test(wish))) return null;
-
-  if (wish.length > WISH_MAX_LENGTH) {
-    const cut = wish.slice(0, WISH_MAX_LENGTH);
-    const lastSpace = cut.lastIndexOf(' ');
-    wish = (lastSpace > WISH_MIN_LENGTH ? cut.slice(0, lastSpace) : cut).replace(/[\s.,!?'’-]+$/, '');
-  }
-
-  return wish.length >= WISH_MIN_LENGTH ? wish : null;
-}
-
 // Generate wishing text based on gift and name (with smart personalized wish matching)
 function generateBlessingText(nickname, giftName, coins, customWish = null) {
+  const safeName = sanitizeNickname(nickname);
+  const safeGift = sanitizeGiftName(giftName);
   let blessingText = '';
   let wishObj = null;
 
@@ -373,7 +344,7 @@ function generateBlessingText(nickname, giftName, coins, customWish = null) {
   if (cleanWish) {
     blessingText = `May your wish come true: "${cleanWish}"!`;
     wishObj = {
-      title: `${nickname}'s Sacred Wish`,
+      title: `${safeName}'s Sacred Wish`,
       theme: 'Heartfelt Prayer Manifest',
       blessing: `May your prayer be answered: "${cleanWish}"!`,
       isCustom: true
@@ -388,9 +359,9 @@ function generateBlessingText(nickname, giftName, coins, customWish = null) {
 
   let actionText = '';
   if (coins >= 10) {
-    actionText = `bestowed a splendid ${giftName || 'Grand Royal Offering'} into the sacred fountain!`;
+    actionText = `bestowed a splendid ${safeGift || 'Grand Royal Offering'} into the sacred fountain!`;
   } else if (coins >= 5) {
-    actionText = `cast ${giftName || 'Treasured Pennies'} into the mystical waters.`;
+    actionText = `cast ${safeGift || 'Treasured Pennies'} into the mystical waters.`;
   } else if (coins >= 1) {
     actionText = `cast a lucky penny into the Magic Wishing Well!`;
   } else {
@@ -399,21 +370,21 @@ function generateBlessingText(nickname, giftName, coins, customWish = null) {
 
   const wishPayload = {
     ...wishObj,
-    donorNickname: nickname,
-    donorGift: giftName || (coins >= 10 ? 'Golden Crown' : 'Crystal Rose')
+    donorNickname: safeName,
+    donorGift: safeGift || (coins >= 10 ? 'Golden Crown' : 'Crystal Rose')
   };
 
   const UK_GRATITUDE_PREFIXES = [
-    `Heartfelt thanks to ${nickname} for offering a splendid ${giftName || (coins + ' lucky pennies')} to the wishing waters!`,
-    `A magnificent offering from ${nickname}! May fortune smile brightly upon you:`,
-    `Splendid generosity from ${nickname}, casting a ${giftName || (coins + ' pennies')} into the ancient fountain!`,
-    `Warmest gratitude to ${nickname} for bestowing a ${giftName || (coins + ' coins')} upon the magic well!`
+    `Heartfelt thanks to ${safeName} for offering a splendid ${safeGift || (coins + ' lucky pennies')} to the wishing waters!`,
+    `A magnificent offering from ${safeName}! May fortune smile brightly upon you:`,
+    `Splendid generosity from ${safeName}, casting a ${safeGift || (coins + ' pennies')} into the ancient fountain!`,
+    `Warmest gratitude to ${safeName} for bestowing a ${safeGift || (coins + ' coins')} upon the magic well!`
   ];
   const chosenPrefix = UK_GRATITUDE_PREFIXES[Math.floor(Math.random() * UK_GRATITUDE_PREFIXES.length)];
   const spoken = `${chosenPrefix} ${blessingText}`;
-  const banner = `${nickname} ${actionText} ${blessingText}`;
+  const banner = `${safeName} ${actionText} ${blessingText}`;
 
-  return { banner, spoken, fortune: wishPayload, wish: wishPayload };
+  return { banner, spoken, fortune: wishPayload, wish: wishPayload, safeNickname: safeName };
 }
 
 // Generate personalized British welcome wish when viewer joins stream
@@ -427,18 +398,20 @@ const WELCOME_WISHES = [
 ];
 
 function generateWelcomeBlessing(nickname) {
+  const safeName = sanitizeNickname(nickname);
   const template = WELCOME_WISHES[Math.floor(Math.random() * WELCOME_WISHES.length)];
   const UK_WELCOME_STARTERS = [
-    `Warmest welcome to ${nickname}!`,
-    `A splendid welcome to ${nickname}!`,
-    `Delighted to welcome ${nickname} to the wishing waters!`,
-    `Welcome, ${nickname}!`
+    `Warmest welcome to ${safeName}!`,
+    `A splendid welcome to ${safeName}!`,
+    `Delighted to welcome ${safeName} to the wishing waters!`,
+    `Welcome, ${safeName}!`
   ];
   const starter = UK_WELCOME_STARTERS[Math.floor(Math.random() * UK_WELCOME_STARTERS.length)];
   return {
-    banner: `✨ Welcome ${nickname} to the Magic Wishing Well!`,
+    banner: `✨ Welcome ${safeName} to the Magic Wishing Well!`,
     spoken: `${starter} ${template}`,
-    blessing: template
+    blessing: template,
+    safeNickname: safeName
   };
 }
 
@@ -557,15 +530,20 @@ function connectToTikTok(uniqueId, sessionId = '', isReconnect = false) {
       }
     });
 
-    // Chat message from viewer
+    // Chat message from viewer (Filtered for stream safety against TikTok strikes)
     tiktokConnection.on('chat', data => {
-      const commentText = (data.comment || data.content || data.text || data.message || '').toString().trim();
-      const nickname = data.nickname || data.user?.nickname || data.uniqueId || data.user?.uniqueId || 'Friend';
+      const rawComment = (data.comment || data.content || data.text || data.message || '').toString();
+      const commentText = sanitizeComment(rawComment);
+      if (!commentText) {
+        console.warn(`[TikTok Chat Blocked] Suppressed potentially toxic/scam comment from "${data.nickname || 'Viewer'}"`);
+        return; // Drop completely! Never display or read toxic/scam chat on stream
+      }
+
+      const nickname = sanitizeNickname(data.nickname || data.user?.nickname || data.uniqueId || data.user?.uniqueId || 'Friend');
       const uniqueId = data.uniqueId || data.user?.uniqueId || data.userId || `user_${Date.now()}`;
       const avatar = data.profilePictureUrl || data.user?.profilePictureUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face';
 
       console.log(`[TikTok Chat] ${nickname}: "${commentText}"`);
-      if (!commentText || commentText === 'undefined') return;
 
       addFountainEnergy(2);
       recordUserWish(uniqueId, commentText, nickname);
@@ -586,10 +564,10 @@ function connectToTikTok(uniqueId, sessionId = '', isReconnect = false) {
       }
 
       const diamondCount = (data.diamondCount || data.coins || 1) * (data.repeatCount || 1);
-      const nickname = data.nickname || data.user?.nickname || data.uniqueId || 'Kind Soul';
+      const nickname = sanitizeNickname(data.nickname || data.user?.nickname || data.uniqueId || 'Kind Soul');
       const uniqueId = data.uniqueId || data.user?.uniqueId || data.userId || `user_${Date.now()}`;
       const avatar = data.profilePictureUrl || data.user?.profilePictureUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face';
-      const giftName = data.giftName || data.gift?.name || 'Golden Offering';
+      const giftName = sanitizeGiftName(data.giftName || data.gift?.name || 'Golden Offering');
 
       const giftData = {
         uniqueId: uniqueId,
@@ -632,9 +610,11 @@ function connectToTikTok(uniqueId, sessionId = '', isReconnect = false) {
       accumulatedLikes += (data.likeCount || 1);
       addFountainEnergy(1);
 
+      const nickname = sanitizeNickname(data.nickname || data.uniqueId || 'Friend');
+
       io.emit('tiktok_like', {
         uniqueId: data.uniqueId,
-        nickname: data.nickname || data.uniqueId,
+        nickname: nickname,
         avatar: data.profilePictureUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face',
         likeCount: data.likeCount || 1,
         totalLikes: accumulatedLikes
@@ -642,7 +622,7 @@ function connectToTikTok(uniqueId, sessionId = '', isReconnect = false) {
 
       if (accumulatedLikes >= appConfig.minLikesForFlowers) {
         accumulatedLikes = 0;
-        const blessing = generateBlessingText(data.nickname || data.uniqueId, '50 Hearts of Love', 0);
+        const blessing = generateBlessingText(nickname, '50 Hearts of Love', 0);
         let ttsResult = { url: null, gender: 'female' };
         if (appConfig.ttsEnabled) {
           try {
@@ -652,7 +632,7 @@ function connectToTikTok(uniqueId, sessionId = '', isReconnect = false) {
 
         io.emit('offering_event', {
           type: 'flower_offering',
-          nickname: data.nickname || data.uniqueId,
+          nickname: nickname,
           avatar: data.profilePictureUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face',
           uniqueId: data.uniqueId,
           bannerText: blessing.banner,
@@ -665,9 +645,10 @@ function connectToTikTok(uniqueId, sessionId = '', isReconnect = false) {
     // Share event
     tiktokConnection.on('share', data => {
       addFountainEnergy(5);
+      const nickname = sanitizeNickname(data.nickname || data.uniqueId || 'Friend');
       io.emit('tiktok_share', {
         uniqueId: data.uniqueId,
-        nickname: data.nickname || data.uniqueId,
+        nickname: nickname,
         avatar: data.profilePictureUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face'
       });
     });
@@ -675,9 +656,10 @@ function connectToTikTok(uniqueId, sessionId = '', isReconnect = false) {
     // Follow event
     tiktokConnection.on('follow', data => {
       addFountainEnergy(5);
+      const nickname = sanitizeNickname(data.nickname || data.uniqueId || 'Friend');
       io.emit('tiktok_follow', {
         uniqueId: data.uniqueId,
-        nickname: data.nickname || data.uniqueId,
+        nickname: nickname,
         avatar: data.profilePictureUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face'
       });
     });
@@ -685,7 +667,7 @@ function connectToTikTok(uniqueId, sessionId = '', isReconnect = false) {
     // Member joins live
     let lastJoinWelcomeTime = 0;
     tiktokConnection.on('member', async data => {
-      const nickname = data.nickname || data.user?.nickname || data.uniqueId || 'Friend';
+      const nickname = sanitizeNickname(data.nickname || data.user?.nickname || data.uniqueId || 'Friend');
       const uniqueId = data.uniqueId || data.user?.uniqueId || data.userId || `user_${Date.now()}`;
       const avatar = data.profilePictureUrl || data.user?.profilePictureUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face';
 
@@ -903,8 +885,13 @@ app.post('/api/simulation/toggle', (req, res) => {
 
 // Test Simulation Events
 app.post('/api/test/chat', (req, res) => {
-  const nickname = req.body.nickname || SAMPLE_NAMES[Math.floor(Math.random() * SAMPLE_NAMES.length)];
-  const comment = req.body.comment || SAMPLE_COMMENTS[Math.floor(Math.random() * SAMPLE_COMMENTS.length)];
+  const nickname = sanitizeNickname(req.body.nickname || SAMPLE_NAMES[Math.floor(Math.random() * SAMPLE_NAMES.length)]);
+  const rawComment = req.body.comment || SAMPLE_COMMENTS[Math.floor(Math.random() * SAMPLE_COMMENTS.length)];
+  const comment = sanitizeComment(rawComment);
+  if (!comment) {
+    return res.status(400).json({ success: false, error: 'Comment filtered by moderation badwords engine' });
+  }
+
   addFountainEnergy(2);
 
   const uniqueId = req.body.uniqueId || `user_${nickname.toLowerCase().replace(/\s+/g, '_')}`;
@@ -921,7 +908,7 @@ app.post('/api/test/chat', (req, res) => {
 });
 
 app.post('/api/test/join', async (req, res) => {
-  const nickname = req.body.nickname || SAMPLE_NAMES[Math.floor(Math.random() * SAMPLE_NAMES.length)];
+  const nickname = sanitizeNickname(req.body.nickname || SAMPLE_NAMES[Math.floor(Math.random() * SAMPLE_NAMES.length)]);
   const avatar = req.body.avatar || `https://images.unsplash.com/photo-${1535713875000 + Math.floor(Math.random() * 500)}?w=100&h=100&fit=crop&crop=face`;
   const uniqueId = req.body.uniqueId || `user_${nickname.toLowerCase().replace(/\s+/g, '_')}`;
 
@@ -935,7 +922,7 @@ app.post('/api/test/join', async (req, res) => {
 
   const payload = {
     uniqueId,
-    nickname,
+    nickname: welcome.safeNickname || nickname,
     avatar,
     bannerText: welcome.banner,
     spokenText: welcome.spoken,
@@ -949,8 +936,8 @@ app.post('/api/test/join', async (req, res) => {
 
 app.post('/api/test/gift', async (req, res) => {
   const coins = parseInt(req.body.coins || 1, 10);
-  const giftName = req.body.giftName || (coins >= 10 ? 'Golden Crown' : (coins >= 5 ? 'Crystal Rose' : 'Lucky Penny'));
-  const nickname = req.body.nickname || 'Alexander Miller';
+  const giftName = sanitizeGiftName(req.body.giftName || (coins >= 10 ? 'Golden Crown' : (coins >= 5 ? 'Crystal Rose' : 'Lucky Penny')));
+  const nickname = sanitizeNickname(req.body.nickname || 'Alexander Miller');
   const avatar = req.body.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face';
 
   const giftData = {
@@ -978,6 +965,7 @@ app.post('/api/test/gift', async (req, res) => {
 
   const payload = {
     ...giftData,
+    nickname: blessing.safeNickname || nickname,
     bannerText: blessing.banner,
     spokenText: blessing.spoken,
     audioUrl: ttsResult.url,
