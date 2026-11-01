@@ -120,6 +120,9 @@ class WishingWellAudioEngine {
     this.init();
     if (!this.ctx) return;
 
+    // SFX Ducking: When voice is speaking, keep coin clink as a faint background touch so it never drowns out speech
+    const volMultiplier = this.isSpeaking ? 0.03 : 0.28;
+
     const now = this.ctx.currentTime;
     const freqs = [1960, 2480, 3120];
     freqs.forEach((freq, idx) => {
@@ -127,7 +130,7 @@ class WishingWellAudioEngine {
       const gain = this.ctx.createGain();
       osc.type = 'sine';
       osc.frequency.setValueAtTime(freq + (Math.random() - 0.5) * 60, now + idx * 0.04);
-      gain.gain.setValueAtTime(0.28 * this.sfxVolume, now + idx * 0.04);
+      gain.gain.setValueAtTime(volMultiplier * this.sfxVolume, now + idx * 0.04);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.04 + 0.28);
       osc.connect(gain);
       gain.connect(this.ctx.destination);
@@ -158,8 +161,10 @@ class WishingWellAudioEngine {
     filter.frequency.setValueAtTime(800, now);
     filter.frequency.exponentialRampToValueAtTime(220, now + 0.25);
 
+    // SFX Ducking: Faint splash during speech
+    const volMultiplier = this.isSpeaking ? 0.08 : 0.6;
     const gain = this.ctx.createGain();
-    gain.gain.setValueAtTime(0.6 * this.sfxVolume, now);
+    gain.gain.setValueAtTime(volMultiplier * this.sfxVolume, now);
     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
 
     noise.connect(filter);
@@ -172,6 +177,8 @@ class WishingWellAudioEngine {
   // Celestial Chime Arpeggio
   playMagicChime() {
     if (!this.soundEnabled) return;
+    // Suppress chime if TTS speech is actively reading so it never clashes with speech
+    if (this.isSpeaking) return;
     this.init();
     if (!this.ctx) return;
 
@@ -193,6 +200,7 @@ class WishingWellAudioEngine {
 
   playBell() {
     if (!this.soundEnabled) return;
+    if (this.isSpeaking) return;
     this.playMagicChime();
     try {
       this.bellAudio.currentTime = 0;
@@ -332,18 +340,27 @@ class WishingWellAudioEngine {
       setTimeout(() => this.processTTSQueue(), 250);
     };
 
-    if (item.url) {
-      this.currentAudio = new Audio(item.url);
-      this.currentAudio.volume = 0.95;
-      this.currentAudio.onended = () => restoreBgm();
-      this.currentAudio.onerror = () => {
+    const startPlayback = () => {
+      if (item.url) {
+        this.currentAudio = new Audio(item.url);
+        this.currentAudio.volume = 0.95;
+        this.currentAudio.onended = () => restoreBgm();
+        this.currentAudio.onerror = () => {
+          this.speakWebSpeech(item.text, () => restoreBgm());
+        };
+        this.currentAudio.play().catch(() => {
+          this.speakWebSpeech(item.text, () => restoreBgm());
+        });
+      } else {
         this.speakWebSpeech(item.text, () => restoreBgm());
-      };
-      this.currentAudio.play().catch(() => {
-        this.speakWebSpeech(item.text, () => restoreBgm());
-      });
+      }
+    };
+
+    // Pre-roll gap for VIP gifts: 450ms allows the opening ceremony chime to complete before voice starts
+    if (item.isVIP) {
+      setTimeout(startPlayback, 450);
     } else {
-      this.speakWebSpeech(item.text, () => restoreBgm());
+      startPlayback();
     }
   }
 

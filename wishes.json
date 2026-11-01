@@ -78,6 +78,485 @@
     "quote": "A gentle wind brings favorable tides. What you touch turns to gold; whatever you plant bears sweet fruit.",
     "meaning": "Supreme good fortune, unexpected windfalls, and doors opening effortlessly for you.",
     "blessing": "May extraordinary luck accompany you, turning every endeavor into an inspiring triumph!"
+  },
+  {
+    "id": 11,
+    "title": "Wish #11 - The Golden Ascent",
+    "theme": "Career Advancement & Promotion",
+    "quote": "Your diligence shines through like morning sunlight. Step upward into leadership and elevated respect.",
+    "meaning": "Promotions, salary increases, and distinguished responsibilities are opening for you.",
+    "blessing": "May your professional journey rise smoothly toward the pinnacle of excellence and honor!"
+  },
+  {
+    "id": 12,
+    "title": "Wish #12 - The Beacon of Victory",
+    "theme": "Exams & Academic Mastery",
+    "quote": "Knowledge gathered with care blossoms into sharp brilliance. Your mind is acute, your memory crystal clear.",
+    "meaning": "Outstanding scores on exams, triumphant interviews, and supreme mastery over complex challenges.",
+    "blessing": "May your intellect shine brightly, guaranteeing victory in all your scholarly pursuits!"
+  },
+  {
+    "id": 13,
+    "title": "Wish #13 - The Sovereign Scepter",
+    "theme": "Leadership & Authority",
+    "quote": "True authority stems from wisdom and benevolence. Others look to your example with genuine respect.",
+    "meaning": "Expanding influence, trusted leadership in teams, and earning the admiration of peers and mentors.",
+    "blessing": "May you lead with gracious wisdom, inspiring all who walk alongside your visionary path!"
+  },
+  {
+    "id": 14,
+    "title": "Wish #14 - The Unstoppable Tide",
+    "theme": "Resilience & Breakthrough",
+    "quote": "No stone can halt the mighty wave. Every challenge you face is transformed into stepping stones toward victory.",
+    "meaning": "Overcoming longstanding hurdles, silencing doubts, and emerging stronger than ever before.",
+    "blessing": "May indomitable strength fill your spirit, propelling you past all obstacles with majestic grace!"
+  },
+  {
+    "id": 15,
+    "title": "Wish #15 - The Masterpiece Blueprint",
+    "theme": "Creative Projects & Innovation",
+    "quote": "Inspiration descends like celestial dew. Your hands bring forth ideas of singular beauty and value.",
+    "meaning": "Groundbreaking creativity, viral creations, and projects praised by all who behold them.",
+    "blessing": "May divine inspiration guide your creations, turning your vision into a celebrated masterpiece!"
+  },
+  {
+    "id": 16,
+    "title": "Wish #16 - The Zenith Horizon",
+    "theme": "New Heights & Milestones",
+    "quote": "Stand upon the summit and behold the endless sky. What once seemed distant is now beneath your feet.",
+    "meaning": "Reaching milestone achievements and discovering even grander horizons awaiting your conquest.",
+    "blessing": "May each summit you reach open the gateway to even greater triumphs and boundless joy!"
+  },
+  {
+    "id": 17,
+    "title": "Wish #17 - The Champion's Laurel",
+    "theme": "Recognition & Honors",
+    "quote": "Merit cannot remain hidden in shadows. Applause and accolades gather to honor your devoted dedication.",
+    "meaning": "Awards, public appreciation, and widespread acclaim for your dedication and high standards.",
+    "blessing": "May your hard work be crowned with the highest honors and universal appreciation!"
+  },
+  {
+    "id": 18,
+    "title": "Wish #18 - The Golden Partnership",
+    "theme": "Alliances & High-Value Deals",
+    "quote": "When great minds unite under noble purpose, the harvest is ten-fold. Fruitful alliances arrive now.",
+    "meaning": "Signing profitable contracts, finding reliable business partners, and harmonious collaborations.",
+    "blessing": "May trusted partners and lucrative ventures unite to multiply your prosperity!"
+  },
+  {
+    "id": 19,
+    "title": "Wish #19 - The Radiant Pioneer",
+    "theme": "Entrepreneurial Success",
+    "quote": "Those who dare to venture into new lands discover uncharted treasures. Boldness is your talisman.",
+    "meaning": "Flourishing business launches, steady client growth, and pioneer advantage in your field.",
+    "blessing": "May your entrepreneurial spirit thrive, bringing forth lasting prosperity and generous returns!"
+  },
+  {
+    "id": 20,
+    "title": "Wish #20 - The Hall of Fame",
+    "theme": "Enduring Legacy",
+    "quote": "Build not only for the day, but for the generations. Your deeds leave an indelible mark of goodness.",
+    "meaning": "Building a reputable name, sustainable long-term enterprise, and leaving a cherished legacy.",
+    "blessing": "May your legacy shine with nobility, wisdom, and everlasting pride for you and your family!"
+  },
+  {
+    "id": 21,
+    "title": "Wish #21 - The Treasure Vault",
+    "theme": "Financial Security & Accumulation",
+    "quote": "Golden grains gather quietly into the barn. Steadfast growth builds a fortress of financial freedom.",
+    "meaning": "Increasing savings, secure investments, and freedom from all financial anxieties.",
+    "blessing": "May your treasury overflow with wealth, granting you enduring security and joyful generosity!"
+  },
+  {
+    "id": 22,
+    "title": "Wish #22 - The Overflowing Cornucopia",
+    "theme": "Bountiful Provision",
+    "quote": "The horn of abundance pours forth milk and honey. There is always more than enough for all your needs.",
+    "meaning": "Abundant resources, effortless provision, and joyful sharing with those you hold dear.",
+    "blessing": "May you always enjoy an abundance of life's sweetest gifts and finest provisions!"
+  },
+  {
+    "id": 23,
+    "title": "Wish #23 - The Prosperous Merchant",
+    "theme": "Lucrative Commerce & Sales",
+    "quote": "Caravans return from distant shores laden with precious gems. Commerce thrives under favorable stars.",
+    "meaning": "Rapid inventory turnover, enthusiastic customers, and skyrocketing revenue in all business ventures.",
+    "blessing": "May every transaction bring golden profit, satisfied patrons, and continuous growth!"
+  },
+  {
+    "id": 24,
+    "title": "Wish #24 - The Celestial Windfall",
+    "theme": "Unexpected Windfalls & Luck",
+    "quote": "Gold falls from clear skies when least expected. Fortunate surprises brighten your path.",
+    "meaning": "Unexpected cash bonuses, winning tickets, favorable settlements, or valuable gifts.",
+    "blessing": "May delightful surprises and golden windfalls arrive unexpectedly at your doorstep!"
+  },
+  {
+    "id": 25,
+    "title": "Wish #25 - The Diamond Foundation",
+    "theme": "Long-Term Wealth Stability",
+    "quote": "A house built upon diamonds withstands all storms. Your foundations are solid, rich, and immovable.",
+    "meaning": "Rock-solid real estate, diversified portfolios, and permanent freedom from debts.",
+    "blessing": "May your financial foundation be as resilient and radiant as eternal diamond!"
+  },
+  {
+    "id": 26,
+    "title": "Wish #26 - The Emerald Grove",
+    "theme": "Multiplying Assets",
+    "quote": "A single seed planted in fertile earth becomes a canopy of emerald prosperity. Patience bears gold.",
+    "meaning": "Smart investments multiplying ahead of schedule, generating passive streams of income.",
+    "blessing": "May your assets flourish like a lush emerald grove, bearing golden fruits in all seasons!"
+  },
+  {
+    "id": 27,
+    "title": "Wish #27 - The Midas Touch",
+    "theme": "Effortless Manifestation",
+    "quote": "Wherever your gaze turns, opportunity springs forth. Grace and favor accompany your decisions.",
+    "meaning": "Effortless success in negotiation, market timing, and lucrative opportunities finding you first.",
+    "blessing": "May fortune bless your hands so that whatever you cultivate transforms into pure golden success!"
+  },
+  {
+    "id": 28,
+    "title": "Wish #28 - The Golden Harvest",
+    "theme": "Reaping What Was Sown",
+    "quote": "Long seasons of sweat and care now turn to sheaves of gold. Feast upon the bounty of your labor.",
+    "meaning": "Receiving overdue payments, major returns on long investments, and celebrating hard-won victories.",
+    "blessing": "May your harvest be richer than your highest hopes, rewarding your patience a hundredfold!"
+  },
+  {
+    "id": 29,
+    "title": "Wish #29 - The Infinite Wellspring",
+    "theme": "Generosity & Wealth Circulation",
+    "quote": "The more water drawn from a living well, the sweeter and clearer it flows. Giving multiplies receiving.",
+    "meaning": "Possessing both grand wealth and a generous heart, enjoying true prosperity with loved ones.",
+    "blessing": "May your wealth flow boundlessly, blessing both yourself and everyone whose life you touch!"
+  },
+  {
+    "id": 30,
+    "title": "Wish #30 - The Debt-Free Dawn",
+    "theme": "Financial Liberation",
+    "quote": "The chains of obligation fall away like dust. You walk forward as the sovereign master of your destiny.",
+    "meaning": "Clearing debts, achieving full financial independence, and living with a tranquil heart.",
+    "blessing": "May complete financial freedom unlock a life of deep peace, liberty, and endless happiness!"
+  },
+  {
+    "id": 31,
+    "title": "Wish #31 - The Living Waters",
+    "theme": "Physical Vitality & Rejuvenation",
+    "quote": "Drink from the sacred spring and feel renewal course through every vein. Youthful vigor is restored.",
+    "meaning": "Rapid recovery from illness, boundless stamina, and vibrant physical well-being.",
+    "blessing": "May vitality, energy, and radiant health fill your body, keeping you strong in all years!"
+  },
+  {
+    "id": 32,
+    "title": "Wish #32 - The Calm Harbor",
+    "theme": "Mental Stillness & Anxiety Relief",
+    "quote": "Though winds howl on the open sea, within the harbor the waters rest like polished glass. Peace is here.",
+    "meaning": "Freedom from worry, emotional equilibrium, and tranquil clarity in times of decision.",
+    "blessing": "May calm tranquility guard your mind, dissolving all worries into serene quietude."
+  },
+  {
+    "id": 33,
+    "title": "Wish #33 - The Shield of Longevity",
+    "theme": "Vibrant Longevity & Endurance",
+    "quote": "Like the ancient cedar standing tall through centuries, your years are long, fruitful, and majestic.",
+    "meaning": "Long life accompanied by clear sight, sound joints, and enduring joy alongside descendants.",
+    "blessing": "May you be blessed with longevity, vibrant wellness, and a life surrounded by loving family!"
+  },
+  {
+    "id": 34,
+    "title": "Wish #34 - The Tree of Restoration",
+    "theme": "Cellular Healing & Wholeness",
+    "quote": "Its leaves are for the healing of the nations. Every weary cell receives new breath and wholeness.",
+    "meaning": "Overcoming health concerns, finding the right medical guidance, and holistic revitalization.",
+    "blessing": "May gentle healing wash over you, restoring complete wholeness from head to toe!"
+  },
+  {
+    "id": 35,
+    "title": "Wish #35 - The Breath of Dawn",
+    "theme": "Morning Joy & Clear Spirit",
+    "quote": "Night surrenders to the fresh morning breeze. Each day arrives as a holy canvas of pure wonder.",
+    "meaning": "Waking up energized, feeling enthusiastic about life, and greeting each day with optimism.",
+    "blessing": "May every morning greet you with a joyful smile, refreshed energy, and high inspiration!"
+  },
+  {
+    "id": 36,
+    "title": "Wish #36 - The Jade Lotus",
+    "theme": "Emotional Balance & Pure Spirit",
+    "quote": "Rising untouched from muddy waters, the lotus opens petals of flawless purity to the sun.",
+    "meaning": "Releasing past emotional pain, rising above negativity, and finding pure inner poise.",
+    "blessing": "May your soul remain as luminous and untarnished as the jade lotus blossoming in morning light!"
+  },
+  {
+    "id": 37,
+    "title": "Wish #37 - The Sanctuary of Sleep",
+    "theme": "Restful Sleep & Sweet Dreams",
+    "quote": "Cast your cares into the wishing pool. Rest upon pillows of quiet grace and wake refreshed.",
+    "meaning": "Ending insomnia, enjoying sound, restorative sleep, and peaceful dreams throughout the night.",
+    "blessing": "May angelic peace cradle your rest each night, restoring your strength and sweet tranquility!"
+  },
+  {
+    "id": 38,
+    "title": "Wish #38 - The Whispering Forest",
+    "theme": "Grounded Living & Harmony with Nature",
+    "quote": "Listen to the harmony of the leaves and earth. In simplicity lies the deepest well of happiness.",
+    "meaning": "Finding balance between work and rest, nourishing the spirit, and enjoying life's simple pleasures.",
+    "blessing": "May grounded harmony and natural joy fill your life with calm contentment and delight!"
+  },
+  {
+    "id": 39,
+    "title": "Wish #39 - The Radiant Glow",
+    "theme": "Aura of Beauty & Grace",
+    "quote": "When the heart is pure, light shines through the countenance. Grace and charm illuminate your presence.",
+    "meaning": "Inner beauty reflecting outward, charismatic appeal, and winning the affection of all you meet.",
+    "blessing": "May radiant charm and inner brightness make your presence a comforting blessing to everyone!"
+  },
+  {
+    "id": 40,
+    "title": "Wish #40 - The Well of Ageless Joy",
+    "theme": "Youthful Spirit & Enthusiasm",
+    "quote": "Time cannot age a heart that loves and laughs. Keep the spark of wonder burning bright forever.",
+    "meaning": "Retaining youthful optimism, laughing often, and celebrating each year with enthusiasm.",
+    "blessing": "May the fountain of youthful joy continually bubble up within your heart throughout all your days!"
+  },
+  {
+    "id": 41,
+    "title": "Wish #41 - The Twin Flames",
+    "theme": "Deep Romance & Passion",
+    "quote": "Two flames merge into a single blazing torch of warmth and passion. Mutual devotion burns bright.",
+    "meaning": "Intense romance, passionate attraction, and lifelong loyalty with your destined lover.",
+    "blessing": "May your love story burn brightly with genuine romance, mutual respect, and everlasting joy!"
+  },
+  {
+    "id": 42,
+    "title": "Wish #42 - The Golden Thread",
+    "theme": "Healing & Reconciliation",
+    "quote": "A single strand of golden compassion mends old wounds. Misunderstandings vanish into tender grace.",
+    "meaning": "Reconnecting with an estranged friend or family member, forgiving the past, and restoring warmth.",
+    "blessing": "May forgiveness and gentle understanding rebuild broken bridges and rekindle loving bonds!"
+  },
+  {
+    "id": 43,
+    "title": "Wish #43 - The Sacred Vow",
+    "theme": "Lifelong Loyalty & Marriage",
+    "quote": "Hand in hand through sunshine and rain. True companionship is the greatest treasure under heaven.",
+    "meaning": "Happy marriage, unbreakable vows, shared laughter, and building a blessed home together.",
+    "blessing": "May your union be blessed with lifelong fidelity, deep laughter, and unwavering companionship!"
+  },
+  {
+    "id": 44,
+    "title": "Wish #44 - The Blossom of Affection",
+    "theme": "Sweet Courtship & Sparks",
+    "quote": "A sweet fragrance fills the garden air. Shy glances blossom into delightful conversations of the heart.",
+    "meaning": "Meeting a charming partner, sparks flying on dates, and the sweet excitement of budding love.",
+    "blessing": "May fresh romance and tender sparks of affection sweeten every day of your life!"
+  },
+  {
+    "id": 45,
+    "title": "Wish #45 - The Symphony of Hearts",
+    "theme": "Empathy & Telepathic Bond",
+    "quote": "Words are scarcely needed where two souls understand the silent whisper of the other's eyes.",
+    "meaning": "Finding someone who truly understands and appreciates you for exactly who you are.",
+    "blessing": "May you be cherished by someone who sees the beauty of your soul and honors you completely!"
+  },
+  {
+    "id": 46,
+    "title": "Wish #46 - The Lighthouse of Friendship",
+    "theme": "Loyal Allies & Kindred Spirits",
+    "quote": "When stormy seas test the ship, a faithful friend is the lighthouse that guides you safely home.",
+    "meaning": "Surrounding yourself with trustworthy friends who stand by you through thick and thin.",
+    "blessing": "May you be surrounded by noble, loyal friends who lift your spirit and celebrate your victories!"
+  },
+  {
+    "id": 47,
+    "title": "Wish #47 - The Celestial Matchmaker",
+    "theme": "Destined Encounters",
+    "quote": "Heaven arranges encounters with miraculous precision. The right soul appears at the perfect hour.",
+    "meaning": "Serendipitous meetings leading to true love or lifelong partnerships just when you least expect.",
+    "blessing": "May divine timing bring your destined partner into your arms with joyful ease!"
+  },
+  {
+    "id": 48,
+    "title": "Wish #48 - The Aegis of Light",
+    "theme": "Shield Against Negativity",
+    "quote": "A halo of golden light surrounds your being. Jealousy and ill-will bounce off like harmless dust.",
+    "meaning": "Protection from toxic gossip, malicious intentions, and negative energies in all spaces.",
+    "blessing": "May divine light shield your spirit, turning every ill intention into harmless vapor!"
+  },
+  {
+    "id": 49,
+    "title": "Wish #49 - The Compass of Truth",
+    "theme": "Unfailing Intuition",
+    "quote": "A quiet voice within whispers true direction. Follow your gut; the internal needle never lies.",
+    "meaning": "Sharp intuition, seeing through deception instantly, and making wise choices with zero regrets.",
+    "blessing": "May your inner compass guide you unerringly toward safety, honor, and great prosperity!"
+  },
+  {
+    "id": 50,
+    "title": "Wish #50 - The Auspicious Traveler",
+    "theme": "Safe Journeys & Travel Luck",
+    "quote": "Winds blow favorably at your back; smooth roads welcome your wheels; clear skies guide your flight.",
+    "meaning": "Safe travels abroad, pleasant vacations, arriving without delays, and joyous reunions.",
+    "blessing": "May every journey you take be sheltered in safety, filled with wondrous sights and joyful returns!"
+  },
+  {
+    "id": 51,
+    "title": "Wish #51 - The Hearth of Happiness",
+    "theme": "Home Sanctuary & Warmth",
+    "quote": "Inside these walls, peace abides. The fire burns warm, and every room echoes with affectionate smiles.",
+    "meaning": "A comfortable, secure home filled with pleasant energy, welcome guests, and deep comfort.",
+    "blessing": "May your home be an oasis of comfort, laughter, safety, and divine blessings for all who enter!"
+  },
+  {
+    "id": 52,
+    "title": "Wish #52 - The Wellspring of Kinship",
+    "theme": "Generational Unity",
+    "quote": "Like branches of a mighty oak, we may grow in different directions yet our roots remain one.",
+    "meaning": "Strong family bonds across generations, mutual support during hardships, and shared pride.",
+    "blessing": "May your family be united in love, prospering together across generations in honor and joy!"
+  },
+  {
+    "id": 53,
+    "title": "Wish #53 - The Child of Promise",
+    "theme": "Blessings for Children & Descendants",
+    "quote": "Young shoots bathed in morning dew grow tall and straight. Their laughter is the music of heaven.",
+    "meaning": "Health, intelligence, good character, and bright academic futures for your children and youth.",
+    "blessing": "May your children grow in wisdom, health, and grace, bringing perpetual pride to your family!"
+  },
+  {
+    "id": 54,
+    "title": "Wish #54 - The Harmony Bell",
+    "theme": "Dissolving Household Discord",
+    "quote": "Let the clear chime ring out all grievances. What was tangled is smoothed; peace returns to dwell.",
+    "meaning": "Resolving family conflicts swiftly, ending misunderstandings, and restoring joyful cooperation.",
+    "blessing": "May peace and gentle harmony silence all discord, filling your household with sweet serenity!"
+  },
+  {
+    "id": 55,
+    "title": "Wish #55 - The Peaceful Feast",
+    "theme": "Abundant Gatherings & Joy",
+    "quote": "The table is laden with bountiful food, surrounded by the faces of those you hold dearest.",
+    "meaning": "Joyful holidays, heartwarming family dinners, and celebrating milestones in delightful fellowship.",
+    "blessing": "May your table always be blessed with delicious abundance, warm fellowship, and grateful hearts!"
+  },
+  {
+    "id": 56,
+    "title": "Wish #56 - The Gentle Nest",
+    "theme": "Comfort & Care for Elders",
+    "quote": "Honor the gray hairs of wisdom. In their sunset years, let peace and tender care surround their days.",
+    "meaning": "Good health, clear mind, and loving companionship for your parents and beloved elders.",
+    "blessing": "May your elders be blessed with comfort, dignity, good health, and the deep love of their family!"
+  },
+  {
+    "id": 57,
+    "title": "Wish #57 - The Auspicious Residence",
+    "theme": "Acquiring a Dream Home",
+    "quote": "The sacred deed is signed; the golden key turns. Cross the threshold into the home you dreamed of.",
+    "meaning": "Buying a house, moving to a prosperous neighborhood, and remodeling with wonderful ease.",
+    "blessing": "May your dwelling be blessed with good fortune, flourishing energy, and permanent security!"
+  },
+  {
+    "id": 58,
+    "title": "Wish #58 - The Cloak of Sanctuary",
+    "theme": "Refuge from Trouble",
+    "quote": "When storms rage outside, you are wrapped in warm blankets of divine shelter. Fear cannot enter here.",
+    "meaning": "Escaping legal troubles, resolving disputes safely, and finding sanctuary in turbulent times.",
+    "blessing": "May heavenly peace surround you like a secure mantle, keeping harm far from your dwelling!"
+  },
+  {
+    "id": 59,
+    "title": "Wish #59 - The Angelic Benefactor",
+    "theme": "Helpful Mentors Appearing",
+    "quote": "Just when the mountain seems too steep, a wise traveler offers a guiding hand and lantern light.",
+    "meaning": "Meeting supportive mentors, receiving financial or career assistance right when you need it most.",
+    "blessing": "May noble benefactors step into your path, opening doors and smoothing your journey ahead!"
+  },
+  {
+    "id": 60,
+    "title": "Wish #60 - The Starlight Epiphany",
+    "theme": "Creative Genius & Breakthroughs",
+    "quote": "In a flash of inspiration, the puzzle clicks together. What was complex becomes effortlessly obvious.",
+    "meaning": "Sudden eureka moments, solving persistent engineering or artistic problems with genius flair.",
+    "blessing": "May brilliant insight strike your mind like starlight, giving birth to your greatest ideas!"
+  },
+  {
+    "id": 61,
+    "title": "Wish #61 - The Alchemist's Crucible",
+    "theme": "Transmuting Trials into Gold",
+    "quote": "The fire that burns the dross purifies the gold. Your greatest test becomes your greatest testimony.",
+    "meaning": "Turning past setbacks into lucrative opportunities, resilience, and unshakeable mastery.",
+    "blessing": "May every hardship you have endured transform into glorious wisdom, wealth, and strength!"
+  },
+  {
+    "id": 62,
+    "title": "Wish #62 - The Unlocked Potential",
+    "theme": "Awakening Latent Talents",
+    "quote": "The sleeping giant within opens its eyes. Skills you never knew you possessed begin to flourish.",
+    "meaning": "Mastering new skills rapidly, excelling in unexpected fields, and discovering hidden passions.",
+    "blessing": "May your highest gifts awaken, dazzling the world with your unique brilliance and mastery!"
+  },
+  {
+    "id": 63,
+    "title": "Wish #63 - The Golden Bridge",
+    "theme": "Manifesting the Impossible",
+    "quote": "Across the chasm of impossibility, faith builds a gleaming golden bridge. Cross over with bold joy.",
+    "meaning": "Achieving goals that others called unrealistic, winning against the odds, and creating miracles.",
+    "blessing": "May impossible barriers crumble into golden pathways leading directly to your cherished dreams!"
+  },
+  {
+    "id": 64,
+    "title": "Wish #64 - The Oracle of Clarity",
+    "theme": "Sharp Insight & Decision Making",
+    "quote": "Look into the still water and see the true course. Doubts scatter like dry leaves before the wind.",
+    "meaning": "Making the right investment, career, or life choice with absolute certainty and calm clarity.",
+    "blessing": "May flawless clarity guide your judgments, assuring total confidence and triumphant outcomes!"
+  },
+  {
+    "id": 65,
+    "title": "Wish #65 - The Rainbow Horizon",
+    "theme": "Joy After the Storm",
+    "quote": "The dark rain clouds break; a glorious rainbow arches across the azure sky. Rejoice in the sunlight.",
+    "meaning": "Difficult periods ending completely, tears replaced by joyful laughter, and bright hopes fulfilled.",
+    "blessing": "May the storm pass completely from your life, leaving only rainbows, sunshine, and joyful peace!"
+  },
+  {
+    "id": 66,
+    "title": "Wish #66 - The Sovereign Peace",
+    "theme": "Unshakable Inner Tranquility",
+    "quote": "Rooted like an ancient mountain, no passing breeze can shake your core. You are sovereign over self.",
+    "meaning": "Emotional mastery, freedom from external opinions, and deep serene self-confidence.",
+    "blessing": "May sovereign peace reign within your spirit, making you invincible to stress and doubt!"
+  },
+  {
+    "id": 67,
+    "title": "Wish #67 - The Miracle Seed",
+    "theme": "Small Beginnings to Grand Results",
+    "quote": "Despise not the day of small beginnings. The tinest seed contains the blueprint of a mighty forest.",
+    "meaning": "A small project or side hustle growing into a massive enterprise or life-changing accomplishment.",
+    "blessing": "May your humble beginnings sprout with miraculous vigor into an empire of blessings!"
+  },
+  {
+    "id": 68,
+    "title": "Wish #68 - The Seraphic Song",
+    "theme": "Spiritual Elevation & Gratitude",
+    "quote": "A melodious song echoes through the celestial spheres. When gratitude fills the heart, heaven smiles.",
+    "meaning": "Deep spiritual peace, profound gratitude, and feeling blessed in every moment of existence.",
+    "blessing": "May your soul sing with gratitude and joy, attracting endless blessings from the heavens!"
+  },
+  {
+    "id": 69,
+    "title": "Wish #69 - The Infinite Sky",
+    "theme": "Limitless Freedom & Expansion",
+    "quote": "You were not born to remain in a cage. Spread your wings and soar into the boundless blue expanse.",
+    "meaning": "Breaking through all limitations, traveling the world, and living life entirely on your own terms.",
+    "blessing": "May limitless freedom be yours to explore the world, fulfilling every dream of your heart!"
+  },
+  {
+    "id": 70,
+    "title": "Wish #70 - The Universal Harmony",
+    "theme": "Complete Alignment & Abundance",
+    "quote": "All things in heaven and earth work together for your highest good. You are loved, blessed, and complete.",
+    "meaning": "Total alignment of health, wealth, love, and purpose. Everything falling into place with divine elegance.",
+    "blessing": "May universal harmony and supreme blessings bless you today, tomorrow, and forevermore!"
   }
 ]
-

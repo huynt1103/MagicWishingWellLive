@@ -184,14 +184,34 @@ class WishingWellLiveApp {
       }
     }
 
-    // 3 distinct standing slots around the well front (prevents overlapping)
+    // 5 distinct non-overlapping standing positions along the well arc
     const SLOTS = [
-      { startX: 32, targetX: 36, targetY: 57.5 }, // Left Flank
-      { startX: 50, targetX: 50, targetY: 58.8 }, // Center Front
-      { startX: 68, targetX: 64, targetY: 57.5 }  // Right Flank
+      { id: 0, startX: 25, targetX: 28, targetY: 57.0 }, // Far Left
+      { id: 1, startX: 37, targetX: 39, targetY: 58.2 }, // Mid Left
+      { id: 2, startX: 50, targetX: 50, targetY: 59.5 }, // Center Front (VIP)
+      { id: 3, startX: 63, targetX: 61, targetY: 58.2 }, // Mid Right
+      { id: 4, startX: 75, targetX: 72, targetY: 57.0 }  // Far Right
     ];
-    const slotIdx = this.activeWishmakers.length % SLOTS.length;
-    const slot = SLOTS[slotIdx];
+
+    const occupiedSlotIds = new Set(this.activeWishmakers.map(w => w.slotId));
+    let slot;
+
+    if (isGift) {
+      // VIP claims Center Front (id: 2). If a casual visitor is there, dismiss them
+      const occupant = this.activeWishmakers.find(w => w.slotId === 2);
+      if (occupant && !occupant.isGift && occupant.el) {
+        occupant.el.style.opacity = '0';
+        setTimeout(() => occupant.el.remove(), 300);
+        const oIdx = this.activeWishmakers.indexOf(occupant);
+        if (oIdx !== -1) this.activeWishmakers.splice(oIdx, 1);
+      }
+      slot = SLOTS[2];
+    } else {
+      // Casual visitors take available flank slots
+      const available = SLOTS.filter(s => s.id !== 2 && !occupiedSlotIds.has(s.id));
+      if (available.length === 0) return; // Avoid clumping when full
+      slot = available[Math.floor(Math.random() * available.length)];
+    }
 
     const traveler = document.createElement('div');
     traveler.className = `walking-wishmaker walking ${isGift ? 'vip' : ''}`;
@@ -212,7 +232,7 @@ class WishingWellLiveApp {
     `;
 
     this.stage.appendChild(traveler);
-    const wishmakerObj = { el: traveler, isGift };
+    const wishmakerObj = { el: traveler, isGift, slotId: slot.id };
     this.activeWishmakers.push(wishmakerObj);
 
     const cleanup = () => {
@@ -1062,7 +1082,6 @@ class WishingWellLiveApp {
     this.socket.on('tiktok_join', data => {
       if (data.bannerText) this.updateTopBanner(data.bannerText);
       if (data.spokenText || data.audioUrl) {
-        window.wishingAudio.playMagicChime();
         window.wishingAudio.queueSpeech(data.spokenText, data.audioUrl);
       }
       this.spawnWalkingWishmaker(data.nickname, data.avatar, '✨ Welcome to the fountain!', 1, false);
