@@ -127,7 +127,10 @@ class WishingWellAudioEngine {
   initWebSpeechVoices() {
     const updateVoices = () => {
       const voices = window.speechSynthesis.getVoices();
-      this.enVoice = voices.find(v => v.lang.startsWith('en-US') || v.lang.startsWith('en-GB') || v.lang.startsWith('en')) || voices[0] || null;
+      const enVoices = voices.filter(v => v.lang.startsWith('en'));
+      this.enFemaleVoices = enVoices.filter(v => /female|jenny|zira|aria|samantha|susan|victoria/i.test(v.name));
+      this.enMaleVoices = enVoices.filter(v => /male|david|guy|andrew|george|mark/i.test(v.name));
+      this.enVoice = this.enFemaleVoices[0] || enVoices[0] || null;
     };
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
       window.speechSynthesis.onvoiceschanged = updateVoices;
@@ -268,7 +271,7 @@ class WishingWellAudioEngine {
   }
 
   // TTS speech queue management with Value-Based VIP Priority & Donor Protection
-  queueSpeech(spokenText, audioUrl = null, isVIP = false, coins = 0) {
+  queueSpeech(spokenText, audioUrl = null, isVIP = false, coins = 0, voiceGender = 'female') {
     if (!this.ttsEnabled || !spokenText) return;
 
     const newItem = {
@@ -276,6 +279,7 @@ class WishingWellAudioEngine {
       url: audioUrl,
       isVIP: !!isVIP,
       coins: parseInt(coins || 0, 10),
+      gender: voiceGender || 'female',
       timestamp: Date.now()
     };
 
@@ -371,13 +375,13 @@ class WishingWellAudioEngine {
         this.currentAudio.volume = 0.95;
         this.currentAudio.onended = () => restoreBgm();
         this.currentAudio.onerror = () => {
-          this.speakWebSpeech(item.text, () => restoreBgm());
+          this.speakWebSpeech(item.text, () => restoreBgm(), item.gender);
         };
         this.currentAudio.play().catch(() => {
-          this.speakWebSpeech(item.text, () => restoreBgm());
+          this.speakWebSpeech(item.text, () => restoreBgm(), item.gender);
         });
       } else {
-        this.speakWebSpeech(item.text, () => restoreBgm());
+        this.speakWebSpeech(item.text, () => restoreBgm(), item.gender);
       }
     };
 
@@ -389,7 +393,7 @@ class WishingWellAudioEngine {
     }
   }
 
-  speakWebSpeech(text, onComplete) {
+  speakWebSpeech(text, onComplete, gender = 'female') {
     if (!this.hasWebSpeech) {
       if (onComplete) onComplete();
       return;
@@ -397,9 +401,19 @@ class WishingWellAudioEngine {
     window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text);
     utter.lang = 'en-US';
-    if (this.enVoice) utter.voice = this.enVoice;
+
+    if (gender === 'male' && this.enMaleVoices && this.enMaleVoices.length > 0) {
+      utter.voice = this.enMaleVoices[Math.floor(Math.random() * this.enMaleVoices.length)];
+      utter.pitch = 0.90;
+    } else if (this.enFemaleVoices && this.enFemaleVoices.length > 0) {
+      utter.voice = this.enFemaleVoices[Math.floor(Math.random() * this.enFemaleVoices.length)];
+      utter.pitch = 1.05;
+    } else if (this.enVoice) {
+      utter.voice = this.enVoice;
+      utter.pitch = gender === 'male' ? 0.90 : 1.05;
+    }
+
     utter.rate = 0.95;
-    utter.pitch = 1.0;
     utter.volume = 1.0;
     utter.onend = () => { if (onComplete) onComplete(); };
     utter.onerror = () => { if (onComplete) onComplete(); };

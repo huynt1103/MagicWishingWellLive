@@ -427,7 +427,7 @@ class WishingWellLiveApp {
     this.updateRecentWishmaker(nickname, coins);
 
     window.wishingAudio.playMagicChime();
-    window.wishingAudio.queueSpeech(spokenText, audioUrl, true, coins);
+    window.wishingAudio.queueSpeech(spokenText, audioUrl, true, coins, data.voiceGender);
 
     // Spawn walking character that walks to the well and tosses the golden coin!
     const wishData = wish || fortune;
@@ -677,6 +677,47 @@ class WishingWellLiveApp {
     setTimeout(() => {
       overlay.classList.remove('active');
     }, 4800);
+  }
+
+  // Feature: Jackpot Golden Rush Shower (50-60 cascading golden coins)
+  triggerGoldenRush(data) {
+    const leaderName = (data.awakener && data.awakener.nickname) ? data.awakener.nickname : 'Divine Awakener';
+    this.updateTopBanner(`✨ GOLDEN JACKPOT RUSH! Level ${data.level || 6} unlocked by ${leaderName}! 🌟`);
+    this.triggerFountainSurge(7500);
+    window.wishingAudio.playBell();
+
+    let count = 0;
+    const showerInterval = setInterval(() => {
+      if (count >= 50) {
+        clearInterval(showerInterval);
+        return;
+      }
+      count++;
+      const startX = 220 + Math.random() * 640;
+      const targetX = this.wellCenter.x + (Math.random() - 0.5) * 160;
+      const targetY = this.wellCenter.y + (Math.random() - 0.5) * 80;
+
+      this.tossedCoins.push({
+        startX,
+        startY: -40,
+        targetX,
+        targetY,
+        x: startX,
+        y: -40,
+        progress: 0,
+        duration: 0.85 + Math.random() * 0.45,
+        peakHeight: 20 + Math.random() * 30,
+        scale: 0.75 + Math.random() * 0.35,
+        radius: 12 + Math.random() * 6,
+        color: '#fef08a',
+        isGolden: true,
+        spinAngle: Math.random() * Math.PI,
+        spinSpeed: 0.18 + Math.random() * 0.25,
+        nickname: leaderName,
+        avatarImg: null,
+        onLandedCallback: null
+      });
+    }, 80);
   }
 
   // Feature #2: Real-time Dethrone Outbid Alert
@@ -953,18 +994,19 @@ class WishingWellLiveApp {
       this.ctx.fill();
       this.ctx.restore();
 
-      // Emit sparkle particles along the coin's trail
-      if (Math.random() < 0.6) {
+      // Stardust Meteor Trail: dense sparkling trail trailing behind the flying coin
+      const trailSparkles = c.isGolden ? 3 : 2;
+      for (let s = 0; s < trailSparkles; s++) {
         this.particles.push({
-          x: c.x + (Math.random() - 0.5) * 16,
-          y: c.y + (Math.random() - 0.5) * 16,
-          vx: (Math.random() - 0.5) * 1.5,
+          x: c.x + (Math.random() - 0.5) * 12,
+          y: c.y + (Math.random() - 0.5) * 12,
+          vx: -(c.targetX - c.startX) * 0.003 + (Math.random() - 0.5) * 1.2,
           vy: (Math.random() - 0.5) * 1.5,
-          gravity: 0.05,
-          radius: 2 + Math.random() * 3,
-          color: c.isGolden ? '#fef08a' : '#38bdf8',
-          alpha: 0.9,
-          decay: 0.04
+          gravity: 0.02,
+          radius: 1.5 + Math.random() * 3.5,
+          color: c.isGolden ? (Math.random() > 0.35 ? '#fef08a' : '#ffffff') : '#38bdf8',
+          alpha: 0.95,
+          decay: 0.035
         });
       }
 
@@ -1133,6 +1175,10 @@ class WishingWellLiveApp {
       this.showLevelUpCelebration(data.level, leaderName);
     });
 
+    this.socket.on('golden_rush_event', data => {
+      this.triggerGoldenRush(data);
+    });
+
     this.socket.on('top1_dethroned', data => {
       this.showOutbidAlert(data.newLeader, data.oldLeader);
     });
@@ -1144,7 +1190,7 @@ class WishingWellLiveApp {
     this.socket.on('tiktok_join', data => {
       if (data.bannerText) this.updateTopBanner(data.bannerText);
       if (data.spokenText || data.audioUrl) {
-        window.wishingAudio.queueSpeech(data.spokenText, data.audioUrl);
+        window.wishingAudio.queueSpeech(data.spokenText, data.audioUrl, false, 0, data.voiceGender);
       }
       this.spawnWalkingWishmaker(data.nickname, data.avatar, '✨ Welcome to the fountain!', 1, false);
     });

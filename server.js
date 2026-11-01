@@ -4,8 +4,8 @@ const { Server } = require('socket.io');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
-const { execFile } = require('child_process');
 const crypto = require('crypto');
+const { EdgeTTS } = require('node-edge-tts');
 
 // Support both tiktok-live-connector legacy and modern exports
 let WebcastPushConnection;
@@ -81,20 +81,72 @@ let leaderboard = [
   { uniqueId: 'mia_a', nickname: 'Mia Anderson', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=face', score: 40 }
 ];
 
+// State Persistence (Chống mất trắng dữ liệu BXH và Năng lượng khi server restart)
+const STATE_FILE = path.join(__dirname, 'state.json');
+
+function saveAppState() {
+  try {
+    const data = {
+      leaderboard,
+      fountainEnergy,
+      fountainLevel,
+      updatedAt: new Date().toISOString()
+    };
+    fs.writeFileSync(STATE_FILE, JSON.stringify(data, null, 2), 'utf8');
+  } catch (e) {
+    console.error('[State Persistence Error]:', e.message);
+  }
+}
+
+function loadAppState() {
+  try {
+    if (fs.existsSync(STATE_FILE)) {
+      const raw = fs.readFileSync(STATE_FILE, 'utf8');
+      const data = JSON.parse(raw);
+      if (Array.isArray(data.leaderboard) && data.leaderboard.length > 0) {
+        leaderboard = data.leaderboard;
+      }
+      if (typeof data.fountainEnergy === 'number') {
+        fountainEnergy = data.fountainEnergy;
+      }
+      if (typeof data.fountainLevel === 'number') {
+        fountainLevel = data.fountainLevel;
+      }
+      console.log(`[State Persistence] Restored state: Level ${fountainLevel}, Energy ${fountainEnergy}, ${leaderboard.length} guardians`);
+    }
+  } catch (e) {
+    console.error('[State Persistence Load Error]:', e.message);
+  }
+}
+
 // Feature #1: Water Resonance Energy (Subtle Natural Mega Surge)
 let fountainEnergy = 740; // 0 to 1000
 const fountainEnergyMax = 1000;
 let fountainLevel = 5;
+
+// Load persisted state if exists
+loadAppState();
 
 function addFountainEnergy(amount, user = null) {
   fountainEnergy += amount;
   if (fountainEnergy >= fountainEnergyMax) {
     fountainEnergy = 0;
     fountainLevel++;
+    const awakenerUser = user || {
+      nickname: 'Divine Benefactor',
+      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face'
+    };
     io.emit('fountain_awakened', {
       level: fountainLevel,
-      awakener: user || { nickname: 'Kind Soul' }
+      awakener: awakenerUser
     });
+    // Feature: Jackpot Golden Rush shower!
+    io.emit('golden_rush_event', {
+      level: fountainLevel,
+      awakener: awakenerUser,
+      count: 65
+    });
+    saveAppState();
   }
   const percent = Math.min(100, Math.floor((fountainEnergy / fountainEnergyMax) * 100));
   io.emit('energy_update', {
@@ -103,12 +155,13 @@ function addFountainEnergy(amount, user = null) {
     percent: percent,
     level: fountainLevel
   });
+  saveAppState();
 }
 
 // App Configuration
 let appConfig = {
   ttsEnabled: true,
-  ttsVoice: 'en-US-JennyNeural',
+  ttsVoice: 'alternate', // Default to alternating male & female voices
   ttsLang: 'en',
   ttsRate: '+0%',
   rippleInterval: 3000,
@@ -145,6 +198,7 @@ function recordDonation(user, coins) {
   leaderboard.sort((a, b) => b.score - a.score);
   leaderboard = leaderboard.slice(0, 20);
   io.emit('leaderboard_update', leaderboard);
+  saveAppState();
 
   // Feature #2 & #6: Real-time Dethrone Outbid Alert!
   const newLeader = leaderboard[0];
@@ -160,37 +214,85 @@ function recordDonation(user, coins) {
   addFountainEnergy(coins * 10, user);
 }
 
-// Generate speech file
-function generateSpeechFile(text, voice = appConfig.ttsVoice, rate = appConfig.ttsRate, lang = appConfig.ttsLang || 'en') {
-  return new Promise((resolve, reject) => {
-    const hash = crypto.createHash('md5').update(`${text}_${voice}_${rate}_${lang}`).digest('hex');
-    const filename = `${hash}.mp3`;
-    const outputPath = path.join(CACHE_DIR, filename);
-    const publicUrl = `/audio_cache/${filename}`;
+// Voice Pools: alternating between vibrant female and calming male neural voices
+const VOICE_POOLS = {
+  en: {
+    female: ['en-US-JennyNeural', 'en-US-AriaNeural', 'en-US-AvaNeural', 'en-GB-SoniaNeural'],
+    male: ['en-US-GuyNeural', 'en-US-AndrewNeural', 'en-US-BrianNeural', 'en-GB-RyanNeural']
+  },
+  vi: {
+    female: ['vi-VN-HoaiMyNeural'],
+    male: ['vi-VN-NamMinhNeural']
+  }
+};
 
-    const hasValidFile = () => fs.existsSync(outputPath) && fs.statSync(outputPath).size > 0;
-    const removeBrokenFile = () => {
-      try { fs.unlinkSync(outputPath); } catch (e) {}
+let lastVoiceGender = 'male';
+
+function resolveVoiceAndGender(preferredVoice = null, lang = 'en') {
+  const langKey = lang === 'vi' ? 'vi' : 'en';
+  const pool = VOICE_POOLS[langKey] || VOICE_POOLS.en;
+
+  // 1. If explicit specific voice chosen in config (e.g. Jenny or Guy)
+  if (preferredVoice && preferredVoice !== 'alternate' && preferredVoice !== 'default') {
+    const isMale = pool.male.includes(preferredVoice) || /guy|andrew|brian|ryan|david/i.test(preferredVoice);
+    return {
+      voice: preferredVoice,
+      gender: isMale ? 'male' : 'female'
     };
+  }
 
+  // 2. Alternating mode: strictly alternates between female and male on each read
+  const nextGender = lastVoiceGender === 'female' ? 'male' : 'female';
+  lastVoiceGender = nextGender;
+  const list = pool[nextGender] || pool.female;
+  const chosenVoice = list[Math.floor(Math.random() * list.length)];
+  return {
+    voice: chosenVoice,
+    gender: nextGender
+  };
+}
+
+// Generate speech file with EdgeTTS (Zero Python Dependency, pure Node.js)
+async function generateSpeechFile(text, preferredVoice = null, rate = appConfig.ttsRate, lang = appConfig.ttsLang || 'en') {
+  if (!text || !text.trim()) return { url: null, gender: 'female', voice: 'none' };
+
+  const { voice, gender } = resolveVoiceAndGender(preferredVoice || appConfig.ttsVoice, lang);
+  const hash = crypto.createHash('md5').update(`${text}_${voice}_${rate}_${lang}`).digest('hex');
+  const filename = `${hash}.mp3`;
+  const outputPath = path.join(CACHE_DIR, filename);
+  const publicUrl = `/audio_cache/${filename}`;
+
+  const hasValidFile = () => fs.existsSync(outputPath) && fs.statSync(outputPath).size > 0;
+
+  if (hasValidFile()) {
+    return { url: publicUrl, gender, voice };
+  }
+
+  try {
+    const tts = new EdgeTTS({ voice, lang });
+    await tts.ttsPromise(text, outputPath);
     if (hasValidFile()) {
-      return resolve(publicUrl);
+      return { url: publicUrl, gender, voice };
     }
-
-    const scriptPath = path.join(__dirname, 'tts_service.py');
-    execFile('python', [scriptPath, text, outputPath, '--voice', voice, '--rate', rate, '--lang', lang], (error, stdout, stderr) => {
-      if (error) {
-        console.error('TTS error:', stderr || error.message);
-        removeBrokenFile();
-        return reject(error);
+    throw new Error('TTS generated empty file');
+  } catch (err) {
+    console.warn(`[EdgeTTS Error (${voice})]: ${err.message}. Trying Google TTS fallback...`);
+    try {
+      const gUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text.slice(0, 200))}&tl=${lang}&client=tw-ob`;
+      const res = await fetch(gUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+      if (res.ok) {
+        const buffer = Buffer.from(await res.arrayBuffer());
+        if (buffer.length > 0) {
+          fs.writeFileSync(outputPath, buffer);
+          return { url: publicUrl, gender, voice: 'google-tts-fallback' };
+        }
       }
-      if (!hasValidFile()) {
-        removeBrokenFile();
-        return reject(new Error('TTS produced an empty audio file'));
-      }
-      resolve(publicUrl);
-    });
-  });
+    } catch (gErr) {
+      console.error('[Google TTS Fallback Error]:', gErr.message);
+    }
+    try { if (fs.existsSync(outputPath)) fs.unlinkSync(outputPath); } catch (e) {}
+    return { url: null, gender, voice };
+  }
 }
 
 // Recent user wishes cache: uniqueId / nickname -> { wish, timestamp }
@@ -487,10 +589,10 @@ function connectToTikTok(uniqueId, sessionId = '', isReconnect = false) {
 
       const userWish = getRecentUserWish(uniqueId, nickname);
       const blessing = generateBlessingText(giftData.nickname, `${giftData.giftName} x${giftData.repeatCount}`, diamondCount, userWish);
-      let audioUrl = null;
+      let ttsResult = { url: null, gender: 'female' };
       if (appConfig.ttsEnabled) {
         try {
-          audioUrl = await generateSpeechFile(blessing.spoken);
+          ttsResult = await generateSpeechFile(blessing.spoken);
         } catch (e) {
           console.error('TTS error on gift:', e);
         }
@@ -500,7 +602,8 @@ function connectToTikTok(uniqueId, sessionId = '', isReconnect = false) {
         ...giftData,
         bannerText: blessing.banner,
         spokenText: blessing.spoken,
-        audioUrl: audioUrl,
+        audioUrl: ttsResult.url,
+        voiceGender: ttsResult.gender,
         fortune: blessing.fortune,
         wish: blessing.wish
       });
@@ -523,10 +626,10 @@ function connectToTikTok(uniqueId, sessionId = '', isReconnect = false) {
       if (accumulatedLikes >= appConfig.minLikesForFlowers) {
         accumulatedLikes = 0;
         const blessing = generateBlessingText(data.nickname || data.uniqueId, '50 Hearts of Love', 0);
-        let audioUrl = null;
+        let ttsResult = { url: null, gender: 'female' };
         if (appConfig.ttsEnabled) {
           try {
-            audioUrl = await generateSpeechFile(blessing.spoken);
+            ttsResult = await generateSpeechFile(blessing.spoken);
           } catch (e) {}
         }
 
@@ -536,7 +639,8 @@ function connectToTikTok(uniqueId, sessionId = '', isReconnect = false) {
           avatar: data.profilePictureUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face',
           uniqueId: data.uniqueId,
           bannerText: blessing.banner,
-          audioUrl: audioUrl
+          audioUrl: ttsResult.url,
+          voiceGender: ttsResult.gender
         });
       }
     });
@@ -576,10 +680,10 @@ function connectToTikTok(uniqueId, sessionId = '', isReconnect = false) {
       }
 
       const welcome = generateWelcomeBlessing(nickname);
-      let audioUrl = null;
+      let ttsResult = { url: null, gender: 'female' };
       if (shouldSpeak && appConfig.ttsEnabled) {
         try {
-          audioUrl = await generateSpeechFile(welcome.spoken);
+          ttsResult = await generateSpeechFile(welcome.spoken);
         } catch (e) {}
       }
 
@@ -589,7 +693,8 @@ function connectToTikTok(uniqueId, sessionId = '', isReconnect = false) {
         avatar,
         bannerText: welcome.banner,
         spokenText: shouldSpeak ? welcome.spoken : null,
-        audioUrl: audioUrl
+        audioUrl: ttsResult.url,
+        voiceGender: ttsResult.gender
       });
     });
 
@@ -749,8 +854,8 @@ app.get('/api/tts', async (req, res) => {
   const lang = req.query.lang || appConfig.ttsLang || 'en';
 
   try {
-    const audioUrl = await generateSpeechFile(text, voice, rate, lang);
-    res.json({ success: true, audioUrl });
+    const ttsResult = await generateSpeechFile(text, voice, rate, lang);
+    res.json({ success: true, audioUrl: ttsResult.url, gender: ttsResult.gender, voice: ttsResult.voice });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
@@ -804,10 +909,10 @@ app.post('/api/test/join', async (req, res) => {
   const uniqueId = req.body.uniqueId || `user_${nickname.toLowerCase().replace(/\s+/g, '_')}`;
 
   const welcome = generateWelcomeBlessing(nickname);
-  let audioUrl = null;
+  let ttsResult = { url: null, gender: 'female' };
   if (appConfig.ttsEnabled) {
     try {
-      audioUrl = await generateSpeechFile(welcome.spoken);
+      ttsResult = await generateSpeechFile(welcome.spoken);
     } catch (e) {}
   }
 
@@ -817,7 +922,8 @@ app.post('/api/test/join', async (req, res) => {
     avatar,
     bannerText: welcome.banner,
     spokenText: welcome.spoken,
-    audioUrl
+    audioUrl: ttsResult.url,
+    voiceGender: ttsResult.gender
   };
 
   io.emit('tiktok_join', payload);
@@ -844,10 +950,10 @@ app.post('/api/test/gift', async (req, res) => {
 
   const userWish = req.body.wish || getRecentUserWish(giftData.uniqueId, nickname);
   const blessing = generateBlessingText(nickname, `${giftName} x${giftData.repeatCount}`, coins, userWish);
-  let audioUrl = null;
+  let ttsResult = { url: null, gender: 'female' };
   if (appConfig.ttsEnabled) {
     try {
-      audioUrl = await generateSpeechFile(blessing.spoken);
+      ttsResult = await generateSpeechFile(blessing.spoken);
     } catch (e) {
       console.error('Speech synthesis error in test:', e);
     }
@@ -857,13 +963,24 @@ app.post('/api/test/gift', async (req, res) => {
     ...giftData,
     bannerText: blessing.banner,
     spokenText: blessing.spoken,
-    audioUrl: audioUrl,
+    audioUrl: ttsResult.url,
+    voiceGender: ttsResult.gender,
     fortune: blessing.fortune,
     wish: blessing.wish
   };
 
   io.emit('tiktok_gift', payload);
   res.json({ success: true, payload });
+});
+
+// Test Golden Rush Event
+app.post('/api/test/golden_rush', (req, res) => {
+  const awakener = {
+    nickname: (req.body && req.body.nickname) || 'Alexander Miller',
+    avatar: (req.body && req.body.avatar) || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face'
+  };
+  addFountainEnergy(1000, awakener);
+  res.json({ success: true, message: 'Golden Rush triggered!' });
 });
 
 // Test Dethrone Top 1 Outbid Alert
@@ -912,10 +1029,10 @@ app.post('/api/test/fill-full', (req, res) => {
 app.post('/api/test/flower', async (req, res) => {
   const nickname = req.body.nickname || 'Amelia Taylor';
   const blessing = generateBlessingText(nickname, '50 Hearts of Love', 0);
-  let audioUrl = null;
+  let ttsResult = { url: null, gender: 'female' };
   if (appConfig.ttsEnabled) {
     try {
-      audioUrl = await generateSpeechFile(blessing.spoken);
+      ttsResult = await generateSpeechFile(blessing.spoken);
     } catch (e) {}
   }
   const payload = {
@@ -924,7 +1041,8 @@ app.post('/api/test/flower', async (req, res) => {
     avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face',
     uniqueId: 'amelia_taylor',
     bannerText: blessing.banner,
-    audioUrl: audioUrl
+    audioUrl: ttsResult.url,
+    voiceGender: ttsResult.gender
   };
   io.emit('offering_event', payload);
   res.json({ success: true, payload });

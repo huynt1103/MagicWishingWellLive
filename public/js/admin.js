@@ -85,7 +85,7 @@ socket.on('init_state', data => {
     updateConnectionUI(data.connectionStatus, data.tiktokUser);
   }
   if (data.config) {
-    if (ttsVoiceSelect) ttsVoiceSelect.value = data.config.ttsVoice || 'en-US-JennyNeural';
+    if (ttsVoiceSelect) ttsVoiceSelect.value = data.config.ttsVoice || 'alternate';
     if (ttsEnabledCheck) ttsEnabledCheck.checked = !!data.config.ttsEnabled;
     if (data.config.bgmVolume !== undefined && bgmVolumeInput) {
       bgmVolumeInput.value = data.config.bgmVolume;
@@ -191,7 +191,7 @@ btnToggleSim.addEventListener('click', async () => {
 // Save configuration
 btnSaveConfig.addEventListener('click', async () => {
   const config = {
-    ttsVoice: ttsVoiceSelect ? ttsVoiceSelect.value : 'en-US-JennyNeural',
+    ttsVoice: ttsVoiceSelect ? ttsVoiceSelect.value : 'alternate',
     ttsEnabled: ttsEnabledCheck ? ttsEnabledCheck.checked : true,
     bgmVolume: parseFloat(bgmVolumeInput.value || 0.30),
     ttsLang: ttsVoiceSelect.value.startsWith('vi') ? 'vi' : 'en'
