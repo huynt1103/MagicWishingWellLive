@@ -214,11 +214,11 @@ function recordDonation(user, coins) {
   addFountainEnergy(coins * 10, user);
 }
 
-// Voice Pools: alternating between vibrant female and calming male neural voices
+// Voice Pools: authentic British Neural voices (Received Pronunciation & Modern UK English)
 const VOICE_POOLS = {
   en: {
-    female: ['en-US-JennyNeural', 'en-US-AriaNeural', 'en-US-AvaNeural', 'en-GB-SoniaNeural'],
-    male: ['en-US-GuyNeural', 'en-US-AndrewNeural', 'en-US-BrianNeural', 'en-GB-RyanNeural']
+    female: ['en-GB-SoniaNeural', 'en-GB-LibbyNeural', 'en-GB-MaisieNeural'],
+    male: ['en-GB-RyanNeural', 'en-GB-ThomasNeural']
   },
   vi: {
     female: ['vi-VN-HoaiMyNeural'],
@@ -234,7 +234,7 @@ function resolveVoiceAndGender(preferredVoice = null, lang = 'en') {
 
   // 1. If explicit specific voice chosen in config (e.g. Jenny or Guy)
   if (preferredVoice && preferredVoice !== 'alternate' && preferredVoice !== 'default') {
-    const isMale = pool.male.includes(preferredVoice) || /guy|andrew|brian|ryan|david/i.test(preferredVoice);
+    const isMale = pool.male.includes(preferredVoice) || /guy|andrew|brian|ryan|david|thomas|alfie|george|oliver|arthur/i.test(preferredVoice);
     return {
       voice: preferredVoice,
       gender: isMale ? 'male' : 'female'
@@ -388,13 +388,13 @@ function generateBlessingText(nickname, giftName, coins, customWish = null) {
 
   let actionText = '';
   if (coins >= 10) {
-    actionText = `cast a ${giftName || 'Grand Golden Offering'} into the sacred fountain!`;
+    actionText = `bestowed a splendid ${giftName || 'Grand Royal Offering'} into the sacred fountain!`;
   } else if (coins >= 5) {
-    actionText = `tossed ${giftName || 'Treasured Coins'} into the magical waters.`;
+    actionText = `cast ${giftName || 'Treasured Pennies'} into the mystical waters.`;
   } else if (coins >= 1) {
-    actionText = `cast a lucky coin into the Magic Wishing Well!`;
+    actionText = `cast a lucky penny into the Magic Wishing Well!`;
   } else {
-    actionText = `showered the fountain with 50 hearts of love!`;
+    actionText = `showered the fountain with 50 hearts of goodwill!`;
   }
 
   const wishPayload = {
@@ -403,26 +403,43 @@ function generateBlessingText(nickname, giftName, coins, customWish = null) {
     donorGift: giftName || (coins >= 10 ? 'Golden Crown' : 'Crystal Rose')
   };
 
-  const spoken = `Heartfelt gratitude to ${nickname} for tossing ${giftName || (coins + ' coins')} into the Wishing Well! ${blessingText}`;
+  const UK_GRATITUDE_PREFIXES = [
+    `Heartfelt thanks to ${nickname} for offering a splendid ${giftName || (coins + ' lucky pennies')} to the wishing waters!`,
+    `A magnificent offering from ${nickname}! May fortune smile brightly upon you:`,
+    `Splendid generosity from ${nickname}, casting a ${giftName || (coins + ' pennies')} into the ancient fountain!`,
+    `Warmest gratitude to ${nickname} for bestowing a ${giftName || (coins + ' coins')} upon the magic well!`
+  ];
+  const chosenPrefix = UK_GRATITUDE_PREFIXES[Math.floor(Math.random() * UK_GRATITUDE_PREFIXES.length)];
+  const spoken = `${chosenPrefix} ${blessingText}`;
   const banner = `${nickname} ${actionText} ${blessingText}`;
 
   return { banner, spoken, fortune: wishPayload, wish: wishPayload };
 }
 
-// Generate personalized welcome wish when viewer joins stream
+// Generate personalized British welcome wish when viewer joins stream
 const WELCOME_WISHES = [
-  'May your heart be light, and may peace and prosperity follow your every step!',
-  'Welcome to the magical waters! May your most cherished wishes find their way to reality.',
-  'May good fortune, radiant health, and unexpected blessings brighten your days!',
-  'Wishing you continuous abundance, boundless happiness, and peace of mind!',
-  'May every door of opportunity open effortlessly for you on your journey!'
+  'Warmest welcome to the sacred waters! May peace and good fortune abide with you.',
+  'A splendid welcome to the Magic Well! May your most cherished wishes find their way to reality.',
+  'Delighted to have you with us! May radiant health and unexpected blessings brighten your days.',
+  'Wishing you continuous abundance, boundless cheer, and serenity on your journey.',
+  'May every door of opportunity open effortlessly, and may fortune favour your path!',
+  'Welcome, noble traveller! May the ancient waters bring calm and good tidings to your heart.'
 ];
 
 function generateWelcomeBlessing(nickname) {
   const template = WELCOME_WISHES[Math.floor(Math.random() * WELCOME_WISHES.length)];
-  const banner = `Welcome ${nickname} to the Magic Wishing Well! ${template}`;
-  const spoken = `Welcome ${nickname} to the Magic Wishing Well! ${template}`;
-  return { banner, spoken, blessing: template };
+  const UK_WELCOME_STARTERS = [
+    `Warmest welcome to ${nickname}!`,
+    `A splendid welcome to ${nickname}!`,
+    `Delighted to welcome ${nickname} to the wishing waters!`,
+    `Welcome, ${nickname}!`
+  ];
+  const starter = UK_WELCOME_STARTERS[Math.floor(Math.random() * UK_WELCOME_STARTERS.length)];
+  return {
+    banner: `✨ Welcome ${nickname} to the Magic Wishing Well!`,
+    spoken: `${starter} ${template}`,
+    blessing: template
+  };
 }
 
 // ==================== TIKTOK LIVE CONNECTION ====================

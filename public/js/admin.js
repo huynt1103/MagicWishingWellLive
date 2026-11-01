@@ -216,7 +216,7 @@ btnTestVoice.addEventListener('click', async () => {
   btnTestVoice.disabled = true;
   btnTestVoice.innerText = 'Speaking...';
   try {
-    const text = 'Welcome to the Magic Wishing Well! May all your heartfelt dreams and aspirations come true!';
+    const text = 'Warmest welcome to the Magic Wishing Well! May fortune and good cheer honour your path today!';
     const voice = ttsVoiceSelect.value;
     const lang = voice.startsWith('vi') ? 'vi' : 'en';
     const res = await fetch(`/api/tts?text=${encodeURIComponent(text)}&voice=${voice}&lang=${lang}`);

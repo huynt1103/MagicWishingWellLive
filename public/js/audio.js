@@ -127,10 +127,13 @@ class WishingWellAudioEngine {
   initWebSpeechVoices() {
     const updateVoices = () => {
       const voices = window.speechSynthesis.getVoices();
-      const enVoices = voices.filter(v => v.lang.startsWith('en'));
-      this.enFemaleVoices = enVoices.filter(v => /female|jenny|zira|aria|samantha|susan|victoria/i.test(v.name));
-      this.enMaleVoices = enVoices.filter(v => /male|david|guy|andrew|george|mark/i.test(v.name));
-      this.enVoice = this.enFemaleVoices[0] || enVoices[0] || null;
+      // Prioritize British English (en-GB) voices
+      const gbVoices = voices.filter(v => v.lang === 'en-GB' || v.lang.startsWith('en_GB') || /united kingdom|british/i.test(v.name));
+      const pool = gbVoices.length > 0 ? gbVoices : voices.filter(v => v.lang.startsWith('en'));
+
+      this.enFemaleVoices = pool.filter(v => /female|sonia|libby|maisie|victoria|hazel|susan|jenny|zira|aria|samantha/i.test(v.name));
+      this.enMaleVoices = pool.filter(v => /male|ryan|thomas|alfie|george|oliver|arthur|david|guy|andrew|mark/i.test(v.name));
+      this.enVoice = this.enFemaleVoices[0] || pool[0] || null;
     };
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
       window.speechSynthesis.onvoiceschanged = updateVoices;
@@ -400,7 +403,7 @@ class WishingWellAudioEngine {
     }
     window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = 'en-US';
+    utter.lang = 'en-GB';
 
     if (gender === 'male' && this.enMaleVoices && this.enMaleVoices.length > 0) {
       utter.voice = this.enMaleVoices[Math.floor(Math.random() * this.enMaleVoices.length)];
