@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Magic Wishing Well - TikTok Live Interactive</title>
+  <link rel="stylesheet" href="css/live.css">
+</head>
+<body>
+
+  <!-- 9:16 Live Canvas Container -->
+  <div id="live-viewport">
+    
+    <!-- Top Status Bar: Natural Water Resonance Energy Bar (#1) -->
+    <div id="top-status-bar">
+      <div id="resonance-pill" class="resonance-pill">
+        <span class="rune-icon">💧</span>
+        <span class="resonance-label">Water Resonance: <b id="resonance-val">74%</b></span>
+        <div class="resonance-meter-track">
+          <div class="resonance-meter-fill" id="resonance-fill" style="width: 74%;"></div>
+        </div>
+        <span class="level-badge" id="resonance-level">Tier 5</span>
+      </div>
+    </div>
+
+    <!-- Atmospheric Particle, Water & Light Canvas -->
+    <canvas id="fx-canvas"></canvas>
+
+    <!-- 8 Guardian Pedestals & Walking Wishmaker Stage (#2 & #6) -->
+    <div id="temple-stage">
+      <div id="guardians-pedestals"></div>
+    </div>
+
+    <!-- Top Celestial Banner Announcement -->
+    <div id="top-banner-container">
+      <div class="share-pill">shared the magical fountain with friends</div>
+      <div class="royal-announcement-card">
+        <div class="royal-corner tl"></div>
+        <div class="royal-corner tr"></div>
+        <div class="royal-corner bl"></div>
+        <div class="royal-corner br"></div>
+        <div class="announcement-text" id="royal-banner-text">
+          <span class="highlight-name">Alexander M.</span> tossed a <span class="highlight-gift">Golden Crown</span> into the Magic Well! May prosperity and radiant luck follow your journey!
+        </div>
+      </div>
+    </div>
+
+    <!-- Real-time Outbid Alert Banner (#2 Dethrone Notification) -->
+    <div id="outbid-alert-container"></div>
+
+    <!-- Stream Call-To-Action Ribbon (TikTok Safe Zone - Replaces non-clickable web buttons) -->
+    <div id="stream-cta-ribbon">
+      <div class="cta-pill">💬 Type your wish in chat to toss a lucky coin</div>
+      <div class="cta-sparkle">✨</div>
+      <div class="cta-pill">🎁 Gift to claim a Guardian Pedestal</div>
+    </div>
+
+    <!-- Bottom Action & Donor Panel (Positioned in Safe Zone above TikTok Chat) -->
+    <div id="bottom-action-panel">
+      <!-- Upper row: Top Wishmaker Pill + Compact Leaderboard -->
+      <div class="donor-leaderboard-row">
+        <div class="recent-donor-box" id="recent-donor-pill">
+          <span class="dot-gold"></span>
+          <span class="donor-name" id="recent-donor-name">Alexander M.</span>
+          <span class="donor-score" id="recent-donor-score">Tossed: 320 Coins</span>
+        </div>
+        <div class="compact-leaderboard" id="compact-lb-box">
+          <div class="clb-title">FOUNTAIN GUARDIANS (TOP 8)</div>
+          <div class="clb-list" id="clb-list-container">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 Safe Spiritual Action Cards (Bypasses TikTok OCR) -->
+      <div class="donation-cards-row" id="donation-cards-row">
+        <div class="donate-card">
+          <div class="coin-val">MAKE A WISH</div>
+          <div class="action-label">🪙 Lucky Penny</div>
+        </div>
+        <div class="donate-card">
+          <div class="coin-val">ABUNDANCE</div>
+          <div class="action-label">✨ Golden Coin</div>
+        </div>
+        <div class="donate-card">
+          <div class="coin-val">ETERNAL JOY</div>
+          <div class="action-label">💎 Crystal Gem</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Auspicious Wish Floating Banner -->
+    <div id="fortune-overlay">
+      <div class="fortune-scroll">
+        <div class="fortune-donor-header">
+          <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face" id="fortune-avatar" class="fortune-avatar" alt="donor" />
+          <div class="fortune-donor-info">
+            <div class="fortune-donor-name" id="fortune-donor-name">Alexander Miller</div>
+            <div class="fortune-donor-gift" id="fortune-donor-gift">✨ Sacred Blessing • Golden Crown ✨</div>
+          </div>
+        </div>
+        <div class="fortune-divider-subtle"></div>
+        <div class="fortune-title" id="fortune-title">Wish #1 - The Crown of Triumph</div>
+        <div class="fortune-blessing" id="fortune-blessing">May your highest ambitions be fulfilled, and may honor and prosperity follow your every step!</div>
+      </div>
+    </div>
+
+    <!-- High-Impact Level Up / Resonance Awakening Celebration -->
+    <div id="level-awakening-overlay">
+      <div class="awakening-shockwave"></div>
+      <div class="awakening-crest">
+        <div class="awakening-badge">🌊 WATER RESONANCE AWAKENED 🌊</div>
+        <div class="awakening-tier" id="awakening-tier-text">TIER 6 UNLOCKED</div>
+        <div class="awakening-divider"></div>
+        <div class="awakening-hero" id="awakening-hero-text">Awakened by Alexander Miller</div>
+        <div class="awakening-sub">The sacred fountain overflows with celestial blessings!</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/live.js"></script>
+</body>
+</html>

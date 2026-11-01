@@ -1,0 +1,7 @@
+node_modules/
+public/audio_cache/
+*.log
+out.mp3
+.env
+.DS_Store
+Thumbs.db

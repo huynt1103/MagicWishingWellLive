@@ -1,0 +1,1078 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Quicksand:wght@500;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #030712;
+  font-family: 'Quicksand', sans-serif;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 
+  1080 x 1920 Virtual Canvas Architecture
+*/
+#live-viewport {
+  position: absolute;
+  width: 1080px;
+  height: 1920px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(var(--ui-scale, 1)) translateZ(0);
+  transform-origin: center center;
+  overflow: hidden;
+  background: #030712 url('../assets/mystic_well_bg.jpg') no-repeat center center;
+  background-size: cover;
+  box-shadow: 0 0 70px rgba(0, 0, 0, 0.95);
+  backface-visibility: hidden;
+}
+
+#live-viewport::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 40%, rgba(56, 189, 248, 0.12) 0%, rgba(245, 158, 11, 0.05) 45%, rgba(0, 0, 0, 0.35) 100%);
+  z-index: 5;
+  animation: divineBreathing 8s ease-in-out infinite alternate;
+  transform: translateZ(0);
+}
+
+@keyframes divineBreathing {
+  0% { opacity: 0.65; }
+  50% { opacity: 1.0; }
+  100% { opacity: 0.75; }
+}
+
+#fx-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1080px;
+  height: 1920px;
+  pointer-events: none;
+  z-index: 10;
+  transform: translateZ(0);
+}
+
+#temple-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1080px;
+  height: 1920px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* ==================== FEATURE #1: NATURAL WATER RESONANCE METER ==================== */
+#top-status-bar {
+  position: absolute;
+  top: 130px; /* Safe from TikTok Host avatar and viewer count */
+  left: 28px;
+  right: 28px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 700;
+  z-index: 60;
+}
+
+.resonance-pill {
+  background: rgba(15, 23, 42, 0.92);
+  border: 1.5px solid rgba(56, 189, 248, 0.65);
+  border-radius: 20px;
+  padding: 5px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+  transition: all 0.4s ease;
+}
+
+.resonance-pill.near-awakening {
+  border-color: #f59e0b;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.7);
+  animation: pulseResonance 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes pulseResonance {
+  0% { transform: scale(1); border-color: #38bdf8; }
+  100% { transform: scale(1.04); border-color: #fef08a; box-shadow: 0 0 25px rgba(254, 240, 138, 0.8); }
+}
+
+.rune-icon {
+  font-size: 16px;
+  animation: floatRune 2s ease-in-out infinite alternate;
+}
+
+@keyframes floatRune {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-3px); }
+}
+
+.resonance-label {
+  color: #e0f2fe;
+  font-size: 14px;
+}
+
+.resonance-label b {
+  color: #38bdf8;
+  font-weight: 800;
+}
+
+.resonance-pill.near-awakening .resonance-label b {
+  color: #fef08a;
+}
+
+.resonance-meter-track {
+  width: 110px;
+  height: 8px;
+  background: rgba(30, 41, 59, 0.85);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+.resonance-meter-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0284c7, #38bdf8, #fef08a);
+  border-radius: 6px;
+  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.4, 1);
+  box-shadow: 0 0 8px #38bdf8;
+}
+
+.level-badge {
+  background: rgba(2, 132, 199, 0.35);
+  border: 1px solid #38bdf8;
+  border-radius: 10px;
+  padding: 1px 7px;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #7dd3fc;
+}
+
+/* ==================== FEATURE #2 & #6: 8 GUARDIAN PEDESTALS ==================== */
+#guardians-pedestals {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1080px;
+  height: 1920px;
+  pointer-events: none;
+}
+
+.guardian-pedestal-slot {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 26;
+  transition: left 0.85s cubic-bezier(0.34, 1.25, 0.64, 1),
+              top 0.85s cubic-bezier(0.34, 1.25, 0.64, 1),
+              transform 0.85s cubic-bezier(0.34, 1.25, 0.64, 1),
+              opacity 0.6s ease;
+}
+
+/* Rank Change Animations */
+.guardian-pedestal-slot.rank-climb-boost .guardian-avatar {
+  animation: climbAuraGlow 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes climbAuraGlow {
+  0% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.22); filter: brightness(1.7) drop-shadow(0 0 20px #fef08a); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+.guardian-pedestal-slot.rank-drop-slide {
+  animation: dropShake 0.8s ease-out;
+}
+
+@keyframes dropShake {
+  0% { transform: translate(-50%, -100%) scale(1); }
+  35% { transform: translate(-50%, -100%) scale(0.92) translateY(6px); filter: brightness(0.85); }
+  100% { transform: translate(-50%, -100%) scale(1) translateY(0); filter: brightness(1); }
+}
+
+/* 3D Realistic Stone / Gold Pedestal Pillar */
+.pedestal-column {
+  width: 76px;
+  height: 85px;
+  background: url('../assets/stone_pedestal.png') no-repeat center bottom;
+  background-size: contain;
+  margin-top: -8px;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.9));
+}
+
+.guardian-pedestal-slot.top-1 .pedestal-column {
+  width: 108px;
+  height: 115px;
+  background: url('../assets/gold_pedestal.png') no-repeat center bottom;
+  background-size: contain;
+  margin-top: -12px;
+  filter: drop-shadow(0 0 25px rgba(245, 158, 11, 0.85)) drop-shadow(0 8px 18px rgba(0,0,0,0.95));
+  animation: goldPedestalPulse 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes goldPedestalPulse {
+  0% { filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.6)) drop-shadow(0 8px 18px rgba(0,0,0,0.9)); }
+  100% { filter: drop-shadow(0 0 35px rgba(254, 240, 138, 0.95)) drop-shadow(0 10px 22px rgba(0,0,0,0.95)); }
+}
+
+.guardian-pedestal-slot.danger-seat-slot .pedestal-column {
+  filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.85)) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.9));
+}
+
+/* Standing Guardian Character */
+.guardian-char {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar-aura {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.avatar-aura.aura-cyan {
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.45) 0%, rgba(56, 189, 248, 0) 70%);
+}
+
+.avatar-aura.aura-gold {
+  width: 85px;
+  height: 85px;
+  background: radial-gradient(circle, rgba(254, 240, 138, 0.6) 0%, rgba(245, 158, 11, 0.3) 50%, rgba(0, 0, 0, 0) 75%);
+  animation: auraPulse 2.0s ease-in-out infinite alternate;
+}
+
+@keyframes auraPulse {
+  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; }
+  100% { transform: translate(-50%, -50%) scale(1.15); opacity: 1.0; }
+}
+
+.guardian-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2.5px solid #38bdf8;
+  object-fit: cover;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.8), 0 4px 8px rgba(0,0,0,0.8);
+  background: #1e293b;
+  position: relative;
+  z-index: 3;
+}
+
+.guardian-pedestal-slot.top-1 .guardian-avatar {
+  width: 66px;
+  height: 66px;
+  border: 3.5px solid #fef08a;
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.95), 0 6px 12px rgba(0,0,0,0.9);
+}
+
+.guardian-robe {
+  width: 28px;
+  height: 34px;
+  background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
+  border-radius: 10px 10px 4px 4px;
+  margin-top: -4px;
+  border: 1.5px solid #38bdf8;
+  position: relative;
+  z-index: 3;
+}
+
+.guardian-pedestal-slot.top-1 .guardian-robe {
+  width: 40px;
+  height: 44px;
+  background: linear-gradient(180deg, #d97706 0%, #b45309 100%);
+  border-color: #fef08a;
+}
+
+/* Torch / Light crystal held by guardian */
+.guardian-torch {
+  position: absolute;
+  top: 4px;
+  right: -6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 10px #38bdf8;
+  animation: torchFlicker 1.5s ease-in-out infinite alternate;
+}
+
+.guardian-pedestal-slot.top-1 .guardian-torch {
+  width: 14px;
+  height: 14px;
+  background: #fef08a;
+  box-shadow: 0 0 18px #f59e0b;
+}
+
+@keyframes torchFlicker {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1.2); opacity: 1.0; }
+}
+
+/* Rank Badge */
+.guardian-rank-tag {
+  margin-top: 3px;
+  background: rgba(15, 23, 42, 0.94);
+  border: 1px solid #38bdf8;
+  border-radius: 12px;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #bae6fd;
+  white-space: nowrap;
+}
+
+.guardian-pedestal-slot.top-1 .guardian-rank-tag {
+  background: linear-gradient(135deg, #b45309, #78350f);
+  border-color: #fef08a;
+  color: #fef08a;
+  font-size: 12.5px;
+  padding: 2px 9px;
+}
+
+.guardian-rank-tag.danger-seat {
+  background: rgba(80, 10, 10, 0.95);
+  border-color: #ef4444;
+  color: #fca5a5;
+  animation: dangerBlink 1.4s infinite alternate;
+}
+
+@keyframes dangerBlink {
+  0% { box-shadow: 0 0 4px rgba(239, 68, 68, 0.4); }
+  100% { box-shadow: 0 0 12px rgba(239, 68, 68, 0.9); }
+}
+
+/* Top 1 Golden Floating Crown */
+.crown-float {
+  position: absolute;
+  top: -26px;
+  font-size: 24px;
+  animation: crownHover 2.2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.9));
+}
+
+@keyframes crownHover {
+  0% { transform: translateY(0) rotate(-3deg); }
+  100% { transform: translateY(-7px) rotate(3deg); }
+}
+
+/* Ejection / Outbid Departure Animation */
+.guardian-pedestal-slot.ejecting {
+  animation: pedestalEject 1.2s ease-out forwards;
+}
+
+@keyframes pedestalEject {
+  0% { opacity: 1; transform: translate(-50%, -100%) scale(1); }
+  50% { opacity: 0.8; transform: translate(-50%, -100%) translateY(20px) scale(0.9); }
+  100% { opacity: 0; transform: translate(-50%, -100%) translateY(50px) scale(0.6); }
+}
+
+/* ==================== OUTBID DETHRONE BANNER ==================== */
+#outbid-alert-container {
+  position: absolute;
+  top: 295px;
+  left: 28px;
+  right: 28px;
+  z-index: 120;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.outbid-alert-card {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(30, 8, 8, 0.96) 0%, rgba(69, 10, 10, 0.96) 50%, rgba(20, 5, 5, 0.96) 100%);
+  border: 2.5px solid #ef4444;
+  border-radius: 16px;
+  padding: 14px 20px;
+  box-shadow: 0 0 35px rgba(239, 68, 68, 0.7), 0 8px 24px rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  animation: outbidDropIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes outbidDropIn {
+  from { transform: translateY(-40px) scale(0.8); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.outbid-icon {
+  font-size: 36px;
+  animation: outbidPulse 0.6s infinite alternate;
+}
+
+@keyframes outbidPulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.2); }
+}
+
+.outbid-content {
+  flex: 1;
+}
+
+.outbid-title {
+  font-family: 'Cinzel', serif;
+  font-size: 15px;
+  font-weight: 900;
+  color: #fca5a5;
+  letter-spacing: 1px;
+}
+
+.outbid-desc {
+  font-size: 19px;
+  color: #fff;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.outbid-desc .highlight-new {
+  color: #fef08a;
+  font-weight: 800;
+}
+
+.outbid-desc .highlight-old {
+  color: #94a3b8;
+  text-decoration: line-through;
+}
+
+/* ==================== WALKING WISHMAKER CHARACTER (ETHEREAL SPIRIT) ==================== */
+.walking-wishmaker {
+  position: absolute;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+  transition: top 1.8s cubic-bezier(0.25, 0.8, 0.25, 1), left 1.8s ease, transform 1.8s ease, opacity 0.5s ease;
+}
+
+.wish-speech-bubble {
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(8px);
+  color: #f8fafc;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 7px 16px;
+  border-radius: 14px;
+  border: 1.5px solid #38bdf8;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 12px rgba(56, 189, 248, 0.3);
+  margin-bottom: 10px;
+  white-space: nowrap;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+}
+
+.wish-speech-bubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #38bdf8 transparent transparent transparent;
+}
+
+.walking-wishmaker.vip .wish-speech-bubble {
+  border-color: #fbbf24;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 15px rgba(251, 191, 36, 0.4);
+}
+
+.walking-wishmaker.vip .wish-speech-bubble::after {
+  border-color: #fbbf24 transparent transparent transparent;
+}
+
+.wishmaker-badge {
+  background: rgba(15, 23, 42, 0.94);
+  border: 1.5px solid #38bdf8;
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #bae6fd;
+  white-space: nowrap;
+  margin-bottom: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+
+.walking-wishmaker.vip .wishmaker-badge {
+  border-color: #f59e0b;
+  color: #fef08a;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+}
+
+.spirit-traveler-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.spirit-halo {
+  position: absolute;
+  top: -8px;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 2px dashed rgba(56, 189, 248, 0.6);
+  animation: spiritHaloSpin 10s linear infinite;
+  pointer-events: none;
+}
+
+.walking-wishmaker.vip .spirit-halo {
+  border: 2px dashed rgba(245, 158, 11, 0.85);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+}
+
+@keyframes spiritHaloSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spirit-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2.5px solid #38bdf8;
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.8), 0 4px 12px rgba(0, 0, 0, 0.6);
+  object-fit: cover;
+  background: #1e293b;
+  position: relative;
+  z-index: 2;
+}
+
+.walking-wishmaker.vip .spirit-avatar {
+  border-color: #fef08a;
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.95), 0 4px 12px rgba(0, 0, 0, 0.7);
+}
+
+.spirit-robe {
+  width: 42px;
+  height: 48px;
+  background: linear-gradient(180deg, rgba(56, 189, 248, 0.85) 0%, rgba(2, 132, 199, 0.4) 60%, transparent 100%);
+  border-radius: 50% 50% 40% 40% / 60% 60% 30% 30%;
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.7));
+  margin-top: -10px;
+  position: relative;
+  z-index: 1;
+  animation: spiritRobeFlow 1.6s ease-in-out infinite alternate;
+}
+
+.walking-wishmaker.vip .spirit-robe {
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.95) 0%, rgba(217, 119, 6, 0.45) 60%, transparent 100%);
+  filter: drop-shadow(0 0 14px rgba(245, 158, 11, 0.85));
+}
+
+@keyframes spiritRobeFlow {
+  0% { transform: scaleX(0.92) translateY(0); }
+  100% { transform: scaleX(1.08) translateY(-4px); }
+}
+
+.walking-wishmaker.walking .spirit-traveler-wrap {
+  animation: spiritHoverWalk 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes spiritHoverWalk {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-10px); }
+}
+
+.walking-wishmaker.tossing .spirit-traveler-wrap {
+  animation: spiritTossGlow 0.4s ease-in-out infinite alternate;
+}
+
+@keyframes spiritTossGlow {
+  0% { transform: scale(1); filter: brightness(1); }
+  100% { transform: scale(1.12) translateY(-6px); filter: brightness(1.3); }
+}
+
+.walking-wishmaker.celebrating .spirit-traveler-wrap {
+  animation: spiritCelebrate 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes spiritCelebrate {
+  0% { transform: scale(1) translateY(0); }
+  100% { transform: scale(1.15) translateY(-14px); }
+}
+
+/* ==================== TOP ROYAL BANNER ==================== */
+#top-banner-container {
+  position: absolute;
+  top: 185px;
+  left: 28px;
+  right: 28px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.share-pill {
+  background: rgba(15, 23, 42, 0.92);
+  border: 1.5px solid #38bdf8;
+  border-radius: 20px;
+  padding: 5px 22px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #bae6fd;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+}
+
+.share-pill::before {
+  content: '✨';
+  font-size: 15px;
+}
+
+.royal-announcement-card {
+  width: 100%;
+  background: linear-gradient(180deg, rgba(15, 30, 55, 0.96) 0%, rgba(9, 18, 34, 0.96) 100%);
+  border: 2px solid #38bdf8;
+  border-radius: 16px;
+  padding: 12px 22px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8), inset 0 0 16px rgba(56, 189, 248, 0.35);
+  text-align: center;
+  position: relative;
+  animation: bannerGlow 3.5s infinite alternate;
+}
+
+.royal-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: #fbbf24;
+}
+.royal-corner.tl { top: 5px; left: 5px; border-top: 3px solid #fbbf24; border-left: 3px solid #fbbf24; }
+.royal-corner.tr { top: 5px; right: 5px; border-top: 3px solid #fbbf24; border-right: 3px solid #fbbf24; }
+.royal-corner.bl { bottom: 5px; left: 5px; border-bottom: 3px solid #fbbf24; border-left: 3px solid #fbbf24; }
+.royal-corner.br { bottom: 5px; right: 5px; border-bottom: 3px solid #fbbf24; border-right: 3px solid #fbbf24; }
+
+.announcement-text {
+  font-size: 21px;
+  line-height: 1.45;
+  color: #f0f9ff;
+  font-weight: 600;
+}
+
+.announcement-text .highlight-name {
+  color: #fef08a;
+  font-weight: 800;
+}
+
+.announcement-text .highlight-gift {
+  color: #38bdf8;
+  font-weight: 800;
+}
+
+@keyframes bannerGlow {
+  0% { border-color: #0284c7; box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35); }
+  100% { border-color: #38bdf8; box-shadow: 0 6px 32px rgba(56, 189, 248, 0.6); }
+}
+
+/* ==================== STREAM CTA RIBBON (TIKTOK SAFE ZONE) ==================== */
+#stream-cta-ribbon {
+  position: absolute;
+  top: 1080px;
+  left: 28px;
+  right: 28px;
+  z-index: 45;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  pointer-events: none;
+}
+
+.cta-pill {
+  background: rgba(15, 23, 42, 0.94);
+  border: 1.5px solid rgba(56, 189, 248, 0.6);
+  border-radius: 20px;
+  padding: 8px 22px;
+  font-size: 17.5px;
+  font-weight: 700;
+  color: #e0f2fe;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+}
+
+.cta-sparkle {
+  font-size: 22px;
+  animation: sparkleTwinkle 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes sparkleTwinkle {
+  0% { transform: scale(0.8) rotate(-10deg); opacity: 0.6; }
+  100% { transform: scale(1.3) rotate(15deg); opacity: 1; }
+}
+
+/* ==================== BOTTOM ACTION & DONOR PANEL ==================== */
+#bottom-action-panel {
+  position: absolute;
+  top: 1145px; /* Safely above TikTok chat stream (y ≈ 1250px) */
+  left: 24px;
+  right: 24px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.donor-leaderboard-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.recent-donor-box {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(11, 20, 38, 0.98));
+  border: 2px solid #38bdf8;
+  border-radius: 12px;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.7);
+  font-size: 20px;
+  max-width: 60%;
+}
+
+.dot-gold {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 10px #f59e0b;
+}
+
+.donor-name {
+  font-weight: 800;
+  color: #fef08a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.donor-score {
+  font-size: 16px;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+.compact-leaderboard {
+  background: rgba(15, 23, 42, 0.94);
+  border: 1.5px solid #0284c7;
+  border-radius: 12px;
+  padding: 8px 14px;
+  min-width: 240px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.7);
+}
+
+.clb-title {
+  font-size: 12.5px;
+  font-weight: 900;
+  color: #38bdf8;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.clb-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14.5px;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.clb-item:last-child {
+  border-bottom: none;
+}
+
+.clb-name {
+  color: #e2e8f0;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clb-val {
+  color: #fbbf24;
+  font-weight: 800;
+}
+
+/* 3 Safe Cards */
+.donation-cards-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.donate-card {
+  flex: 1;
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  border: 1.5px solid #38bdf8;
+  border-radius: 12px;
+  padding: 10px 8px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+
+.donate-card .coin-val {
+  font-size: 13px;
+  font-weight: 900;
+  color: #fef08a;
+  letter-spacing: 0.5px;
+}
+
+.donate-card .action-label {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-top: 3px;
+}
+
+/* Auspicious Floating Wish Card */
+#fortune-overlay {
+  position: absolute;
+  top: 310px; /* Floating right under top royal announcement card */
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(-16px) scale(0.95);
+}
+
+#fortune-overlay.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.fortune-scroll {
+  width: 530px;
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(12px);
+  border: 2px solid #fbbf24;
+  border-radius: 18px;
+  padding: 18px 24px;
+  box-shadow: 0 0 35px rgba(251, 191, 36, 0.45), 0 14px 32px rgba(0, 0, 0, 0.75);
+  text-align: center;
+  position: relative;
+}
+
+.fortune-donor-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.fortune-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 2px solid #fef08a;
+  box-shadow: 0 0 14px rgba(251, 191, 36, 0.7);
+  object-fit: cover;
+  background: #1e293b;
+}
+
+.fortune-donor-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.fortune-donor-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fef08a;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.6);
+}
+
+.fortune-donor-gift {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #38bdf8;
+  letter-spacing: 0.8px;
+  margin-top: 1px;
+}
+
+.fortune-divider-subtle {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.4), transparent);
+  margin: 8px 0 12px 0;
+}
+
+.fortune-title {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 0.8px;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+  margin-bottom: 8px;
+}
+
+.fortune-blessing {
+  font-size: 17.5px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #f8fafc;
+}
+
+/* ==================== HIGH-IMPACT LEVEL UP / AWAKENING CELEBRATION ==================== */
+#level-awakening-overlay {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+#level-awakening-overlay.active {
+  opacity: 1;
+}
+
+.awakening-shockwave {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 4px solid #38bdf8;
+  box-shadow: 0 0 40px #38bdf8, inset 0 0 30px #fbbf24;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#level-awakening-overlay.active .awakening-shockwave {
+  animation: shockwaveExpand 2.2s cubic-bezier(0.1, 0.8, 0.2, 1) infinite;
+}
+
+@keyframes shockwaveExpand {
+  0% { transform: scale(0.6); opacity: 1; }
+  60% { opacity: 0.8; }
+  100% { transform: scale(6.5); opacity: 0; }
+}
+
+.awakening-crest {
+  width: 620px;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.96) 0%, rgba(30, 41, 59, 0.96) 100%);
+  backdrop-filter: blur(14px);
+  border: 3px solid #fbbf24;
+  border-radius: 24px;
+  padding: 28px 32px;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(251, 191, 36, 0.6), 0 20px 50px rgba(0, 0, 0, 0.9);
+  transform: scale(0.6);
+  opacity: 0;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+  position: relative;
+  z-index: 2;
+}
+
+#level-awakening-overlay.active .awakening-crest {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.awakening-badge {
+  font-size: 14px;
+  font-weight: 900;
+  color: #38bdf8;
+  letter-spacing: 3px;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+  margin-bottom: 8px;
+}
+
+.awakening-tier {
+  font-family: 'Cinzel', serif;
+  font-size: 34px;
+  font-weight: 900;
+  color: #fef08a;
+  letter-spacing: 2px;
+  text-shadow: 0 0 25px rgba(245, 158, 11, 0.9), 0 0 40px rgba(254, 240, 138, 0.6);
+}
+
+.awakening-divider {
+  width: 140px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #fbbf24, transparent);
+  margin: 14px auto;
+}
+
+.awakening-hero {
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.awakening-sub {
+  font-size: 15px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-top: 6px;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.4) translateY(15px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}

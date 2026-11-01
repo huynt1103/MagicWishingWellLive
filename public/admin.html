@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - The Magic Wishing Well Live</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <div class="admin-container">
+    <header>
+      <h1>✨ The Magic Wishing Well - TikTok Live Controller</h1>
+      <a href="index.html" target="_blank" class="live-link-btn">📺 Open Live Overlay (OBS / Studio)</a>
+    </header>
+
+    <div class="grid-layout">
+      
+      <!-- Card 1: TikTok Live Connection -->
+      <div class="card">
+        <h2>📡 TikTok Live Connection</h2>
+        
+        <div class="status-row">
+          <span>Status:</span>
+          <div id="status-badge" class="status-badge disconnected">
+            <span class="status-dot"></span>
+            <span id="status-text">Disconnected</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tiktok-username">TikTok Username (Channel currently streaming LIVE):</label>
+          <input type="text" id="tiktok-username" placeholder="e.g. your_stream_handle">
+        </div>
+
+        <div class="form-group">
+          <label for="tiktok-sessionid">Session ID Cookie (Optional - Prevents rate limits):</label>
+          <input type="text" id="tiktok-sessionid" placeholder="Paste sessionid cookie from tiktok.com if required">
+        </div>
+
+        <div class="btn-group" style="margin-bottom: 12px;">
+          <button id="btn-connect" class="btn btn-primary">🔗 Connect Live</button>
+          <button id="btn-disconnect" class="btn btn-danger" disabled>⏹️ Disconnect</button>
+        </div>
+
+        <!-- Auto Simulation Mode Toggle -->
+        <div style="background: #171c26; padding: 12px; border-radius: 8px; border: 1px solid #2d384e;">
+          <div style="font-weight: 700; font-size: 13px; color: #60a5fa; margin-bottom: 4px;">🎮 Auto Simulation Mode (AFK Test):</div>
+          <p style="font-size: 11.5px; color: #94a3b8; margin-bottom: 8px;">
+            Simulates US/UK viewers joining, tossing coins, making wishes, and sending gifts continuously:
+          </p>
+          <button id="btn-toggle-sim" class="btn btn-gold" style="width: 100%;">▶️ Start Live Simulation</button>
+        </div>
+      </div>
+
+      <!-- Card 2: Quick Simulator -->
+      <div class="card">
+        <h2>⚡ Quick Effect Simulator</h2>
+
+        <div class="sim-grid">
+          <button class="sim-btn" id="sim-1xu">
+            <span class="title">🪙 Test 1 Coin: Lucky Penny</span>
+            <span class="sub">Tosses silver coin with water splash & clink</span>
+          </button>
+          <button class="sim-btn" id="sim-5xu">
+            <span class="title">✨ Test 5 Coins: Golden Toss</span>
+            <span class="sub">Golden coin arc, water ripple & sparkle</span>
+          </button>
+          <button class="sim-btn" id="sim-10xu">
+            <span class="title">📜 Test 10+ Coins: Big Wish</span>
+            <span class="sub">Light pillar surge + Auspicious Scroll reveal</span>
+          </button>
+          <button class="sim-btn" id="sim-50tim">
+            <span class="title">💖 Test 50 Likes: Hearts Shower</span>
+            <span class="sub">Water fountain eruption with love hearts</span>
+          </button>
+          <button class="sim-btn" id="sim-all-bow" style="grid-column: span 2; background: #0c4a6e; border-color: #38bdf8;">
+            <span class="title">🌊 Fountain Eruption (Grand Surge)</span>
+            <span class="sub">Triggers celestial light pillar & continuous water waves</span>
+          </button>
+          <button class="sim-btn" id="sim-join" style="grid-column: span 2; background: #162a22; border-color: #10b981;">
+            <span class="title">👋 Test Viewer Join (Welcome Wish)</span>
+            <span class="sub">Welcomes viewer by name with AI Voice blessing</span>
+          </button>
+          <button class="sim-btn" id="sim-chat" style="grid-column: span 2;">
+            <span class="title">💬 Test Viewer Chat & Coin Drop</span>
+            <span class="sub">Displays speech bubble + tosses coin into pool</span>
+          </button>
+          <button class="sim-btn" id="sim-dethrone" style="grid-column: span 2; background: #450a0a; border-color: #ef4444;">
+            <span class="title">⚡ Test Dethrone Top 1 (Outbid Alert)</span>
+            <span class="sub">Challenger takes Top 1 with Golden Crown + Overthrow Alert & SFX</span>
+          </button>
+          <button class="sim-btn" id="sim-awaken" style="grid-column: span 2; background: #083344; border-color: #06b6d4;">
+            <span class="title">💧 Test Awaken Fountain (100% Resonance)</span>
+            <span class="sub">Charges energy to 100%, advances tier & triggers Mega Rainbow Fountain Eruption</span>
+          </button>
+        </div>
+
+        <!-- Custom Gift Form -->
+        <div style="background: #171a23; padding: 12px; border-radius: 8px; border: 1px solid #2e3547; margin-top: 10px;">
+          <div style="font-weight: 700; font-size: 13px; color: #ffd700; margin-bottom: 8px;">Trigger Custom Gift:</div>
+          <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <input type="text" id="custom-name" placeholder="Viewer Name" style="flex: 2;">
+            <input type="text" id="custom-gift-name" placeholder="Gift (Crown, Diamond...)" style="flex: 2;">
+            <input type="number" id="custom-coins" placeholder="Coins" value="10" style="flex: 1;">
+          </div>
+          <button id="btn-custom-gift" class="btn btn-gold" style="width: 100%;">🎁 Toss This Custom Gift</button>
+        </div>
+      </div>
+
+      <!-- Card 3: Voice & Audio Settings -->
+      <div class="card">
+        <h2>🔊 Voice (TTS) & Audio Settings</h2>
+
+        <div class="form-group">
+          <label for="tts-voice">AI Voice Model (English Edge-TTS / gTTS):</label>
+          <select id="tts-voice">
+            <option value="en-US-JennyNeural" selected>Jenny (US Female - Warm, clear, uplifting)</option>
+            <option value="en-US-GuyNeural">Guy (US Male - Deep, calm, serene)</option>
+            <option value="en-GB-SoniaNeural">Sonia (UK British Female - Elegant, polite)</option>
+            <option value="vi-VN-HoaiMyNeural">Hoai My (Vietnamese fallback)</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+          <input type="checkbox" id="tts-enabled" checked style="width: 18px; height: 18px; accent-color: #38bdf8;">
+          <label for="tts-enabled" style="margin-bottom: 0; cursor: pointer; color: #fff;">Enable AI Voice reading wishes & names</label>
+        </div>
+
+        <div class="form-group">
+          <label for="bgm-volume">Ambient Music Volume:</label>
+          <input type="range" id="bgm-volume" min="0" max="1" step="0.05" value="0.30" style="width: 100%; accent-color: #38bdf8;">
+        </div>
+
+        <div class="btn-group">
+          <button id="btn-save-config" class="btn btn-primary">💾 Save Settings</button>
+          <button id="btn-test-voice" class="btn btn-secondary">🔊 Test AI Voice</button>
+        </div>
+      </div>
+
+      <!-- Card 4: Leaderboard & Logs -->
+      <div class="card">
+        <h2>📊 Leaderboard & Live Event Logs</h2>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <span style="font-size: 13px; color: #9eaab7;">"Fountain Guardians" Ranking:</span>
+          <button id="btn-reset-lb" class="btn btn-danger" style="padding: 6px 12px; font-size: 12px;">🔄 Reset Ranks</button>
+        </div>
+
+        <label>Live Event Stream:</label>
+        <div class="log-box" id="event-logs"></div>
+
+        <div style="margin-top: 14px; padding: 10px; background: #161a24; border-radius: 6px; font-size: 12px; color: #a2b0be;">
+          💡 <b>TikTok Pro Tip:</b><br>
+          - Your channel must be <b>actively streaming LIVE</b> on TikTok before clicking Connect.<br>
+          - Use a clean residential US/UK proxy to ensure local distribution.
+        </div>
+      </div>
+
+      <!-- Card 5: Anti-Detection & Stream Health -->
+      <div class="card" style="grid-column: span 2; border: 1px solid #10b981; background: #0f1f1a;">
+        <h2 style="color: #34d399;">🛡️ Anti-Static & OCR Safety Controls</h2>
+        
+        <p style="font-size: 13px; color: #94a3b8; margin-bottom: 14px;">
+          TikTok algorithms penalize static streams or direct coin-begging text. Use these controls to maintain 100% compliance:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 16px;">
+          <button id="btn-toggle-cards" class="btn btn-secondary" style="background: #1e293b; border-color: #38bdf8; color: #bae6fd;">
+            👁️ Toggle Bottom Action Cards
+          </button>
+          <button id="btn-toggle-halo" class="btn btn-secondary" style="background: #1e293b; border-color: #10b981; color: #34d399;">
+            ✨ Toggle Light Beam & Shimmer
+          </button>
+        </div>
+
+        <div style="background: #064e3b; border: 1px solid #059669; padding: 12px 14px; border-radius: 8px; font-size: 13px; color: #d1fae5; line-height: 1.6;">
+          <b>🔑 3 Golden Rules for High TikTok Algorithm Retention:</b><br>
+          1. <b>Turn on Computer Mic in OBS:</b> Keep mic on low volume to capture subtle room ambient noise. TikTok classifies streams with audio input as <i>Original Content</i>.<br>
+          2. <b>Add small Webcam Picture-in-Picture:</b> Showing hands or a desk corner ensures 100% bypass of automated static loop detection.<br>
+          3. <b>Payout Setup:</b> Link your verified personal PayPal in TikTok Creator Dashboard for instant, frictionless withdrawal.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
