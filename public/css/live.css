@@ -35,6 +35,13 @@ html, body {
   background-size: cover;
   box-shadow: 0 0 70px rgba(0, 0, 0, 0.95);
   backface-visibility: hidden;
+  animation: bgMicroBreathing 26s ease-in-out infinite alternate;
+}
+
+@keyframes bgMicroBreathing {
+  0% { background-size: 100% 100%; background-position: center center; }
+  50% { background-size: 101.4% 101.4%; background-position: 50.2% 49.8%; }
+  100% { background-size: 100.7% 100.7%; background-position: 49.8% 50.2%; }
 }
 
 #live-viewport::before {
