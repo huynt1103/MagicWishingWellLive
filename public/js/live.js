@@ -10,6 +10,22 @@
  * - English TTS voice synthesis queue & Auspicious Wish Scroll reveal
  */
 
+// Nicknames, comments and avatar URLs come from TikTok viewers and must never be rendered as HTML
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face';
+
+function safeImageUrl(url) {
+  return typeof url === 'string' && /^(https?:\/\/|\/)/i.test(url) ? url : DEFAULT_AVATAR;
+}
+
 class WishingWellLiveApp {
   constructor() {
     this.stage = document.getElementById('temple-stage');
@@ -222,11 +238,11 @@ class WishingWellLiveApp {
 
     // Build Ethereal Spirit Traveler DOM
     traveler.innerHTML = `
-      ${text ? `<div class="wish-speech-bubble">${text}</div>` : ''}
-      <div class="wishmaker-badge">${nickname}</div>
+      ${text ? `<div class="wish-speech-bubble">${escapeHtml(text)}</div>` : ''}
+      <div class="wishmaker-badge">${escapeHtml(nickname)}</div>
       <div class="spirit-traveler-wrap">
         <div class="spirit-halo"></div>
-        <img src="${avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face'}" class="spirit-avatar" alt="${nickname}" />
+        <img src="${escapeHtml(safeImageUrl(avatar))}" class="spirit-avatar" alt="${escapeHtml(nickname)}" />
         <div class="spirit-robe"></div>
       </div>
     `;
@@ -442,7 +458,7 @@ class WishingWellLiveApp {
 
   updateTopBanner(text) {
     const bannerEl = document.getElementById('royal-banner-text');
-    if (bannerEl) bannerEl.innerHTML = text;
+    if (bannerEl) bannerEl.textContent = text;
   }
 
   updateRecentWishmaker(nickname, coins) {
@@ -469,8 +485,8 @@ class WishingWellLiveApp {
       const row = document.createElement('div');
       row.className = 'clb-item';
       row.innerHTML = `
-        <span class="clb-name">${index + 1}. ${item.nickname}</span>
-        <span class="clb-val">${item.score}</span>
+        <span class="clb-name">${index + 1}. ${escapeHtml(item.nickname)}</span>
+        <span class="clb-val">${escapeHtml(item.score)}</span>
       `;
       container.appendChild(row);
     });
@@ -515,6 +531,9 @@ class WishingWellLiveApp {
         const oldRank = parseInt(slot.dataset.rank || newRank, 10);
         slot.dataset.rank = newRank;
 
+        // Update classes (must run before adding the animation classes below)
+        slot.className = `guardian-pedestal-slot ${isTop1 ? 'top-1' : ''} ${isDangerSeat ? 'danger-seat-slot' : ''}`;
+
         // Rank climb vs drop animation
         if (newRank < oldRank) {
           slot.classList.remove('rank-drop-slide');
@@ -530,9 +549,6 @@ class WishingWellLiveApp {
         slot.style.left = `${pos.x}px`;
         slot.style.top = `${pos.y}px`;
         slot.style.zIndex = pos.zIndex;
-
-        // Update classes
-        slot.className = `guardian-pedestal-slot ${isTop1 ? 'top-1' : ''} ${isDangerSeat ? 'danger-seat-slot' : ''}`;
 
         // Update Crown for Top 1
         const crownEl = slot.querySelector('.crown-float');
@@ -575,11 +591,11 @@ class WishingWellLiveApp {
           <div class="guardian-char">
             ${isTop1 ? '<div class="crown-float">👑</div>' : ''}
             <div class="avatar-aura ${isTop1 ? 'aura-gold' : 'aura-cyan'}"></div>
-            <img src="${item.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face'}" class="guardian-avatar" alt="${item.nickname}" />
+            <img src="${escapeHtml(safeImageUrl(item.avatar))}" class="guardian-avatar" alt="${escapeHtml(item.nickname)}" />
             <div class="guardian-robe">
               <div class="guardian-torch"></div>
             </div>
-            <div class="guardian-rank-tag ${isDangerSeat ? 'danger-seat' : ''}">#${index + 1} ${firstName}</div>
+            <div class="guardian-rank-tag ${isDangerSeat ? 'danger-seat' : ''}">#${index + 1} ${escapeHtml(firstName)}</div>
           </div>
           <div class="pedestal-column"></div>
         `;
@@ -649,12 +665,11 @@ class WishingWellLiveApp {
         this.ripples.push({
           x: this.wellCenter.x,
           y: this.wellCenter.y,
-          radiusX: 25,
-          radiusY: 10,
-          maxRadiusX: this.wellRadiusX * 1.6,
+          radius: 25,
+          maxRadius: this.wellRadiusX * 1.6,
           alpha: 1.0,
-          color: '#fbbf24',
-          lineWidth: 5
+          speed: 3.5,
+          color: '#fbbf24'
         });
       }, i * 260);
     }
@@ -676,7 +691,7 @@ class WishingWellLiveApp {
       <div class="outbid-content">
         <div class="outbid-title">THRONE OVERTHROWN! NEW TOP 1 GUARDIAN!</div>
         <div class="outbid-desc">
-          <span class="highlight-new">${newLeader.nickname}</span> (${newLeader.score}🪙) dethroned <span class="highlight-old">${oldLeader.nickname}</span>!
+          <span class="highlight-new">${escapeHtml(newLeader.nickname)}</span> (${escapeHtml(newLeader.score)}🪙) dethroned <span class="highlight-old">${escapeHtml(oldLeader.nickname)}</span>!
         </div>
       </div>
     `;
@@ -734,7 +749,12 @@ class WishingWellLiveApp {
   // ==================== MAIN CANVAS RENDER LOOP ====================
 
   startMainRenderLoop() {
-    const render = () => {
+    let lastFrameTime = null;
+    const render = (timestamp) => {
+      // Clamp so a backgrounded/throttled OBS source does not make coins jump
+      const dt = lastFrameTime === null ? 0.016 : Math.min(0.05, Math.max(0, (timestamp - lastFrameTime) / 1000));
+      lastFrameTime = timestamp;
+
       this.ctx.clearRect(0, 0, 1080, 1920);
 
       // 1. Render Ancient Stone Well & Glowing Water Basin
@@ -749,7 +769,7 @@ class WishingWellLiveApp {
       this.renderRipples();
 
       // 4. Render Flying Tossed Coins
-      this.renderTossedCoins();
+      this.renderTossedCoins(dt);
 
       // 5. Render Water Droplet Splash Particles
       this.renderParticles();
@@ -788,18 +808,38 @@ class WishingWellLiveApp {
       sc.shimmerPhase += sc.shimmerSpeed;
       const alpha = 0.5 + 0.5 * Math.sin(sc.shimmerPhase);
 
-      this.ctx.save();
-      this.ctx.beginPath();
-      this.ctx.ellipse(sc.x, sc.y, sc.radius, sc.radius * 0.6, 0.2, 0, Math.PI * 2);
-      this.ctx.fillStyle = sc.color;
+      const sprite = this.getSunkenCoinSprite(sc.color, sc.radius);
       this.ctx.globalAlpha = 0.45 + alpha * 0.55;
-      this.ctx.shadowColor = sc.color;
-      this.ctx.shadowBlur = 10;
-      this.ctx.fill();
-      this.ctx.restore();
+      this.ctx.drawImage(sprite, sc.x - sprite.width / 2, sc.y - sprite.height / 2);
     }
+    this.ctx.globalAlpha = 1.0;
 
     this.ctx.restore(); // Exit clip
+  }
+
+  // Pre-rendered glowing coin sprites: shadowBlur on ~90 coins every frame is too heavy for OBS on weak PCs
+  getSunkenCoinSprite(color, radius) {
+    if (!this.coinSpriteCache) this.coinSpriteCache = new Map();
+    const roundedRadius = Math.max(1, Math.round(radius));
+    const key = `${color}_${roundedRadius}`;
+    let sprite = this.coinSpriteCache.get(key);
+    if (sprite) return sprite;
+
+    const glowPadding = 14;
+    const size = (roundedRadius + glowPadding) * 2;
+    sprite = document.createElement('canvas');
+    sprite.width = size;
+    sprite.height = size;
+    const sctx = sprite.getContext('2d');
+    sctx.beginPath();
+    sctx.ellipse(size / 2, size / 2, roundedRadius, roundedRadius * 0.6, 0.2, 0, Math.PI * 2);
+    sctx.fillStyle = color;
+    sctx.shadowColor = color;
+    sctx.shadowBlur = 10;
+    sctx.fill();
+
+    this.coinSpriteCache.set(key, sprite);
+    return sprite;
   }
 
   renderLightPillar() {
@@ -882,12 +922,11 @@ class WishingWellLiveApp {
     this.ctx.restore();
   }
 
-  renderTossedCoins() {
-    const dt = 0.016;
+  renderTossedCoins(dt = 0.016) {
     for (let i = this.tossedCoins.length - 1; i >= 0; i--) {
       const c = this.tossedCoins[i];
       c.progress += dt / c.duration;
-      c.spinAngle += c.spinSpeed;
+      c.spinAngle += c.spinSpeed * (dt / 0.016);
 
       const p = Math.min(1.0, c.progress);
       c.x = c.startX + (c.targetX - c.startX) * p;
@@ -899,11 +938,18 @@ class WishingWellLiveApp {
       const shadowY = linearY + 14;
       const heightAboveGround = Math.max(0, linearY - c.y);
       const shadowScale = Math.max(0.25, 1.0 - heightAboveGround / 280);
+      // Radial gradient instead of ctx.filter blur, which is very expensive per frame
+      const shadowRadius = 32 * shadowScale;
       this.ctx.save();
+      this.ctx.translate(c.x, shadowY);
+      this.ctx.scale(1, 11 / 28);
+      const shadowGrad = this.ctx.createRadialGradient(0, 0, 0, 0, 0, shadowRadius);
+      shadowGrad.addColorStop(0, 'rgba(0, 0, 0, 0.45)');
+      shadowGrad.addColorStop(0.75, 'rgba(0, 0, 0, 0.3)');
+      shadowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
       this.ctx.beginPath();
-      this.ctx.ellipse(c.x, shadowY, 28 * shadowScale, 11 * shadowScale, 0, 0, Math.PI * 2);
-      this.ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
-      this.ctx.filter = 'blur(4px)';
+      this.ctx.arc(0, 0, shadowRadius, 0, Math.PI * 2);
+      this.ctx.fillStyle = shadowGrad;
       this.ctx.fill();
       this.ctx.restore();
 
@@ -1038,6 +1084,17 @@ class WishingWellLiveApp {
     this.ctx.restore();
   }
 
+  applyConfig(config) {
+    if (!config) return;
+    if (typeof config.ttsEnabled === 'boolean') {
+      window.wishingAudio.setTTSEnabled(config.ttsEnabled);
+    }
+    const bgmVolume = parseFloat(config.bgmVolume);
+    if (Number.isFinite(bgmVolume)) {
+      window.wishingAudio.setBGMVolume(bgmVolume);
+    }
+  }
+
   // ==================== SOCKET.IO HANDLING ====================
 
   initSocket() {
@@ -1054,6 +1111,11 @@ class WishingWellLiveApp {
       if (data.energy) {
         this.updateEnergyMeter(data.energy);
       }
+      this.applyConfig(data.config);
+    });
+
+    this.socket.on('config_update', config => {
+      this.applyConfig(config);
     });
 
     this.socket.on('leaderboard_update', list => {

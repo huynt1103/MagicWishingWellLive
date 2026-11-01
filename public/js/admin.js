@@ -23,6 +23,16 @@ const btnTestVoice = document.getElementById('btn-test-voice');
 
 let isSimulating = false;
 
+// Log messages are HTML; every value coming from TikTok viewers or the server must go through this
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // Helper to append logs
 function addLog(type, message) {
   const time = new Date().toLocaleTimeString();
@@ -90,9 +100,11 @@ socket.on('init_state', data => {
 socket.on('connection_status', data => {
   updateConnectionUI(data.status, data.user, data.error);
   if (data.status === 'connected') {
-    addLog('sys', `Successfully connected to live stream of @${data.user}!`);
+    addLog('sys', `Successfully connected to live stream of @${escapeHtml(data.user)}!`);
   } else if (data.status === 'error') {
-    addLog('sys', `Connection error: ${data.error}`);
+    addLog('sys', `Connection error: ${escapeHtml(data.error)}`);
+  } else if (data.status === 'connecting' && data.reconnectAttempt) {
+    addLog('sys', `Connection lost. Reconnecting in ${Math.round((data.reconnectDelayMs || 0) / 1000)}s (attempt ${escapeHtml(data.reconnectAttempt)})...`);
   }
 });
 
@@ -104,32 +116,32 @@ socket.on('simulation_status', data => {
 socket.on('tiktok_chat', data => {
   const comment = data.comment || data.content || '';
   if (comment && comment !== 'undefined') {
-    addLog('chat', `[Chat] <b>${data.nickname || 'Friend'}</b>: ${comment}`);
+    addLog('chat', `[Chat] <b>${escapeHtml(data.nickname || 'Friend')}</b>: ${escapeHtml(comment)}`);
   }
 });
 
 socket.on('tiktok_gift', data => {
-  addLog('gift', `[Gift] <b>${data.nickname}</b> tossed <b>${data.giftName}</b> (${data.coins} coins)`);
+  addLog('gift', `[Gift] <b>${escapeHtml(data.nickname)}</b> tossed <b>${escapeHtml(data.giftName)}</b> (${escapeHtml(data.coins)} coins)`);
 });
 
 socket.on('tiktok_like', data => {
-  addLog('like', `[Like] <b>${data.nickname}</b> sent likes & tossed lucky sparks`);
+  addLog('like', `[Like] <b>${escapeHtml(data.nickname)}</b> sent likes & tossed lucky sparks`);
 });
 
 socket.on('tiktok_follow', data => {
-  addLog('chat', `[Follow] <b>${data.nickname}</b> followed the Wishing Well!`);
+  addLog('chat', `[Follow] <b>${escapeHtml(data.nickname)}</b> followed the Wishing Well!`);
 });
 
 socket.on('tiktok_share', data => {
-  addLog('chat', `[Share] <b>${data.nickname}</b> shared the magic fountain!`);
+  addLog('chat', `[Share] <b>${escapeHtml(data.nickname)}</b> shared the magic fountain!`);
 });
 
 socket.on('tiktok_join', data => {
-  addLog('sys', `[Join] 🌸 <b>${data.nickname}</b> arrived at the Wishing Well.`);
+  addLog('sys', `[Join] 🌸 <b>${escapeHtml(data.nickname)}</b> arrived at the Wishing Well.`);
 });
 
 socket.on('offering_event', data => {
-  addLog('gift', `[Fountain Surge] <b>${data.nickname}</b> triggered hearts fountain surge!`);
+  addLog('gift', `[Fountain Surge] <b>${escapeHtml(data.nickname)}</b> triggered hearts fountain surge!`);
 });
 
 // Connect TikTok Live
@@ -149,7 +161,7 @@ btnConnect.addEventListener('click', async () => {
       body: JSON.stringify({ uniqueId: username, sessionId: sessionId })
     });
     const json = await res.json();
-    addLog('sys', json.message);
+    addLog('sys', escapeHtml(json.message || json.error));
   } catch (err) {
     updateConnectionUI('error', username, err.message);
   }
@@ -308,7 +320,7 @@ if (btnDethrone) {
         body: JSON.stringify({})
       });
       const data = await res.json();
-      addLog('gift', `⚡ Top 1 Dethroned! ${data.newLeader.nickname} took the crown from ${data.oldLeader.nickname}!`);
+      addLog('gift', `⚡ Top 1 Dethroned! ${escapeHtml(data.newLeader.nickname)} took the crown from ${escapeHtml(data.oldLeader.nickname)}!`);
     } catch (e) {
       console.error(e);
     }

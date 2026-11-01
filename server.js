@@ -168,7 +168,12 @@ function generateSpeechFile(text, voice = appConfig.ttsVoice, rate = appConfig.t
     const outputPath = path.join(CACHE_DIR, filename);
     const publicUrl = `/audio_cache/${filename}`;
 
-    if (fs.existsSync(outputPath)) {
+    const hasValidFile = () => fs.existsSync(outputPath) && fs.statSync(outputPath).size > 0;
+    const removeBrokenFile = () => {
+      try { fs.unlinkSync(outputPath); } catch (e) {}
+    };
+
+    if (hasValidFile()) {
       return resolve(publicUrl);
     }
 
@@ -176,7 +181,12 @@ function generateSpeechFile(text, voice = appConfig.ttsVoice, rate = appConfig.t
     execFile('python', [scriptPath, text, outputPath, '--voice', voice, '--rate', rate, '--lang', lang], (error, stdout, stderr) => {
       if (error) {
         console.error('TTS error:', stderr || error.message);
+        removeBrokenFile();
         return reject(error);
+      }
+      if (!hasValidFile()) {
+        removeBrokenFile();
+        return reject(new Error('TTS produced an empty audio file'));
       }
       resolve(publicUrl);
     });
@@ -215,13 +225,50 @@ function getRecentUserWish(userId, nickname) {
   return found.wish;
 }
 
+// Viewer wishes are read aloud by TTS and shown on stream, so they must pass this filter
+const WISH_MAX_LENGTH = 80;
+const WISH_MIN_LENGTH = 3;
+const BANNED_WISH_PATTERNS = [
+  /f+u+c+k+/i, /sh[i1]t/i, /b[i1]tch/i, /\bcunt/i, /\bdick/i, /puss(y|ies)/i, /\bass(hole)?\b/i,
+  /bastard/i, /\bslut/i, /whore/i, /n[i1]gg/i, /\bfag/i, /retard/i, /\bkys\b/i, /kill (yo)?urself/i,
+  /\brap(e|ist)/i, /\bnazi/i, /hitler/i, /porn/i, /\bsex/i, /\bnude/i, /\bnaked/i, /onlyfans/i,
+  /\bdie\b/i, /\bsuicide/i, /terroris/i, /\bdrugs?\b/i, /cocaine/i, /\bweed\b/i,
+  /paypal/i, /cash ?app/i, /venmo/i, /zelle/i, /crypto/i, /bitcoin/i, /telegram/i, /whatsapp/i,
+  /follow me/i, /my (page|profile|channel)/i
+];
+
+function sanitizeWish(rawWish) {
+  if (!rawWish || typeof rawWish !== 'string') return null;
+  if (/[<>]/.test(rawWish)) return null;
+
+  let wish = rawWish
+    .replace(/https?:\/\/\S+/gi, ' ')
+    .replace(/\bwww\.\S+/gi, ' ')
+    .replace(/\b\S+\.(com|net|org|io|me|ly|gg|tv|co|vn|xyz)\b\S*/gi, ' ')
+    .replace(/\d{6,}/g, ' ')
+    .replace(/[^\p{L}\p{N}\s.,!?'’-]/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (wish.length < WISH_MIN_LENGTH) return null;
+  if (BANNED_WISH_PATTERNS.some(pattern => pattern.test(wish))) return null;
+
+  if (wish.length > WISH_MAX_LENGTH) {
+    const cut = wish.slice(0, WISH_MAX_LENGTH);
+    const lastSpace = cut.lastIndexOf(' ');
+    wish = (lastSpace > WISH_MIN_LENGTH ? cut.slice(0, lastSpace) : cut).replace(/[\s.,!?'’-]+$/, '');
+  }
+
+  return wish.length >= WISH_MIN_LENGTH ? wish : null;
+}
+
 // Generate wishing text based on gift and name (with smart personalized wish matching)
 function generateBlessingText(nickname, giftName, coins, customWish = null) {
   let blessingText = '';
   let wishObj = null;
 
-  if (customWish && customWish.trim()) {
-    const cleanWish = customWish.trim();
+  const cleanWish = sanitizeWish(customWish);
+  if (cleanWish) {
     blessingText = `May your wish come true: "${cleanWish}"!`;
     wishObj = {
       title: `${nickname}'s Sacred Wish`,
@@ -278,13 +325,61 @@ function generateWelcomeBlessing(nickname) {
 
 // ==================== TIKTOK LIVE CONNECTION ====================
 
-function connectToTikTok(uniqueId, sessionId = '') {
-  if (tiktokConnection) {
-    try {
-      tiktokConnection.disconnect();
-    } catch (e) {}
-    tiktokConnection = null;
+const MAX_RECONNECT_ATTEMPTS = 10;
+let autoReconnect = false;
+let reconnectTimer = null;
+let reconnectAttempts = 0;
+
+function clearReconnectTimer() {
+  if (reconnectTimer) {
+    clearTimeout(reconnectTimer);
+    reconnectTimer = null;
   }
+}
+
+function scheduleReconnect() {
+  if (!autoReconnect || !currentTiktokUser || reconnectTimer) return;
+  if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+    autoReconnect = false;
+    connectionStatus = 'error';
+    io.emit('connection_status', {
+      status: connectionStatus,
+      user: currentTiktokUser,
+      error: `Lost connection and gave up after ${MAX_RECONNECT_ATTEMPTS} reconnect attempts. Please click Connect again.`
+    });
+    return;
+  }
+
+  const delay = Math.min(60000, 5000 * 2 ** reconnectAttempts);
+  reconnectAttempts++;
+  console.log(`[TikTok Live] Reconnecting to @${currentTiktokUser} in ${delay / 1000}s (attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})`);
+  connectionStatus = 'connecting';
+  io.emit('connection_status', { status: connectionStatus, user: currentTiktokUser, reconnectAttempt: reconnectAttempts, reconnectDelayMs: delay });
+
+  reconnectTimer = setTimeout(() => {
+    reconnectTimer = null;
+    connectToTikTok(currentTiktokUser, currentSessionId, true);
+  }, delay);
+}
+
+function releaseTikTokConnection() {
+  if (!tiktokConnection) return;
+  const oldConnection = tiktokConnection;
+  tiktokConnection = null;
+  oldConnection.removeAllListeners();
+  try {
+    Promise.resolve(oldConnection.disconnect()).catch(() => {});
+  } catch (e) {}
+}
+
+function connectToTikTok(uniqueId, sessionId = '', isReconnect = false) {
+  clearReconnectTimer();
+  releaseTikTokConnection();
+
+  if (!isReconnect) {
+    reconnectAttempts = 0;
+  }
+  autoReconnect = true;
 
   currentTiktokUser = uniqueId.trim().replace(/^@/, '');
   currentSessionId = (sessionId || '').trim();
@@ -307,23 +402,40 @@ function connectToTikTok(uniqueId, sessionId = '') {
 
   try {
     tiktokConnection = new WebcastPushConnection(currentTiktokUser, connectionOptions);
+    const thisConnection = tiktokConnection;
+    let hasConnected = false;
+
+    tiktokConnection.on('error', err => {
+      console.error('[TikTok Live Error]:', err?.info || '', err?.exception?.message || '');
+    });
 
     tiktokConnection.connect().then(state => {
+      if (tiktokConnection !== thisConnection) return;
+      hasConnected = true;
+      reconnectAttempts = 0;
       connectionStatus = 'connected';
       console.log(`[TikTok Live] Successfully connected to @${currentTiktokUser} (Room ID: ${state.roomId})`);
       io.emit('connection_status', { status: connectionStatus, user: currentTiktokUser, roomId: state.roomId });
     }).catch(err => {
+      if (tiktokConnection !== thisConnection) return;
       connectionStatus = 'error';
-      console.error('[TikTok Live Error]:', err.message);
+      const errMessage = (err && err.message) || String(err);
+      console.error('[TikTok Live Error]:', errMessage);
 
-      let friendlyError = err.message;
-      if (err.message.includes('The requested user isn\'t online') || err.message.includes('not online')) {
+      let friendlyError = errMessage;
+      if (errMessage.includes('The requested user isn\'t online') || errMessage.includes('not online')) {
         friendlyError = `Channel @${currentTiktokUser} is currently OFFLINE. Please start your TikTok Live stream first!`;
-      } else if (err.message.includes('Business plan') || err.message.includes('eulerstream')) {
+      } else if (errMessage.includes('Business plan') || errMessage.includes('eulerstream')) {
         friendlyError = `Channel @${currentTiktokUser} is offline or requires a sessionid cookie.`;
       }
 
       io.emit('connection_status', { status: connectionStatus, user: currentTiktokUser, error: friendlyError });
+
+      if (isReconnect) {
+        scheduleReconnect();
+      } else {
+        autoReconnect = false;
+      }
     });
 
     // Chat message from viewer
@@ -482,6 +594,8 @@ function connectToTikTok(uniqueId, sessionId = '') {
     });
 
     tiktokConnection.on('streamEnd', () => {
+      autoReconnect = false;
+      clearReconnectTimer();
       connectionStatus = 'disconnected';
       io.emit('connection_status', { status: 'streamEnd', user: currentTiktokUser, error: 'Live stream ended.' });
     });
@@ -489,21 +603,26 @@ function connectToTikTok(uniqueId, sessionId = '') {
     tiktokConnection.on('disconnected', () => {
       connectionStatus = 'disconnected';
       io.emit('connection_status', { status: 'disconnected', user: currentTiktokUser });
+      if (hasConnected) {
+        scheduleReconnect();
+      }
     });
 
   } catch (err) {
     connectionStatus = 'error';
     io.emit('connection_status', { status: connectionStatus, user: currentTiktokUser, error: err.message });
+    if (isReconnect) {
+      scheduleReconnect();
+    } else {
+      autoReconnect = false;
+    }
   }
 }
 
 function disconnectTikTok() {
-  if (tiktokConnection) {
-    try {
-      tiktokConnection.disconnect();
-    } catch (e) {}
-    tiktokConnection = null;
-  }
+  autoReconnect = false;
+  clearReconnectTimer();
+  releaseTikTokConnection();
   connectionStatus = 'disconnected';
   io.emit('connection_status', { status: connectionStatus, user: currentTiktokUser });
 }

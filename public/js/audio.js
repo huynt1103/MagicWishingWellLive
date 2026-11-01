@@ -103,6 +103,27 @@ class WishingWellAudioEngine {
     this.bgmAudio.volume = this.bgmVolume;
   }
 
+  setTTSEnabled(enabled) {
+    this.ttsEnabled = !!enabled;
+    if (this.ttsEnabled) return;
+
+    // Disabling must silence the stream immediately: drop the queue and stop the current voice
+    this.ttsQueue = [];
+    if (this.currentAudio) {
+      try {
+        this.currentAudio.pause();
+        this.currentAudio.currentTime = 0;
+      } catch (e) {}
+      this.currentAudio = null;
+    }
+    if (this.hasWebSpeech) {
+      window.speechSynthesis.cancel();
+    }
+    this.isSpeaking = false;
+    this.currentIsVIP = false;
+    if (this.bgmAudio) this.bgmAudio.volume = this.bgmVolume;
+  }
+
   initWebSpeechVoices() {
     const updateVoices = () => {
       const voices = window.speechSynthesis.getVoices();
@@ -341,6 +362,10 @@ class WishingWellAudioEngine {
     };
 
     const startPlayback = () => {
+      if (!this.ttsEnabled) {
+        restoreBgm();
+        return;
+      }
       if (item.url) {
         this.currentAudio = new Audio(item.url);
         this.currentAudio.volume = 0.95;
