@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "title": "Wish #1 - The Crown of Triumph",
+    "title": "The Crown of Triumph",
     "theme": "Success & Grand Achievement",
     "quote": "The dawn brings triumph to the patient heart. Your long devotion opens the golden gate to victory and honour.",
     "meaning": "Brilliant success in your career, exams, and projects. Recognition and great rewards are arriving.",
@@ -9,7 +9,7 @@
   },
   {
     "id": 2,
-    "title": "Wish #2 - The Golden River",
+    "title": "The Golden River",
     "theme": "Abundance & Wealth Inflow",
     "quote": "Streams of abundance flow freely into your life. What was once scarce now multiplies ten-fold with ease.",
     "meaning": "Financial breakthrough, lucrative opportunities, and continuous prosperity finding their way to you.",
@@ -17,7 +17,7 @@
   },
   {
     "id": 3,
-    "title": "Wish #3 - The Fountain of Serenity",
+    "title": "The Fountain of Serenity",
     "theme": "Health & Radiant Peace",
     "quote": "Gentle waters wash away all burdens. Your mind finds stillness, and your spirit is renewed with boundless vigour.",
     "meaning": "Complete healing, emotional calm, deep restoration, and protection from all stress and anxiety.",
@@ -25,7 +25,7 @@
   },
   {
     "id": 4,
-    "title": "Wish #4 - The Star of Destiny",
+    "title": "The Star of Destiny",
     "theme": "Soul Connection & True Love",
     "quote": "Two paths converge under an auspicious sky. Sincere hearts recognize one another across the greatest distance.",
     "meaning": "Encountering true harmony in love, deep connection, lifelong loyalty, and joy in your relationships.",
@@ -33,7 +33,7 @@
   },
   {
     "id": 5,
-    "title": "Wish #5 - The Guardian Angel",
+    "title": "The Guardian Angel",
     "theme": "Protection & Divine Guidance",
     "quote": "Invisible hands guide your footsteps through uncertain terrain. Every obstacle dissolves before your arrival.",
     "meaning": "Miraculous timing, helpful mentors appearing unexpectedly, and absolute safety wherever you travel.",
@@ -41,7 +41,7 @@
   },
   {
     "id": 6,
-    "title": "Wish #6 - The Blossoming Orchard",
+    "title": "The Blossoming Orchard",
     "theme": "Family Harmony & Home Joy",
     "quote": "The roots of love run deep. Your home becomes a sacred sanctuary of laughter, warmth, and lifelong fellowship.",
     "meaning": "Peace and mutual understanding within your home, flourishing family, and lasting prosperity.",
@@ -49,7 +49,7 @@
   },
   {
     "id": 7,
-    "title": "Wish #7 - The Magic Key",
+    "title": "The Magic Key",
     "theme": "Dreams Realized & Miracles",
     "quote": "The door you have long knocked upon now swings wide. What seemed impossible manifests through unwavering belief.",
     "meaning": "A long-held dream is about to materialize. Synchronicity and breakthrough luck are on your side.",
@@ -57,7 +57,7 @@
   },
   {
     "id": 8,
-    "title": "Wish #8 - The Phoenix Dawn",
+    "title": "The Phoenix Dawn",
     "theme": "New Beginnings & Fresh Energy",
     "quote": "Old chapters close with gratitude. A majestic new beginning rises, brimming with untapped potential and light.",
     "meaning": "A fresh chapter full of creative energy, exciting adventures, and limitless possibilities.",
@@ -65,7 +65,7 @@
   },
   {
     "id": 9,
-    "title": "Wish #9 - The Well of Wisdom",
+    "title": "The Well of Wisdom",
     "theme": "Clarity & Inner Strength",
     "quote": "The fog clears from your sight. Truth reveals itself with luminous clarity, granting fearless conviction.",
     "meaning": "Clear direction in decision-making, unmatched confidence, and mastery over your future.",
@@ -73,7 +73,7 @@
   },
   {
     "id": 10,
-    "title": "Wish #10 - The Celestial Blessing",
+    "title": "The Celestial Blessing",
     "theme": "Miraculous Luck & Good Fortune",
     "quote": "A gentle wind brings favourable tides. What you touch turns to gold; whatever you plant bears sweet fruit.",
     "meaning": "Supreme good fortune, unexpected windfalls, and doors opening effortlessly for you.",
@@ -81,7 +81,7 @@
   },
   {
     "id": 11,
-    "title": "Wish #11 - The Golden Ascent",
+    "title": "The Golden Ascent",
     "theme": "Rising Higher",
     "quote": "Your diligence shines through like morning sunlight. Each day you rise a little higher than before.",
     "meaning": "Steady growth in whatever you pursue, recognition for your efforts, and doors opening ahead.",
@@ -89,7 +89,7 @@
   },
   {
     "id": 12,
-    "title": "Wish #12 - The Beacon of Victory",
+    "title": "The Beacon of Victory",
     "theme": "Bright Mind & Clear Thinking",
     "quote": "Knowledge gathered with care blossoms into sharp brilliance. Your mind is keen and your thoughts are clear.",
     "meaning": "Sharp focus, quick learning, and confidence when facing any challenge.",
@@ -97,7 +97,7 @@
   },
   {
     "id": 13,
-    "title": "Wish #13 - The Sovereign Scepter",
+    "title": "The Sovereign Scepter",
     "theme": "Leadership & Authority",
     "quote": "True authority stems from wisdom and benevolence. Others look to your example with genuine respect.",
     "meaning": "Expanding influence, trusted leadership in teams, and earning the admiration of peers and mentors.",
@@ -105,7 +105,7 @@
   },
   {
     "id": 14,
-    "title": "Wish #14 - The Unstoppable Tide",
+    "title": "The Unstoppable Tide",
     "theme": "Resilience & Breakthrough",
     "quote": "No stone can halt the mighty wave. Every challenge you face is transformed into stepping stones toward victory.",
     "meaning": "Overcoming longstanding hurdles, silencing doubts, and emerging stronger than ever before.",
@@ -113,7 +113,7 @@
   },
   {
     "id": 15,
-    "title": "Wish #15 - The Masterpiece Blueprint",
+    "title": "The Masterpiece Blueprint",
     "theme": "Creative Projects & Innovation",
     "quote": "Inspiration descends like celestial dew. Your hands bring forth ideas of singular beauty and value.",
     "meaning": "Groundbreaking creativity, viral creations, and projects praised by all who behold them.",
@@ -121,7 +121,7 @@
   },
   {
     "id": 16,
-    "title": "Wish #16 - The Zenith Horizon",
+    "title": "The Zenith Horizon",
     "theme": "New Heights & Milestones",
     "quote": "Stand upon the summit and behold the endless sky. What once seemed distant is now beneath your feet.",
     "meaning": "Reaching milestone achievements and discovering even grander horizons awaiting your conquest.",
@@ -129,7 +129,7 @@
   },
   {
     "id": 17,
-    "title": "Wish #17 - The Champion's Laurel",
+    "title": "The Champion's Laurel",
     "theme": "Recognition & Honours",
     "quote": "Merit cannot remain hidden in shadows. Applause and accolades gather to honour your devoted dedication.",
     "meaning": "Awards, public appreciation, and widespread acclaim for your dedication and high standards.",
@@ -137,7 +137,7 @@
   },
   {
     "id": 18,
-    "title": "Wish #18 - The Golden Partnership",
+    "title": "The Golden Partnership",
     "theme": "Alliances & High-Value Deals",
     "quote": "When great minds unite under noble purpose, the harvest is ten-fold. Fruitful alliances arrive now.",
     "meaning": "Signing profitable contracts, finding reliable business partners, and harmonious collaborations.",
@@ -145,7 +145,7 @@
   },
   {
     "id": 19,
-    "title": "Wish #19 - The Radiant Pioneer",
+    "title": "The Radiant Pioneer",
     "theme": "Bold New Ventures",
     "quote": "Those who dare to venture into new lands discover uncharted treasures. Boldness is your talisman.",
     "meaning": "Courage to begin new things, fresh ideas taking root, and rewarding results.",
@@ -153,7 +153,7 @@
   },
   {
     "id": 20,
-    "title": "Wish #20 - The Hall of Fame",
+    "title": "The Hall of Fame",
     "theme": "Enduring Legacy",
     "quote": "Build not only for the day, but for the generations. Your deeds leave an indelible mark of goodness.",
     "meaning": "Building a reputable name, sustainable long-term enterprise, and leaving a cherished legacy.",
@@ -161,7 +161,7 @@
   },
   {
     "id": 21,
-    "title": "Wish #21 - The Treasure Vault",
+    "title": "The Treasure Vault",
     "theme": "Financial Security & Accumulation",
     "quote": "Golden grains gather quietly into the barn. Steadfast growth builds a fortress of financial freedom.",
     "meaning": "Increasing savings, secure investments, and freedom from all financial anxieties.",
@@ -169,7 +169,7 @@
   },
   {
     "id": 22,
-    "title": "Wish #22 - The Overflowing Cornucopia",
+    "title": "The Overflowing Cornucopia",
     "theme": "Bountiful Provision",
     "quote": "The horn of abundance pours forth milk and honey. There is always more than enough for all your needs.",
     "meaning": "Abundant resources, effortless provision, and joyful sharing with those you hold dear.",
@@ -177,7 +177,7 @@
   },
   {
     "id": 23,
-    "title": "Wish #23 - The Treasure Caravan",
+    "title": "The Treasure Caravan",
     "theme": "Good Things Arriving",
     "quote": "Caravans return from distant shores laden with precious gifts. Good things travel towards you under favourable stars.",
     "meaning": "Rewards for your efforts, welcome surprises, and steady blessings flowing in.",
@@ -185,7 +185,7 @@
   },
   {
     "id": 24,
-    "title": "Wish #24 - The Celestial Windfall",
+    "title": "The Celestial Windfall",
     "theme": "Unexpected Windfalls & Luck",
     "quote": "Gold falls from clear skies when least expected. Fortunate surprises brighten your path.",
     "meaning": "Unexpected cash bonuses, winning tickets, favourable settlements, or valuable gifts.",
@@ -193,7 +193,7 @@
   },
   {
     "id": 25,
-    "title": "Wish #25 - The Diamond Foundation",
+    "title": "The Diamond Foundation",
     "theme": "Long-Term Wealth Stability",
     "quote": "A house built upon diamonds withstands all storms. Your foundations are solid, rich, and immovable.",
     "meaning": "Rock-solid real estate, diversified portfolios, and permanent freedom from debts.",
@@ -201,7 +201,7 @@
   },
   {
     "id": 26,
-    "title": "Wish #26 - The Emerald Grove",
+    "title": "The Emerald Grove",
     "theme": "Multiplying Assets",
     "quote": "A single seed planted in fertile earth becomes a canopy of emerald prosperity. Patience bears gold.",
     "meaning": "Smart investments multiplying ahead of schedule, generating passive streams of income.",
@@ -209,7 +209,7 @@
   },
   {
     "id": 27,
-    "title": "Wish #27 - The Midas Touch",
+    "title": "The Midas Touch",
     "theme": "Effortless Manifestation",
     "quote": "Wherever your gaze turns, opportunity springs forth. Grace and favour accompany your decisions.",
     "meaning": "Effortless success in negotiation, market timing, and lucrative opportunities finding you first.",
@@ -217,7 +217,7 @@
   },
   {
     "id": 28,
-    "title": "Wish #28 - The Golden Harvest",
+    "title": "The Golden Harvest",
     "theme": "Reaping What Was Sown",
     "quote": "Long seasons of sweat and care now turn to sheaves of gold. Feast upon the bounty of your labour.",
     "meaning": "Receiving overdue payments, major returns on long investments, and celebrating hard-won victories.",
@@ -225,7 +225,7 @@
   },
   {
     "id": 29,
-    "title": "Wish #29 - The Infinite Wellspring",
+    "title": "The Infinite Wellspring",
     "theme": "Generosity & Wealth Circulation",
     "quote": "The more water drawn from a living well, the sweeter and clearer it flows. Giving multiplies receiving.",
     "meaning": "Possessing both grand wealth and a generous heart, enjoying true prosperity with loved ones.",
@@ -233,7 +233,7 @@
   },
   {
     "id": 30,
-    "title": "Wish #30 - The Freedom Dawn",
+    "title": "The Freedom Dawn",
     "theme": "Financial Liberation",
     "quote": "The chains of obligation fall away like dust. You walk forward as the sovereign master of your destiny.",
     "meaning": "Clearing debts, achieving full financial independence, and living with a tranquil heart.",
@@ -241,7 +241,7 @@
   },
   {
     "id": 31,
-    "title": "Wish #31 - The Living Waters",
+    "title": "The Living Waters",
     "theme": "Physical Vitality & Rejuvenation",
     "quote": "Drink from the sacred spring and feel renewal course through every vein. Youthful vigour is restored.",
     "meaning": "Rapid recovery from illness, boundless stamina, and vibrant physical well-being.",
@@ -249,7 +249,7 @@
   },
   {
     "id": 32,
-    "title": "Wish #32 - The Calm Harbour",
+    "title": "The Calm Harbour",
     "theme": "Mental Stillness & Anxiety Relief",
     "quote": "Though winds howl on the open sea, within the harbour the waters rest like polished glass. Peace is here.",
     "meaning": "Freedom from worry, emotional equilibrium, and tranquil clarity in times of decision.",
@@ -257,7 +257,7 @@
   },
   {
     "id": 33,
-    "title": "Wish #33 - The Evergreen Oak",
+    "title": "The Evergreen Oak",
     "theme": "Strength & Wellbeing",
     "quote": "Like an evergreen oak standing tall through every season, you grow stronger with each passing year.",
     "meaning": "Lasting energy, a resilient spirit, and joy shared with the people you care about.",
@@ -265,7 +265,7 @@
   },
   {
     "id": 34,
-    "title": "Wish #34 - The Tree of Restoration",
+    "title": "The Tree of Restoration",
     "theme": "Renewal & Balance",
     "quote": "Its leaves rustle with fresh breath. Every weary part of you is renewed and made whole.",
     "meaning": "Feeling refreshed in body and mind, restored balance, and renewed vitality.",
@@ -273,7 +273,7 @@
   },
   {
     "id": 35,
-    "title": "Wish #35 - The Breath of Dawn",
+    "title": "The Breath of Dawn",
     "theme": "Morning Joy & Clear Spirit",
     "quote": "Night surrenders to the fresh morning breeze. Each day arrives as a holy canvas of pure wonder.",
     "meaning": "Waking up energized, feeling enthusiastic about life, and greeting each day with optimism.",
@@ -281,7 +281,7 @@
   },
   {
     "id": 36,
-    "title": "Wish #36 - The Jade Lotus",
+    "title": "The Jade Lotus",
     "theme": "Emotional Balance & Pure Spirit",
     "quote": "Rising untouched from muddy waters, the lotus opens petals of flawless purity to the sun.",
     "meaning": "Releasing past emotional pain, rising above negativity, and finding pure inner poise.",
@@ -289,7 +289,7 @@
   },
   {
     "id": 37,
-    "title": "Wish #37 - The Sanctuary of Sleep",
+    "title": "The Sanctuary of Sleep",
     "theme": "Restful Sleep & Sweet Dreams",
     "quote": "Cast your cares into the wishing pool. Rest upon pillows of quiet grace and wake refreshed.",
     "meaning": "Ending insomnia, enjoying sound, restorative sleep, and peaceful dreams throughout the night.",
@@ -297,7 +297,7 @@
   },
   {
     "id": 38,
-    "title": "Wish #38 - The Whispering Forest",
+    "title": "The Whispering Forest",
     "theme": "Grounded Living & Harmony with Nature",
     "quote": "Listen to the harmony of the leaves and earth. In simplicity lies the deepest well of happiness.",
     "meaning": "Finding balance between work and rest, nourishing the spirit, and enjoying life's simple pleasures.",
@@ -305,7 +305,7 @@
   },
   {
     "id": 39,
-    "title": "Wish #39 - The Radiant Glow",
+    "title": "The Radiant Glow",
     "theme": "Aura of Beauty & Grace",
     "quote": "When the heart is pure, light shines through the countenance. Grace and charm illuminate your presence.",
     "meaning": "Inner beauty reflecting outward, charismatic appeal, and winning the affection of all you meet.",
@@ -313,7 +313,7 @@
   },
   {
     "id": 40,
-    "title": "Wish #40 - The Well of Ageless Joy",
+    "title": "The Well of Ageless Joy",
     "theme": "Youthful Spirit & Enthusiasm",
     "quote": "Time cannot age a heart that loves and laughs. Keep the spark of wonder burning bright forever.",
     "meaning": "Retaining youthful optimism, laughing often, and celebrating each year with enthusiasm.",
@@ -321,7 +321,7 @@
   },
   {
     "id": 41,
-    "title": "Wish #41 - The Warm Flame",
+    "title": "The Warm Flame",
     "theme": "Love & Affection",
     "quote": "A single flame can warm a whole room. Love given freely always finds its way back.",
     "meaning": "Deep affection in your life, warm connections, and love that grows stronger over time.",
@@ -329,7 +329,7 @@
   },
   {
     "id": 42,
-    "title": "Wish #42 - The Golden Thread",
+    "title": "The Golden Thread",
     "theme": "Understanding & Harmony",
     "quote": "A single strand of golden compassion ties hearts together. Misunderstandings melt into tender grace.",
     "meaning": "Kind understanding with the people around you, patience, and relationships that grow stronger.",
@@ -337,7 +337,7 @@
   },
   {
     "id": 43,
-    "title": "Wish #43 - The Sacred Promise",
+    "title": "The Sacred Promise",
     "theme": "Loyalty & Trust",
     "quote": "Hand in hand through sunshine and rain. True loyalty is the greatest treasure under heaven.",
     "meaning": "Trustworthy people at your side, promises kept, and bonds that last a lifetime.",
@@ -345,7 +345,7 @@
   },
   {
     "id": 44,
-    "title": "Wish #44 - The Blossom of Affection",
+    "title": "The Blossom of Affection",
     "theme": "Sweet Moments & Kindness",
     "quote": "A sweet fragrance fills the garden air. Small kindnesses blossom into moments of pure delight.",
     "meaning": "Little moments of tenderness, kind words, and affection from the people around you.",
@@ -353,7 +353,7 @@
   },
   {
     "id": 45,
-    "title": "Wish #45 - The Symphony of Hearts",
+    "title": "The Symphony of Hearts",
     "theme": "Empathy & Telepathic Bond",
     "quote": "Words are scarcely needed where two souls understand the silent whisper of the other's eyes.",
     "meaning": "Finding someone who truly understands and appreciates you for exactly who you are.",
@@ -361,7 +361,7 @@
   },
   {
     "id": 46,
-    "title": "Wish #46 - The Lighthouse of Friendship",
+    "title": "The Lighthouse of Friendship",
     "theme": "Loyal Allies & Kindred Spirits",
     "quote": "When stormy seas test the ship, a faithful friend is the lighthouse that guides you safely home.",
     "meaning": "Surrounding yourself with trustworthy friends who stand by you through thick and thin.",
@@ -369,7 +369,7 @@
   },
   {
     "id": 47,
-    "title": "Wish #47 - The Celestial Meeting",
+    "title": "The Celestial Meeting",
     "theme": "Meaningful Encounters",
     "quote": "Heaven arranges encounters with miraculous precision. The right people appear at the perfect hour.",
     "meaning": "Meeting people who inspire, support, and uplift you just when you need them.",
@@ -377,7 +377,7 @@
   },
   {
     "id": 48,
-    "title": "Wish #48 - The Aegis of Light",
+    "title": "The Aegis of Light",
     "theme": "Shield Against Negativity",
     "quote": "A halo of golden light surrounds your being. Jealousy and ill-will bounce off like harmless dust.",
     "meaning": "Protection from toxic gossip, malicious intentions, and negative energies in all spaces.",
@@ -385,7 +385,7 @@
   },
   {
     "id": 49,
-    "title": "Wish #49 - The Compass of Truth",
+    "title": "The Compass of Truth",
     "theme": "Unfailing Intuition",
     "quote": "A quiet voice within whispers true direction. Follow your gut; the internal needle never lies.",
     "meaning": "Sharp intuition, seeing through deception instantly, and making wise choices with zero regrets.",
@@ -393,7 +393,7 @@
   },
   {
     "id": 50,
-    "title": "Wish #50 - The Auspicious Traveller",
+    "title": "The Auspicious Traveller",
     "theme": "Safe Journeys & Travel Luck",
     "quote": "Winds blow favourably at your back; smooth roads welcome your wheels; clear skies guide your flight.",
     "meaning": "Safe travels abroad, pleasant holidays, arriving without delays, and joyous reunions.",
@@ -401,7 +401,7 @@
   },
   {
     "id": 51,
-    "title": "Wish #51 - The Hearth of Happiness",
+    "title": "The Hearth of Happiness",
     "theme": "Home Sanctuary & Warmth",
     "quote": "Inside these walls, peace abides. The fire burns warm, and every room echoes with affectionate smiles.",
     "meaning": "A comfortable, secure home filled with pleasant energy, welcome guests, and deep comfort.",
@@ -409,7 +409,7 @@
   },
   {
     "id": 52,
-    "title": "Wish #52 - The Wellspring of Kinship",
+    "title": "The Wellspring of Kinship",
     "theme": "Generational Unity",
     "quote": "Like branches of a mighty oak, we may grow in different directions yet our roots remain one.",
     "meaning": "Strong family bonds across generations, mutual support during hardships, and shared pride.",
@@ -417,7 +417,7 @@
   },
   {
     "id": 53,
-    "title": "Wish #53 - The Young Shoots",
+    "title": "The Young Shoots",
     "theme": "Growth & Bright Futures",
     "quote": "Young shoots bathed in morning dew grow tall and straight. Every new beginning holds great promise.",
     "meaning": "Fresh growth in every part of your life and a future full of bright possibilities.",
@@ -425,7 +425,7 @@
   },
   {
     "id": 54,
-    "title": "Wish #54 - The Harmony Bell",
+    "title": "The Harmony Bell",
     "theme": "Dissolving Household Discord",
     "quote": "Let the clear chime ring out all grievances. What was tangled is smoothed; peace returns to dwell.",
     "meaning": "Resolving family conflicts swiftly, ending misunderstandings, and restoring joyful cooperation.",
@@ -433,7 +433,7 @@
   },
   {
     "id": 55,
-    "title": "Wish #55 - The Peaceful Feast",
+    "title": "The Peaceful Feast",
     "theme": "Abundant Gatherings & Joy",
     "quote": "The table is laden with bountiful food, surrounded by the faces of those you hold dearest.",
     "meaning": "Joyful holidays, heartwarming family dinners, and celebrating milestones in delightful fellowship.",
@@ -441,7 +441,7 @@
   },
   {
     "id": 56,
-    "title": "Wish #56 - The Gentle Nest",
+    "title": "The Gentle Nest",
     "theme": "Comfort & Care",
     "quote": "A gentle nest shelters all who rest within it. Let peace and tender care surround your days.",
     "meaning": "Feeling cared for, comfortable surroundings, and loving companionship whenever you need it.",
@@ -449,7 +449,7 @@
   },
   {
     "id": 57,
-    "title": "Wish #57 - The Auspicious Residence",
+    "title": "The Auspicious Residence",
     "theme": "Acquiring a Dream Home",
     "quote": "The sacred deed is signed; the golden key turns. Cross the threshold into the home you dreamed of.",
     "meaning": "Buying a house, moving to a prosperous neighbourhood, and remodelling with wonderful ease.",
@@ -457,7 +457,7 @@
   },
   {
     "id": 58,
-    "title": "Wish #58 - The Cloak of Sanctuary",
+    "title": "The Cloak of Sanctuary",
     "theme": "Refuge from Trouble",
     "quote": "When storms rage outside, you are wrapped in warm blankets of divine shelter. Fear cannot enter here.",
     "meaning": "Escaping legal troubles, resolving disputes safely, and finding sanctuary in turbulent times.",
@@ -465,7 +465,7 @@
   },
   {
     "id": 59,
-    "title": "Wish #59 - The Angelic Benefactor",
+    "title": "The Angelic Benefactor",
     "theme": "Helpful Mentors Appearing",
     "quote": "Just when the mountain seems too steep, a wise traveller offers a guiding hand and lantern light.",
     "meaning": "Meeting supportive mentors, receiving financial or career assistance right when you need it most.",
@@ -473,7 +473,7 @@
   },
   {
     "id": 60,
-    "title": "Wish #60 - The Starlight Epiphany",
+    "title": "The Starlight Epiphany",
     "theme": "Creative Genius & Breakthroughs",
     "quote": "In a flash of inspiration, the puzzle clicks together. What was complex becomes effortlessly obvious.",
     "meaning": "Sudden eureka moments, solving persistent engineering or artistic problems with genius flair.",
@@ -481,7 +481,7 @@
   },
   {
     "id": 61,
-    "title": "Wish #61 - The Alchemist's Crucible",
+    "title": "The Alchemist's Crucible",
     "theme": "Transmuting Trials into Gold",
     "quote": "The fire that burns the dross purifies the gold. Your greatest test becomes your greatest testimony.",
     "meaning": "Turning past setbacks into lucrative opportunities, resilience, and unshakeable mastery.",
@@ -489,7 +489,7 @@
   },
   {
     "id": 62,
-    "title": "Wish #62 - The Unlocked Potential",
+    "title": "The Unlocked Potential",
     "theme": "Awakening Latent Talents",
     "quote": "The sleeping giant within opens its eyes. Skills you never knew you possessed begin to flourish.",
     "meaning": "Mastering new skills rapidly, excelling in unexpected fields, and discovering hidden passions.",
@@ -497,7 +497,7 @@
   },
   {
     "id": 63,
-    "title": "Wish #63 - The Golden Bridge",
+    "title": "The Golden Bridge",
     "theme": "Manifesting the Impossible",
     "quote": "Across the chasm of impossibility, faith builds a gleaming golden bridge. Cross over with bold joy.",
     "meaning": "Achieving goals that others called unrealistic, winning against the odds, and creating miracles.",
@@ -505,7 +505,7 @@
   },
   {
     "id": 64,
-    "title": "Wish #64 - The Oracle of Clarity",
+    "title": "The Oracle of Clarity",
     "theme": "Sharp Insight & Decision Making",
     "quote": "Look into the still water and see the true course. Doubts scatter like dry leaves before the wind.",
     "meaning": "Making the right investment, career, or life choice with absolute certainty and calm clarity.",
@@ -513,7 +513,7 @@
   },
   {
     "id": 65,
-    "title": "Wish #65 - The Rainbow Horizon",
+    "title": "The Rainbow Horizon",
     "theme": "Joy After the Storm",
     "quote": "The dark rain clouds break; a glorious rainbow arches across the azure sky. Rejoice in the sunlight.",
     "meaning": "Difficult periods ending completely, tears replaced by joyful laughter, and bright hopes fulfilled.",
@@ -521,7 +521,7 @@
   },
   {
     "id": 66,
-    "title": "Wish #66 - The Sovereign Peace",
+    "title": "The Sovereign Peace",
     "theme": "Unshakable Inner Tranquility",
     "quote": "Rooted like an ancient mountain, no passing breeze can shake your core. You are sovereign over self.",
     "meaning": "Emotional mastery, freedom from external opinions, and deep serene self-confidence.",
@@ -529,7 +529,7 @@
   },
   {
     "id": 67,
-    "title": "Wish #67 - The Miracle Seed",
+    "title": "The Miracle Seed",
     "theme": "Small Beginnings to Grand Results",
     "quote": "Despise not the day of small beginnings. The tiniest seed contains the blueprint of a mighty forest.",
     "meaning": "A small project or side hustle growing into a massive enterprise or life-changing accomplishment.",
@@ -537,7 +537,7 @@
   },
   {
     "id": 68,
-    "title": "Wish #68 - The Seraphic Song",
+    "title": "The Seraphic Song",
     "theme": "Spiritual Elevation & Gratitude",
     "quote": "A melodious song echoes through the celestial spheres. When gratitude fills the heart, heaven smiles.",
     "meaning": "Deep spiritual peace, profound gratitude, and feeling blessed in every moment of existence.",
@@ -545,7 +545,7 @@
   },
   {
     "id": 69,
-    "title": "Wish #69 - The Infinite Sky",
+    "title": "The Infinite Sky",
     "theme": "Limitless Freedom & Expansion",
     "quote": "You were not born to remain in a cage. Spread your wings and soar into the boundless blue expanse.",
     "meaning": "Breaking through all limitations, travelling the world, and living life entirely on your own terms.",
@@ -553,7 +553,7 @@
   },
   {
     "id": 70,
-    "title": "Wish #70 - The Universal Harmony",
+    "title": "The Universal Harmony",
     "theme": "Complete Alignment & Abundance",
     "quote": "All things in heaven and earth work together for your highest good. You are loved, blessed, and complete.",
     "meaning": "Total alignment of health, wealth, love, and purpose. Everything falling into place with divine elegance.",
@@ -561,7 +561,7 @@
   },
   {
     "id": 71,
-    "title": "Wish #71 - The Morning Cuppa",
+    "title": "The Morning Cuppa",
     "theme": "Simple Joys & Daily Comfort",
     "quote": "The kettle sings, the cup is warm, and the day begins gently. Small comforts carry great blessings.",
     "meaning": "Peaceful mornings, unhurried routines, and finding delight in life's everyday rituals.",
@@ -569,7 +569,7 @@
   },
   {
     "id": 72,
-    "title": "Wish #72 - The Loyal Companion",
+    "title": "The Loyal Companion",
     "theme": "Faithful Friendship",
     "quote": "A familiar face at the door, a voice that always answers. True companions make every road shorter.",
     "meaning": "Faithful companions by your side, loyal support, and the comfort of never walking alone.",
@@ -577,7 +577,7 @@
   },
   {
     "id": 73,
-    "title": "Wish #73 - The Garden of Plenty",
+    "title": "The Garden of Plenty",
     "theme": "Growth & Patience",
     "quote": "Seeds sown in spring bloom by summer. Tend your garden kindly, and it will reward you in colour.",
     "meaning": "Steady progress on long-term goals, flourishing hobbies, and the satisfaction of patient work.",
@@ -585,7 +585,7 @@
   },
   {
     "id": 74,
-    "title": "Wish #74 - The Seaside Breeze",
+    "title": "The Seaside Breeze",
     "theme": "Rest & Refreshment",
     "quote": "Salt air, gulls overhead, and waves rolling in. The sea washes tiredness away and returns you renewed.",
     "meaning": "A well-deserved break, relaxing getaways, and a mind refreshed after busy seasons.",
@@ -593,7 +593,7 @@
   },
   {
     "id": 75,
-    "title": "Wish #75 - The Open Road",
+    "title": "The Open Road",
     "theme": "Freedom & Independence",
     "quote": "Eyes on the road ahead, the horizon wide open. Freedom awaits those who stay calm and focused.",
     "meaning": "Independence, confidence in your own choices, and safe journeys wherever you go.",
@@ -601,7 +601,7 @@
   },
   {
     "id": 76,
-    "title": "Wish #76 - The Open Door",
+    "title": "The Open Door",
     "theme": "Fresh Starts & Bright Beginnings",
     "quote": "A new door opens and the light spills through. Walk in with confidence; you belong there.",
     "meaning": "New opportunities appearing, smooth beginnings, and a bright path forward.",
@@ -609,7 +609,7 @@
   },
   {
     "id": 77,
-    "title": "Wish #77 - The Cosy Hearth",
+    "title": "The Cosy Hearth",
     "theme": "Warmth on Rainy Days",
     "quote": "Rain taps softly on the window while the room glows warm. Even grey days hold their own gentle charm.",
     "meaning": "Comfort in quiet evenings, peace during gloomy weather, and contentment at home.",
@@ -617,7 +617,7 @@
   },
   {
     "id": 78,
-    "title": "Wish #78 - The Joyful Bells",
+    "title": "The Joyful Bells",
     "theme": "Happy Celebrations",
     "quote": "Bells ring out across the valley, glasses raised in cheer. Joy shared with friends is joy made stronger.",
     "meaning": "Happy occasions, cheerful gatherings, and reasons to celebrate with people you love.",
@@ -625,7 +625,7 @@
   },
   {
     "id": 79,
-    "title": "Wish #79 - The Little Miracle",
+    "title": "The Little Miracle",
     "theme": "Everyday Miracles",
     "quote": "A first snowdrop, a stranger's smile, a perfect sunset. Small miracles are everywhere for those who look.",
     "meaning": "Noticing the magic in ordinary days and receiving delightful little surprises.",
@@ -633,7 +633,7 @@
   },
   {
     "id": 80,
-    "title": "Wish #80 - The Golden Hours",
+    "title": "The Golden Hours",
     "theme": "Time for What You Love",
     "quote": "The busy hours fade and the golden ones arrive: long walks, slow mornings, and time for what you love.",
     "meaning": "More free time, freedom to enjoy your passions, and days that feel truly your own.",
@@ -641,7 +641,7 @@
   },
   {
     "id": 81,
-    "title": "Wish #81 - The Finish Line",
+    "title": "The Finish Line",
     "theme": "Personal Goals & Fitness",
     "quote": "Every step counts and every early run adds up. The finish line rewards those who kept going.",
     "meaning": "Reaching fitness goals, completing challenges, and feeling strong in body and mind.",
@@ -649,7 +649,7 @@
   },
   {
     "id": 82,
-    "title": "Wish #82 - The Winning Spirit",
+    "title": "The Winning Spirit",
     "theme": "Teamwork & Victory",
     "quote": "The crowd rises as the goal is reached. Teamwork, heart, and a little luck make champions.",
     "meaning": "Success in shared efforts, great teamwork, and the joy of celebrating together.",
@@ -657,7 +657,7 @@
   },
   {
     "id": 83,
-    "title": "Wish #83 - The Melody Within",
+    "title": "The Melody Within",
     "theme": "Music & Creative Joy",
     "quote": "A song hummed under the breath can lift a whole day. Let the music in you be heard.",
     "meaning": "Progress in learning an instrument, creative confidence, and joy through music.",
@@ -665,7 +665,7 @@
   },
   {
     "id": 84,
-    "title": "Wish #84 - The Quiet Library",
+    "title": "The Quiet Library",
     "theme": "Learning & Curiosity",
     "quote": "Between the pages lie a thousand worlds. A curious mind is never truly alone.",
     "meaning": "Enjoying new knowledge, finishing courses, and a lifelong love of learning.",
@@ -673,7 +673,7 @@
   },
   {
     "id": 85,
-    "title": "Wish #85 - The Lucky Penny",
+    "title": "The Lucky Penny",
     "theme": "Small Wins & Happy Surprises",
     "quote": "Heads up on the pavement, a penny shines. Luck often begins with something small.",
     "meaning": "A run of little lucky moments, pleasant surprises, and things going your way.",
@@ -681,7 +681,7 @@
   },
   {
     "id": 86,
-    "title": "Wish #86 - The Weekend Sun",
+    "title": "The Weekend Sun",
     "theme": "Rest & Fun",
     "quote": "Saturday arrives with sunshine and no alarm. Time to laugh, wander, and simply enjoy.",
     "meaning": "Relaxing weekends, fun plans with friends, and a healthy balance between work and play.",
@@ -689,7 +689,7 @@
   },
   {
     "id": 87,
-    "title": "Wish #87 - The Bridge of Kindness",
+    "title": "The Bridge of Kindness",
     "theme": "Giving & Gratitude",
     "quote": "A kind word costs nothing yet travels far. Every good deed comes home in its own time.",
     "meaning": "Kindness returned, a warm community, and the satisfaction of helping others.",
@@ -697,7 +697,7 @@
   },
   {
     "id": 88,
-    "title": "Wish #88 - The Steady Lantern",
+    "title": "The Steady Lantern",
     "theme": "Courage in Hard Times",
     "quote": "When the night feels long, a single lantern is enough to light the next step.",
     "meaning": "Strength to face challenges, support when you need it, and hope through difficult days.",
@@ -705,7 +705,7 @@
   },
   {
     "id": 89,
-    "title": "Wish #89 - The Fresh Start",
+    "title": "The Fresh Start",
     "theme": "Home & Happy Memories",
     "quote": "Curtains open, the kettle on, sunlight across the floor. Every home is waiting for its next happy memory.",
     "meaning": "A home that feels peaceful and welcoming, wherever you are.",
@@ -713,7 +713,7 @@
   },
   {
     "id": 90,
-    "title": "Wish #90 - The Friendly Neighbour",
+    "title": "The Friendly Neighbour",
     "theme": "Community & Belonging",
     "quote": "A wave over the fence, a parcel kindly taken in. Good neighbours make any street feel like home.",
     "meaning": "Belonging in your community, helpful neighbours, and a sense of being truly at home.",
@@ -721,7 +721,7 @@
   },
   {
     "id": 91,
-    "title": "Wish #91 - The Second Wind",
+    "title": "The Second Wind",
     "theme": "Recovery & Renewed Energy",
     "quote": "Just when you thought you were spent, new energy rises. Rest well, then rise again.",
     "meaning": "Bouncing back after tiredness or illness, renewed motivation, and fresh determination.",
@@ -729,7 +729,7 @@
   },
   {
     "id": 92,
-    "title": "Wish #92 - The Perfect Timing",
+    "title": "The Perfect Timing",
     "theme": "Opportunities Aligning",
     "quote": "The right call, the right person, the right moment. Sometimes everything simply clicks.",
     "meaning": "Opportunities arriving just when needed, lucky coincidences, and plans falling into place.",
@@ -737,7 +737,7 @@
   },
   {
     "id": 93,
-    "title": "Wish #93 - The Steady Hand",
+    "title": "The Steady Hand",
     "theme": "Focus Under Pressure",
     "quote": "Breathe in, settle the nerves, clear the mind. You know more than you think; trust yourself.",
     "meaning": "Calm confidence in important moments and results that reflect your hard work.",
@@ -745,7 +745,7 @@
   },
   {
     "id": 94,
-    "title": "Wish #94 - The Happy Reunion",
+    "title": "The Happy Reunion",
     "theme": "Togetherness",
     "quote": "Open arms, warm smiles, tears of joy. Time apart only makes coming together sweeter.",
     "meaning": "Joyful gatherings with the people you love and treasured time together.",
@@ -753,7 +753,7 @@
   },
   {
     "id": 95,
-    "title": "Wish #95 - The Brave Leap",
+    "title": "The Brave Leap",
     "theme": "Trying Something New",
     "quote": "Every great story begins with a nervous first step. Leap, and the path will appear.",
     "meaning": "Confidence to try new things, exciting changes, and growth beyond your comfort zone.",
@@ -761,7 +761,7 @@
   },
   {
     "id": 96,
-    "title": "Wish #96 - The Silver Lining",
+    "title": "The Silver Lining",
     "theme": "Hope After Disappointment",
     "quote": "Behind every grey cloud hides a silver edge. What feels like an ending may be a beginning.",
     "meaning": "Finding the good in setbacks, unexpectedly better outcomes, and lasting optimism.",
@@ -769,7 +769,7 @@
   },
   {
     "id": 97,
-    "title": "Wish #97 - The Laughing Table",
+    "title": "The Laughing Table",
     "theme": "Laughter & Good Humour",
     "quote": "The best evenings end with aching cheeks. Laughter shared is joy doubled.",
     "meaning": "Fun gatherings, good humour in hard times, and friends who always make you laugh.",
@@ -777,7 +777,7 @@
   },
   {
     "id": 98,
-    "title": "Wish #98 - The Clever Saver",
+    "title": "The Clever Saver",
     "theme": "Smart Budgeting & Peace of Mind",
     "quote": "Penny by penny, the jar fills up. Patience and good planning build peace of mind.",
     "meaning": "Sensible budgeting, steady savings, and reaching a goal you have been saving towards.",
@@ -785,7 +785,7 @@
   },
   {
     "id": 99,
-    "title": "Wish #99 - The Gentle Hand",
+    "title": "The Gentle Hand",
     "theme": "Kindness & Support",
     "quote": "Every gentle hand and kind word lightens a heavy load. Support arrives one good day at a time.",
     "meaning": "Comfort when life feels heavy, caring people around you, and strength for the days ahead.",
@@ -793,7 +793,7 @@
   },
   {
     "id": 100,
-    "title": "Wish #100 - The Hundredth Wish",
+    "title": "The Hundredth Wish",
     "theme": "Celebrations & Milestones",
     "quote": "A hundred wishes cast, a hundred hopes shared. Every milestone deserves a moment of celebration.",
     "meaning": "Celebrating birthdays, anniversaries, and milestones with the people who matter most.",
@@ -801,7 +801,7 @@
   },
   {
     "id": 101,
-    "title": "Wish #101 - The Wishing Candle",
+    "title": "The Wishing Candle",
     "theme": "A Wonderful Time Ahead",
     "quote": "Close your eyes, make a wish, and let the candle glow. A new chapter of stories is waiting to be written.",
     "meaning": "Joyful months ahead and wishes quietly coming true.",
@@ -809,7 +809,7 @@
   },
   {
     "id": 102,
-    "title": "Wish #102 - The Glowing Window",
+    "title": "The Glowing Window",
     "theme": "Warmth & Togetherness",
     "quote": "Lamplight in the window and warmth inside. The brightest glow comes from hearts gathered together.",
     "meaning": "Cherished traditions, warm gatherings, and a sense of belonging.",
@@ -817,7 +817,7 @@
   },
   {
     "id": 103,
-    "title": "Wish #103 - The Returning Light",
+    "title": "The Returning Light",
     "theme": "Renewal & New Seasons",
     "quote": "Daffodils push through the cold earth. After every winter, spring returns without fail.",
     "meaning": "A fresh season of life, renewed optimism, and good things beginning to bloom.",
@@ -825,7 +825,7 @@
   },
   {
     "id": 104,
-    "title": "Wish #104 - The Sunny Picnic",
+    "title": "The Sunny Picnic",
     "theme": "Carefree Joy",
     "quote": "A blanket on the grass, sandwiches and sunshine. The simplest days are often the happiest.",
     "meaning": "Carefree outings, sunny days with loved ones, and joy in simple pleasures.",
@@ -833,7 +833,7 @@
   },
   {
     "id": 105,
-    "title": "Wish #105 - The Golden Leaves",
+    "title": "The Golden Leaves",
     "theme": "Reflection & Gratitude",
     "quote": "Leaves crunch underfoot in gold and copper. Autumn reminds us that letting go can be beautiful.",
     "meaning": "Peaceful reflection, gratitude for the year so far, and calm acceptance of change.",
@@ -841,7 +841,7 @@
   },
   {
     "id": 106,
-    "title": "Wish #106 - The Starry Night",
+    "title": "The Starry Night",
     "theme": "Hope & Wonder",
     "quote": "Look up on a clear night; the stars were shining long before your worries began.",
     "meaning": "A renewed sense of wonder, perspective in stressful times, and hope for the future.",
@@ -849,7 +849,7 @@
   },
   {
     "id": 107,
-    "title": "Wish #107 - The Golden Ticket",
+    "title": "The Golden Ticket",
     "theme": "Exciting News",
     "quote": "The envelope arrives, the phone pings. Good news is already on its way to you.",
     "meaning": "Long-awaited good news, acceptances, approvals, and happy announcements.",
@@ -857,7 +857,7 @@
   },
   {
     "id": 108,
-    "title": "Wish #108 - The Patient Path",
+    "title": "The Patient Path",
     "theme": "Progress Over Perfection",
     "quote": "Rome was not built in a day, and neither were you. Every small effort is part of something great.",
     "meaning": "Steady improvement, kindness towards yourself, and pride in how far you have come.",
@@ -865,7 +865,7 @@
   },
   {
     "id": 109,
-    "title": "Wish #109 - The Kind Stranger",
+    "title": "The Kind Stranger",
     "theme": "Help When Needed",
     "quote": "Help often arrives from unexpected faces. The world is kinder than the headlines suggest.",
     "meaning": "Support from unexpected places, kind people crossing your path, and restored faith in others.",
@@ -873,7 +873,7 @@
   },
   {
     "id": 110,
-    "title": "Wish #110 - The Lightbulb Moment",
+    "title": "The Lightbulb Moment",
     "theme": "Learning & Confidence",
     "quote": "A mind lights up when an idea finally clicks. Confidence grows with every little success.",
     "meaning": "Learning something new with joy, growing confidence, and the thrill of understanding.",
@@ -881,7 +881,7 @@
   },
   {
     "id": 111,
-    "title": "Wish #111 - The Fair Wind",
+    "title": "The Fair Wind",
     "theme": "Smooth Plans & Easy Days",
     "quote": "Some days the wind is at your back and everything flows. May more of your days be like that.",
     "meaning": "Plans going smoothly, fewer hassles, and days that run without a hitch.",
@@ -889,7 +889,7 @@
   },
   {
     "id": 112,
-    "title": "Wish #112 - The Old Friend",
+    "title": "The Old Friend",
     "theme": "Rekindled Friendships",
     "quote": "A message out of the blue, a familiar voice. True friendship picks up right where it left off.",
     "meaning": "Reconnecting with old friends, warm catch-ups, and friendships that stand the test of time.",
@@ -897,7 +897,7 @@
   },
   {
     "id": 113,
-    "title": "Wish #113 - The Proud Moment",
+    "title": "The Proud Moment",
     "theme": "Success for Loved Ones",
     "quote": "Watching someone you love succeed is a joy all of its own. Their triumph is shared by all.",
     "meaning": "Success and recognition for your children, partner, or friends, and moments of shared pride.",
@@ -905,7 +905,7 @@
   },
   {
     "id": 114,
-    "title": "Wish #114 - The Creative Spark",
+    "title": "The Creative Spark",
     "theme": "Hobbies & Handmade Joy",
     "quote": "Needle and thread, brush and canvas, hammer and nail. Making things by hand mends the soul.",
     "meaning": "Enjoyment in hobbies, finishing creative projects, and pride in handmade work.",
@@ -913,7 +913,7 @@
   },
   {
     "id": 115,
-    "title": "Wish #115 - The Sunday Roast",
+    "title": "The Sunday Roast",
     "theme": "Family Gatherings",
     "quote": "Gravy on the table, chatter round the room. Sunday dinners bind families together week after week.",
     "meaning": "Regular family gatherings, good food shared, and traditions that keep everyone close.",
@@ -921,7 +921,7 @@
   },
   {
     "id": 116,
-    "title": "Wish #116 - The Clear Sky",
+    "title": "The Clear Sky",
     "theme": "Fine Weather for Big Days",
     "quote": "The forecast clears just in time. Big days deserve blue skies and bright spirits.",
     "meaning": "Fine weather for weddings, trips, and special events, and everything going to plan.",
@@ -929,7 +929,7 @@
   },
   {
     "id": 117,
-    "title": "Wish #117 - The Second Chance",
+    "title": "The Second Chance",
     "theme": "Fresh Opportunities",
     "quote": "Yesterday's mistake does not write tomorrow's story. A second chance is a gift; take it gladly.",
     "meaning": "New opportunities after setbacks, forgiveness, and the chance to start again.",
@@ -937,7 +937,7 @@
   },
   {
     "id": 118,
-    "title": "Wish #118 - The Gentle Pace",
+    "title": "The Gentle Pace",
     "theme": "Balance & Slowing Down",
     "quote": "Not every day needs to be a race. Slow down, breathe deeply, and notice the good around you.",
     "meaning": "Better work-life balance, time for yourself, and freedom from the constant rush.",
@@ -945,7 +945,7 @@
   },
   {
     "id": 119,
-    "title": "Wish #119 - The Warm Welcome",
+    "title": "The Warm Welcome",
     "theme": "New Places & New Faces",
     "quote": "A new town, a new team, a new circle. Kind faces are waiting to welcome you in.",
     "meaning": "Settling into new surroundings, making new friends, and feeling welcome quickly.",
@@ -953,7 +953,7 @@
   },
   {
     "id": 120,
-    "title": "Wish #120 - The Well's Promise",
+    "title": "The Well's Promise",
     "theme": "Everlasting Hope",
     "quote": "Every coin cast carries a hope. The well keeps them all, and hope never runs dry.",
     "meaning": "Lasting optimism, faith in the future, and the belief that good things are coming.",

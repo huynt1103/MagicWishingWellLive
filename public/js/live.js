@@ -1359,7 +1359,7 @@ class WishingWellLiveApp {
     if (!overlay) return;
 
     const donorName = donorInfo.nickname || wish.donorNickname || 'Noble Wishmaker';
-    const donorAvatar = donorInfo.avatar || wish.donorAvatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face';
+    const donorAvatar = safeImageUrl(donorInfo.avatar || wish.donorAvatar || getChibiAvatar(0));
     const giftName = donorInfo.giftName || 'Golden Offering';
 
     const avatarEl = document.getElementById('fortune-avatar');
@@ -1368,7 +1368,10 @@ class WishingWellLiveApp {
     const titleEl = document.getElementById('fortune-title');
     const blessingEl = document.getElementById('fortune-blessing');
 
-    if (avatarEl) avatarEl.src = donorAvatar;
+    if (avatarEl) {
+      avatarEl.src = donorAvatar;
+      avatarEl.onerror = () => { avatarEl.src = getChibiAvatar(0); };
+    }
     if (nameEl) nameEl.innerText = donorName;
     if (giftEl) giftEl.innerText = `✨ Sacred Blessing • ${giftName} ✨`;
 
@@ -1376,7 +1379,10 @@ class WishingWellLiveApp {
       if (wish.isCustom) {
         titleEl.innerText = `Sacred Prayer Manifested`;
       } else {
-        titleEl.innerText = wish.title || 'Golden Wish Manifest';
+        const rawTitle = wish.title || 'Golden Blessing';
+        // Strip out database ID prefix ("Wish #38 - " -> "The Whispering Forest")
+        const cleanTitle = rawTitle.replace(/^(?:Wish\s*)?#?\d+\s*[-–—:]*\s*/i, '').trim();
+        titleEl.innerText = cleanTitle || rawTitle;
       }
     }
     if (blessingEl) blessingEl.innerText = wish.blessing || 'May your heart be filled with peace and light!';
