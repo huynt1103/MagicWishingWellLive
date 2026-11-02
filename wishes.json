@@ -82,18 +82,18 @@
   {
     "id": 11,
     "title": "Wish #11 - The Golden Ascent",
-    "theme": "Career Advancement & Promotion",
-    "quote": "Your diligence shines through like morning sunlight. Step upward into leadership and elevated respect.",
-    "meaning": "Promotions, salary increases, and distinguished responsibilities are opening for you.",
-    "blessing": "May your professional journey rise smoothly toward the pinnacle of excellence and honour!"
+    "theme": "Rising Higher",
+    "quote": "Your diligence shines through like morning sunlight. Each day you rise a little higher than before.",
+    "meaning": "Steady growth in whatever you pursue, recognition for your efforts, and doors opening ahead.",
+    "blessing": "May every path you choose rise smoothly towards excellence and honour!"
   },
   {
     "id": 12,
     "title": "Wish #12 - The Beacon of Victory",
-    "theme": "Exams & Academic Mastery",
-    "quote": "Knowledge gathered with care blossoms into sharp brilliance. Your mind is acute, your memory crystal clear.",
-    "meaning": "Outstanding scores on exams, triumphant interviews, and supreme mastery over complex challenges.",
-    "blessing": "May your intellect shine brightly, guaranteeing victory in all your scholarly pursuits!"
+    "theme": "Bright Mind & Clear Thinking",
+    "quote": "Knowledge gathered with care blossoms into sharp brilliance. Your mind is keen and your thoughts are clear.",
+    "meaning": "Sharp focus, quick learning, and confidence when facing any challenge.",
+    "blessing": "May your mind shine brightly and lead you to victory in every challenge you take on!"
   },
   {
     "id": 13,
@@ -146,10 +146,10 @@
   {
     "id": 19,
     "title": "Wish #19 - The Radiant Pioneer",
-    "theme": "Entrepreneurial Success",
+    "theme": "Bold New Ventures",
     "quote": "Those who dare to venture into new lands discover uncharted treasures. Boldness is your talisman.",
-    "meaning": "Flourishing business launches, steady client growth, and pioneer advantage in your field.",
-    "blessing": "May your entrepreneurial spirit thrive, bringing forth lasting prosperity and generous returns!"
+    "meaning": "Courage to begin new things, fresh ideas taking root, and rewarding results.",
+    "blessing": "May your bold spirit thrive, turning every new venture into lasting joy and success!"
   },
   {
     "id": 20,
@@ -177,11 +177,11 @@
   },
   {
     "id": 23,
-    "title": "Wish #23 - The Prosperous Merchant",
-    "theme": "Lucrative Commerce & Sales",
-    "quote": "Caravans return from distant shores laden with precious gems. Commerce thrives under favourable stars.",
-    "meaning": "Rapid inventory turnover, enthusiastic customers, and skyrocketing revenue in all business ventures.",
-    "blessing": "May every transaction bring golden profit, satisfied patrons, and continuous growth!"
+    "title": "Wish #23 - The Treasure Caravan",
+    "theme": "Good Things Arriving",
+    "quote": "Caravans return from distant shores laden with precious gifts. Good things travel towards you under favourable stars.",
+    "meaning": "Rewards for your efforts, welcome surprises, and steady blessings flowing in.",
+    "blessing": "May good things keep arriving at your door, bringing joy and continuous growth!"
   },
   {
     "id": 24,
@@ -233,7 +233,7 @@
   },
   {
     "id": 30,
-    "title": "Wish #30 - The Debt-Free Dawn",
+    "title": "Wish #30 - The Freedom Dawn",
     "theme": "Financial Liberation",
     "quote": "The chains of obligation fall away like dust. You walk forward as the sovereign master of your destiny.",
     "meaning": "Clearing debts, achieving full financial independence, and living with a tranquil heart.",
@@ -257,19 +257,19 @@
   },
   {
     "id": 33,
-    "title": "Wish #33 - The Shield of Longevity",
-    "theme": "Vibrant Longevity & Endurance",
-    "quote": "Like the ancient cedar standing tall through centuries, your years are long, fruitful, and majestic.",
-    "meaning": "Long life accompanied by clear sight, sound joints, and enduring joy alongside descendants.",
-    "blessing": "May you be blessed with longevity, vibrant wellness, and a life surrounded by loving family!"
+    "title": "Wish #33 - The Evergreen Oak",
+    "theme": "Strength & Wellbeing",
+    "quote": "Like an evergreen oak standing tall through every season, you grow stronger with each passing year.",
+    "meaning": "Lasting energy, a resilient spirit, and joy shared with the people you care about.",
+    "blessing": "May you stay strong, well, and surrounded by people who cherish you!"
   },
   {
     "id": 34,
     "title": "Wish #34 - The Tree of Restoration",
-    "theme": "Cellular Healing & Wholeness",
-    "quote": "Its leaves are for the healing of the nations. Every weary cell receives new breath and wholeness.",
-    "meaning": "Overcoming health concerns, finding the right medical guidance, and holistic revitalization.",
-    "blessing": "May gentle healing wash over you, restoring complete wholeness from head to toe!"
+    "theme": "Renewal & Balance",
+    "quote": "Its leaves rustle with fresh breath. Every weary part of you is renewed and made whole.",
+    "meaning": "Feeling refreshed in body and mind, restored balance, and renewed vitality.",
+    "blessing": "May gentle renewal wash over you, leaving you refreshed from head to toe!"
   },
   {
     "id": 35,
@@ -321,35 +321,35 @@
   },
   {
     "id": 41,
-    "title": "Wish #41 - The Twin Flames",
-    "theme": "Deep Romance & Passion",
-    "quote": "Two flames merge into a single blazing torch of warmth and passion. Mutual devotion burns bright.",
-    "meaning": "Intense romance, passionate attraction, and lifelong loyalty with your destined lover.",
-    "blessing": "May your love story burn brightly with genuine romance, mutual respect, and everlasting joy!"
+    "title": "Wish #41 - The Warm Flame",
+    "theme": "Love & Affection",
+    "quote": "A single flame can warm a whole room. Love given freely always finds its way back.",
+    "meaning": "Deep affection in your life, warm connections, and love that grows stronger over time.",
+    "blessing": "May love burn brightly in your life, bringing warmth, respect, and lasting joy!"
   },
   {
     "id": 42,
     "title": "Wish #42 - The Golden Thread",
-    "theme": "Healing & Reconciliation",
-    "quote": "A single strand of golden compassion mends old wounds. Misunderstandings vanish into tender grace.",
-    "meaning": "Reconnecting with an estranged friend or family member, forgiving the past, and restoring warmth.",
-    "blessing": "May forgiveness and gentle understanding rebuild broken bridges and rekindle loving bonds!"
+    "theme": "Understanding & Harmony",
+    "quote": "A single strand of golden compassion ties hearts together. Misunderstandings melt into tender grace.",
+    "meaning": "Kind understanding with the people around you, patience, and relationships that grow stronger.",
+    "blessing": "May patience and gentle understanding strengthen every bond in your life!"
   },
   {
     "id": 43,
-    "title": "Wish #43 - The Sacred Vow",
-    "theme": "Lifelong Loyalty & Marriage",
-    "quote": "Hand in hand through sunshine and rain. True companionship is the greatest treasure under heaven.",
-    "meaning": "Happy marriage, unbreakable vows, shared laughter, and building a blessed home together.",
-    "blessing": "May your union be blessed with lifelong fidelity, deep laughter, and unwavering companionship!"
+    "title": "Wish #43 - The Sacred Promise",
+    "theme": "Loyalty & Trust",
+    "quote": "Hand in hand through sunshine and rain. True loyalty is the greatest treasure under heaven.",
+    "meaning": "Trustworthy people at your side, promises kept, and bonds that last a lifetime.",
+    "blessing": "May your life be blessed with loyalty, deep laughter, and unwavering companionship!"
   },
   {
     "id": 44,
     "title": "Wish #44 - The Blossom of Affection",
-    "theme": "Sweet Courtship & Sparks",
-    "quote": "A sweet fragrance fills the garden air. Shy glances blossom into delightful conversations of the heart.",
-    "meaning": "Meeting a charming partner, sparks flying on dates, and the sweet excitement of budding love.",
-    "blessing": "May fresh romance and tender sparks of affection sweeten every day of your life!"
+    "theme": "Sweet Moments & Kindness",
+    "quote": "A sweet fragrance fills the garden air. Small kindnesses blossom into moments of pure delight.",
+    "meaning": "Little moments of tenderness, kind words, and affection from the people around you.",
+    "blessing": "May tender moments of affection sweeten every day of your life!"
   },
   {
     "id": 45,
@@ -369,11 +369,11 @@
   },
   {
     "id": 47,
-    "title": "Wish #47 - The Celestial Matchmaker",
-    "theme": "Destined Encounters",
-    "quote": "Heaven arranges encounters with miraculous precision. The right soul appears at the perfect hour.",
-    "meaning": "Serendipitous meetings leading to true love or lifelong partnerships just when you least expect.",
-    "blessing": "May divine timing bring your destined partner into your arms with joyful ease!"
+    "title": "Wish #47 - The Celestial Meeting",
+    "theme": "Meaningful Encounters",
+    "quote": "Heaven arranges encounters with miraculous precision. The right people appear at the perfect hour.",
+    "meaning": "Meeting people who inspire, support, and uplift you just when you need them.",
+    "blessing": "May divine timing bring wonderful people into your life with joyful ease!"
   },
   {
     "id": 48,
@@ -381,7 +381,7 @@
     "theme": "Shield Against Negativity",
     "quote": "A halo of golden light surrounds your being. Jealousy and ill-will bounce off like harmless dust.",
     "meaning": "Protection from toxic gossip, malicious intentions, and negative energies in all spaces.",
-    "blessing": "May divine light shield your spirit, turning every ill intention into harmless vapor!"
+    "blessing": "May divine light shield your spirit, turning every ill intention into harmless vapour!"
   },
   {
     "id": 49,
@@ -389,7 +389,7 @@
     "theme": "Unfailing Intuition",
     "quote": "A quiet voice within whispers true direction. Follow your gut; the internal needle never lies.",
     "meaning": "Sharp intuition, seeing through deception instantly, and making wise choices with zero regrets.",
-    "blessing": "May your inner compass guide you unerringly toward safety, honour, and great prosperity!"
+    "blessing": "May your inner compass guide you unerringly towards safety, honour, and great prosperity!"
   },
   {
     "id": 50,
@@ -417,11 +417,11 @@
   },
   {
     "id": 53,
-    "title": "Wish #53 - The Child of Promise",
-    "theme": "Blessings for Children & Descendants",
-    "quote": "Young shoots bathed in morning dew grow tall and straight. Their laughter is the music of heaven.",
-    "meaning": "Health, intelligence, good character, and bright academic futures for your children and youth.",
-    "blessing": "May your children grow in wisdom, health, and grace, bringing perpetual pride to your family!"
+    "title": "Wish #53 - The Young Shoots",
+    "theme": "Growth & Bright Futures",
+    "quote": "Young shoots bathed in morning dew grow tall and straight. Every new beginning holds great promise.",
+    "meaning": "Fresh growth in every part of your life and a future full of bright possibilities.",
+    "blessing": "May everything you hold dear grow in wisdom, health, and grace!"
   },
   {
     "id": 54,
@@ -442,10 +442,10 @@
   {
     "id": 56,
     "title": "Wish #56 - The Gentle Nest",
-    "theme": "Comfort & Care for Elders",
-    "quote": "Honour the grey hairs of wisdom. In their sunset years, let peace and tender care surround their days.",
-    "meaning": "Good health, clear mind, and loving companionship for your parents and beloved elders.",
-    "blessing": "May your elders be blessed with comfort, dignity, good health, and the deep love of their family!"
+    "theme": "Comfort & Care",
+    "quote": "A gentle nest shelters all who rest within it. Let peace and tender care surround your days.",
+    "meaning": "Feeling cared for, comfortable surroundings, and loving companionship whenever you need it.",
+    "blessing": "May comfort, dignity, and gentle care surround you and everyone you love!"
   },
   {
     "id": 57,
@@ -570,10 +570,10 @@
   {
     "id": 72,
     "title": "Wish #72 - The Loyal Companion",
-    "theme": "Pets & Faithful Friends",
-    "quote": "A wagging tail at the door, a purr upon the pillow. Love comes in many shapes, all of them faithful.",
-    "meaning": "Good health and long happy years for your beloved pets, and the joy of their companionship.",
-    "blessing": "May your furry friends stay healthy, happy, and by your side for many joyful years!"
+    "theme": "Faithful Friendship",
+    "quote": "A familiar face at the door, a voice that always answers. True companions make every road shorter.",
+    "meaning": "Faithful companions by your side, loyal support, and the comfort of never walking alone.",
+    "blessing": "May faithful companions stay by your side through every season of life!"
   },
   {
     "id": 73,
@@ -594,18 +594,18 @@
   {
     "id": 75,
     "title": "Wish #75 - The Open Road",
-    "theme": "Driving Test & Independence",
-    "quote": "Hands steady on the wheel, eyes on the road ahead. Freedom awaits those who stay calm and focused.",
-    "meaning": "Passing your driving test, safe journeys, and newfound independence on the road.",
-    "blessing": "May you pass with flying colours and enjoy safe, happy travels wherever the road leads!"
+    "theme": "Freedom & Independence",
+    "quote": "Eyes on the road ahead, the horizon wide open. Freedom awaits those who stay calm and focused.",
+    "meaning": "Independence, confidence in your own choices, and safe journeys wherever you go.",
+    "blessing": "May you enjoy freedom, confidence, and safe travels wherever the road leads!"
   },
   {
     "id": 76,
-    "title": "Wish #76 - The New Desk",
-    "theme": "Fresh Job & Bright Start",
-    "quote": "A new door opens and a new name badge waits. Walk in with confidence; you were chosen for good reason.",
-    "meaning": "Landing the job you hoped for, settling in smoothly, and earning respect from new colleagues.",
-    "blessing": "May your new role bring you purpose, kind colleagues, and a bright path forward!"
+    "title": "Wish #76 - The Open Door",
+    "theme": "Fresh Starts & Bright Beginnings",
+    "quote": "A new door opens and the light spills through. Walk in with confidence; you belong there.",
+    "meaning": "New opportunities appearing, smooth beginnings, and a bright path forward.",
+    "blessing": "May every new beginning bring you purpose, kind people, and a bright path forward!"
   },
   {
     "id": 77,
@@ -617,27 +617,27 @@
   },
   {
     "id": 78,
-    "title": "Wish #78 - The Wedding Bells",
-    "theme": "Joyful Union",
-    "quote": "Two families become one, glasses raised in cheer. Love declared before friends is love made stronger.",
-    "meaning": "A beautiful wedding day, harmony between families, and a marriage built on laughter.",
-    "blessing": "May your wedding day be perfect and your marriage overflow with love and laughter!"
+    "title": "Wish #78 - The Joyful Bells",
+    "theme": "Happy Celebrations",
+    "quote": "Bells ring out across the valley, glasses raised in cheer. Joy shared with friends is joy made stronger.",
+    "meaning": "Happy occasions, cheerful gatherings, and reasons to celebrate with people you love.",
+    "blessing": "May joyful bells ring often in your life, calling you to celebrate with loved ones!"
   },
   {
     "id": 79,
     "title": "Wish #79 - The Little Miracle",
-    "theme": "New Arrivals & Parenthood",
-    "quote": "Tiny fingers, a first cry, and a heart that grows overnight. New life brings the purest kind of joy.",
-    "meaning": "A safe arrival for a new baby, healthy growth, and confidence on the journey of parenthood.",
-    "blessing": "May your little one arrive safe and well, filling your home with endless joy!"
+    "theme": "Everyday Miracles",
+    "quote": "A first snowdrop, a stranger's smile, a perfect sunset. Small miracles are everywhere for those who look.",
+    "meaning": "Noticing the magic in ordinary days and receiving delightful little surprises.",
+    "blessing": "May little miracles brighten your days and fill your heart with wonder!"
   },
   {
     "id": 80,
-    "title": "Wish #80 - The Golden Years",
-    "theme": "Happy Retirement",
-    "quote": "The working years close with honour. Now come long walks, slow mornings, and time for what you love.",
-    "meaning": "A comfortable retirement, good health to enjoy it, and new hobbies to fill the days.",
-    "blessing": "May your retirement be rich in health, laughter, and wonderful new adventures!"
+    "title": "Wish #80 - The Golden Hours",
+    "theme": "Time for What You Love",
+    "quote": "The busy hours fade and the golden ones arrive: long walks, slow mornings, and time for what you love.",
+    "meaning": "More free time, freedom to enjoy your passions, and days that feel truly your own.",
+    "blessing": "May you have plenty of golden hours filled with health, laughter, and joy!"
   },
   {
     "id": 81,
@@ -649,11 +649,11 @@
   },
   {
     "id": 82,
-    "title": "Wish #82 - The Winning Goal",
-    "theme": "Team Spirit & Victory",
-    "quote": "The crowd rises as the ball meets the net. Teamwork, heart, and a little luck make champions.",
-    "meaning": "Success for your team, brilliant matches, and the joy of celebrating together.",
-    "blessing": "May your team play brilliantly and may every match bring cheers and celebration!"
+    "title": "Wish #82 - The Winning Spirit",
+    "theme": "Teamwork & Victory",
+    "quote": "The crowd rises as the goal is reached. Teamwork, heart, and a little luck make champions.",
+    "meaning": "Success in shared efforts, great teamwork, and the joy of celebrating together.",
+    "blessing": "May you always have a winning spirit and plenty of reasons to cheer!"
   },
   {
     "id": 83,
@@ -706,10 +706,10 @@
   {
     "id": 89,
     "title": "Wish #89 - The Fresh Start",
-    "theme": "Moving House",
-    "quote": "Boxes unpacked, curtains hung, the kettle found at last. A new home awaits its first happy memories.",
-    "meaning": "A smooth move, friendly neighbours, and a new place that quickly feels like home.",
-    "blessing": "May your new home welcome you warmly and fill quickly with happy memories!"
+    "theme": "Home & Happy Memories",
+    "quote": "Curtains open, the kettle on, sunlight across the floor. Every home is waiting for its next happy memory.",
+    "meaning": "A home that feels peaceful and welcoming, wherever you are.",
+    "blessing": "May your home always welcome you warmly and fill with happy memories!"
   },
   {
     "id": 90,
@@ -737,19 +737,19 @@
   },
   {
     "id": 93,
-    "title": "Wish #93 - The Calm Exam Hall",
+    "title": "Wish #93 - The Steady Hand",
     "theme": "Focus Under Pressure",
-    "quote": "Pens ready, nerves settled, mind clear. You know more than you think; trust yourself.",
-    "meaning": "Calm nerves during exams, clear recall, and results that reflect your hard work.",
-    "blessing": "May a calm mind and a clear memory help you shine on exam day!"
+    "quote": "Breathe in, settle the nerves, clear the mind. You know more than you think; trust yourself.",
+    "meaning": "Calm confidence in important moments and results that reflect your hard work.",
+    "blessing": "May a calm mind and a steady hand help you shine whenever it matters most!"
   },
   {
     "id": 94,
     "title": "Wish #94 - The Happy Reunion",
-    "theme": "Loved Ones Coming Home",
-    "quote": "Arrivals gate, open arms, tears of joy. Distance only makes the reunion sweeter.",
-    "meaning": "Seeing faraway family and friends again, safe travels home, and joyful gatherings.",
-    "blessing": "May your loved ones return safely and may your reunions be filled with joy!"
+    "theme": "Togetherness",
+    "quote": "Open arms, warm smiles, tears of joy. Time apart only makes coming together sweeter.",
+    "meaning": "Joyful gatherings with the people you love and treasured time together.",
+    "blessing": "May you share many joyful moments together with the people you love!"
   },
   {
     "id": 95,
@@ -785,11 +785,11 @@
   },
   {
     "id": 99,
-    "title": "Wish #99 - The Gentle Healer",
-    "theme": "Care for Someone Unwell",
-    "quote": "Every gentle hand and kind word helps healing along. Recovery comes one good day at a time.",
-    "meaning": "Comfort and recovery for a loved one who is unwell, and strength for those caring for them.",
-    "blessing": "May healing come gently to those you love, and may you feel supported every step of the way!"
+    "title": "Wish #99 - The Gentle Hand",
+    "theme": "Kindness & Support",
+    "quote": "Every gentle hand and kind word lightens a heavy load. Support arrives one good day at a time.",
+    "meaning": "Comfort when life feels heavy, caring people around you, and strength for the days ahead.",
+    "blessing": "May gentle support surround you and everyone you care about, every step of the way!"
   },
   {
     "id": 100,
@@ -801,23 +801,23 @@
   },
   {
     "id": 101,
-    "title": "Wish #101 - The Birthday Candle",
-    "theme": "Another Wonderful Year",
-    "quote": "Close your eyes, make a wish, and blow. Another year of stories is waiting to be written.",
-    "meaning": "A happy birthday, a joyful year ahead, and wishes quietly coming true.",
-    "blessing": "May your birthday wish come true and may the year ahead be your best yet!"
+    "title": "Wish #101 - The Wishing Candle",
+    "theme": "A Wonderful Time Ahead",
+    "quote": "Close your eyes, make a wish, and let the candle glow. A new chapter of stories is waiting to be written.",
+    "meaning": "Joyful months ahead and wishes quietly coming true.",
+    "blessing": "May your heart's wish come true and may the months ahead be your best yet!"
   },
   {
     "id": 102,
-    "title": "Wish #102 - The Frosty Window",
-    "theme": "Festive Cheer",
-    "quote": "Frost on the glass, lights on the tree, and warmth inside. The festive season gathers hearts together.",
-    "meaning": "Joyful holidays, cherished family traditions, and the warmth of festive gatherings.",
-    "blessing": "May festive cheer warm your home and bring your loved ones close!"
+    "title": "Wish #102 - The Glowing Window",
+    "theme": "Warmth & Togetherness",
+    "quote": "Lamplight in the window and warmth inside. The brightest glow comes from hearts gathered together.",
+    "meaning": "Cherished traditions, warm gatherings, and a sense of belonging.",
+    "blessing": "May warmth and good cheer fill your home and bring your loved ones close!"
   },
   {
     "id": 103,
-    "title": "Wish #103 - The Spring Blossom",
+    "title": "Wish #103 - The Returning Light",
     "theme": "Renewal & New Seasons",
     "quote": "Daffodils push through the cold earth. After every winter, spring returns without fail.",
     "meaning": "A fresh season of life, renewed optimism, and good things beginning to bloom.",
@@ -825,15 +825,15 @@
   },
   {
     "id": 104,
-    "title": "Wish #104 - The Summer Picnic",
+    "title": "Wish #104 - The Sunny Picnic",
     "theme": "Carefree Joy",
     "quote": "A blanket on the grass, sandwiches and sunshine. The simplest days are often the happiest.",
     "meaning": "Carefree outings, sunny days with loved ones, and joy in simple pleasures.",
-    "blessing": "May your summer be full of sunshine, picnics, and carefree happy days!"
+    "blessing": "May your days be full of sunshine, laughter, and carefree happy moments!"
   },
   {
     "id": 105,
-    "title": "Wish #105 - The Autumn Walk",
+    "title": "Wish #105 - The Golden Leaves",
     "theme": "Reflection & Gratitude",
     "quote": "Leaves crunch underfoot in gold and copper. Autumn reminds us that letting go can be beautiful.",
     "meaning": "Peaceful reflection, gratitude for the year so far, and calm acceptance of change.",
@@ -873,11 +873,11 @@
   },
   {
     "id": 110,
-    "title": "Wish #110 - The Bright Classroom",
-    "theme": "Children's Learning & Confidence",
-    "quote": "A young mind lights up when a lesson finally clicks. Confidence grows with every little success.",
-    "meaning": "Children thriving at school, supportive teachers, and growing confidence in young learners.",
-    "blessing": "May the little ones in your life learn happily and grow in confidence every day!"
+    "title": "Wish #110 - The Lightbulb Moment",
+    "theme": "Learning & Confidence",
+    "quote": "A mind lights up when an idea finally clicks. Confidence grows with every little success.",
+    "meaning": "Learning something new with joy, growing confidence, and the thrill of understanding.",
+    "blessing": "May every day bring you a bright new idea and growing confidence!"
   },
   {
     "id": 111,
