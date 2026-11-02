@@ -356,12 +356,12 @@ class PilgrimSeatsManager {
     bubble.innerText = data.comment;
     seat.domEl.querySelector('.seat-content').prepend(bubble);
 
-    // Living Procession: Avatar walks along sacred pathway up to well!
-    this.spawnProcessionWalker(data, `💬 "${data.comment}"`);
+    // Seated pilgrim tosses a coin from their seat!
+    this.triggerSeatCoinToss(seat);
 
     setTimeout(() => {
       if (bubble.parentNode) bubble.remove();
-    }, 4000);
+    }, 4500);
   }
 
   handleLikes(data) {
@@ -372,14 +372,15 @@ class PilgrimSeatsManager {
     seat.user.likesCount = (seat.user.likesCount || 0) + likeCount;
     seat.user.lastActiveAt = Date.now();
 
-    if (seat.user.likesCount >= 20) {
-      const tosses = Math.floor(seat.user.likesCount / 20);
-      seat.user.likesCount = seat.user.likesCount % 20;
+    // Trigger frequent coin toss every 10 likes
+    if (seat.user.likesCount >= 10) {
+      const tosses = Math.floor(seat.user.likesCount / 10);
+      seat.user.likesCount = seat.user.likesCount % 10;
 
-      for (let i = 0; i < tosses; i++) {
+      for (let i = 0; i < Math.min(tosses, 3); i++) {
         setTimeout(() => {
           this.triggerSeatCoinToss(seat);
-        }, i * 300);
+        }, i * 250);
       }
     }
   }
@@ -403,23 +404,16 @@ class PilgrimSeatsManager {
       if (popup.parentNode) popup.remove();
     }, 1300);
 
-    if (this.app && this.app.tossedCoins) {
-      this.app.tossedCoins.push({
-        startX: seat.x,
-        startY: seat.y - 20,
-        x: seat.x,
-        y: seat.y - 20,
-        targetX: 540 + (Math.random() - 0.5) * 60,
-        targetY: 870 + (Math.random() - 0.5) * 30,
-        arcHeight: 220 + Math.random() * 60,
-        spinAngle: 0,
-        spinSpeed: 0.22,
-        progress: 0,
-        speed: 0.022,
-        scale: 0.75,
-        isGolden: (seat.user.tier >= 4),
-        avatarImg: null
-      });
+    // Official canvas coin toss from seat coordinates into well
+    if (this.app) {
+      this.app.tossCoinFromPoint(
+        seat.x,
+        seat.y - 25,
+        seat.user.nickname,
+        seat.user.avatar,
+        1,
+        seat.user.tier >= 4
+      );
     }
 
     if (window.wishingAudio) {
@@ -436,8 +430,8 @@ class PilgrimSeatsManager {
     seat.user.score = (seat.user.score || 0) + giftScore;
     seat.user.lastActiveAt = Date.now();
 
-    // Spawn walking procession for gift giver
-    this.spawnProcessionWalker(data, `🎁 ${data.giftName || 'Sacred Relic'}`);
+    // Seated pilgrim tosses coin with golden celebration
+    this.triggerSeatCoinToss(seat);
 
     const popup = document.createElement('div');
     popup.className = 'floating-score-popup';
@@ -527,26 +521,42 @@ class PilgrimSeatsManager {
     }, 3200);
   }
 
-  spawnProcessionWalker(user, text = '✨ Making a wish...') {
+  spawnProcessionWalker(user, text = '✨ Making a wish...', coins = 1, isGift = false, onLanded = null) {
     const stage = document.getElementById('procession-stage');
     if (!stage || !user) return;
 
+    // Keep sacred aisle clean: max 2 concurrent procession walkers
+    const existingWalkers = stage.querySelectorAll('.procession-walker');
+    if (existingWalkers.length >= 2) {
+      const oldest = existingWalkers[0];
+      oldest.style.opacity = '0';
+      setTimeout(() => { if (oldest.parentNode) oldest.remove(); }, 300);
+    }
+
     const walker = document.createElement('div');
-    walker.className = 'procession-walker';
+    walker.className = `procession-walker walking ${isGift ? 'vip' : ''}`;
     walker.style.left = '540px';
     walker.style.top = '1780px';
+    walker.style.transform = 'translate(-50%, -100%) scale(1.15)';
 
     const nickname = escapeHtml(user.nickname || 'Pilgrim');
-    const avatar = safeImageUrl(user.avatar);
-    const bubbleText = escapeHtml(String(text).slice(0, 32));
+    const avatar = safeImageUrl(user.avatar || getChibiAvatar(0));
+    const bubbleText = escapeHtml(String(text).slice(0, 36));
 
     walker.innerHTML = `
-      <div class="walker-bubble">${bubbleText}</div>
+      ${bubbleText ? `<div class="walker-bubble">${bubbleText}</div>` : ''}
       <div class="walker-head">
-        <img src="${avatar}" class="walker-avatar" alt="${nickname}" />
+        <img src="${avatar}" class="walker-avatar" alt="${nickname}" onerror="this.src=getChibiAvatar(0)" />
       </div>
-      <div class="walker-body">
-        <span class="walker-coin-hand">🪙</span>
+      <div class="walker-chibi-body">
+        <svg viewBox="0 0 48 38" width="48" height="38" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 14 2 C 20 0, 28 0, 34 2 L 40 28 C 30 30, 18 30, 8 28 Z" fill="${isGift ? '#d97706' : '#0284c7'}" stroke="${isGift ? '#fef08a' : '#38bdf8'}" stroke-width="1.2" />
+          <path d="M 18 2 L 24 14 L 30 2" fill="none" stroke="#fef08a" stroke-width="2" />
+          <path d="M 8 6 C 14 16, 20 20, 24 18 C 22 14, 18 8, 14 4 Z" fill="${isGift ? '#b45309' : '#0369a1'}" />
+          <path d="M 40 6 C 34 16, 28 20, 24 18 C 26 14, 30 8, 34 4 Z" fill="${isGift ? '#b45309' : '#0369a1'}" />
+          <circle cx="24" cy="18" r="6" fill="#fbbf24" stroke="#fef08a" stroke-width="1.2" />
+          <rect x="22.5" y="16.5" width="3" height="3" fill="#78350f" />
+        </svg>
       </div>
       <div class="walker-feet">
         <div class="walker-foot left"></div>
@@ -556,27 +566,24 @@ class PilgrimSeatsManager {
 
     stage.appendChild(walker);
 
-    requestAnimationFrame(() => {
-      walker.style.top = '915px';
-    });
+    // CRITICAL: Force reflow so the browser commits top: 1780px before starting the transition!
+    void walker.offsetHeight;
 
+    // Smooth walk up the sacred carpet to the front step of the stone well (y: 975px - OUTSIDE the water!)
+    walker.style.transition = 'top 3.2s cubic-bezier(0.2, 0.8, 0.25, 1), transform 3.2s ease, opacity 0.4s ease';
+    walker.style.top = '975px';
+    walker.style.transform = 'translate(-50%, -100%) scale(0.95)';
+
+    // Arrive at the well rim, toss golden coin into water!
     setTimeout(() => {
-      if (this.app && this.app.tossedCoins) {
-        this.app.tossedCoins.push({
-          startX: 540,
-          startY: 915,
-          x: 540,
-          y: 915,
-          targetX: 540 + (Math.random() - 0.5) * 60,
-          targetY: 870 + (Math.random() - 0.5) * 30,
-          arcHeight: 130,
-          spinAngle: 0,
-          spinSpeed: 0.25,
-          progress: 0,
-          speed: 0.03,
-          scale: 0.9,
-          isGolden: true,
-          avatarImg: null
+      walker.classList.remove('walking');
+      walker.classList.add('tossing');
+
+      if (this.app) {
+        this.app.tossCoinFromPoint(540, 960, nickname, avatar, coins, true, () => {
+          walker.classList.remove('tossing');
+          walker.classList.add('celebrating');
+          if (onLanded) onLanded();
         });
       }
 
@@ -584,12 +591,16 @@ class PilgrimSeatsManager {
         window.wishingAudio.playCoinClink();
       }
 
-      walker.style.opacity = '0';
-      walker.style.transform = 'translate(-50%, -120%) scale(1.3)';
+      // Smooth celebration & dissolve fade out
       setTimeout(() => {
-        if (walker.parentNode) walker.remove();
-      }, 600);
-    }, 3800);
+        walker.style.opacity = '0';
+        walker.style.transform = 'translate(-50%, -120%) scale(1.15)';
+        setTimeout(() => {
+          if (walker.parentNode) walker.remove();
+        }, 500);
+      }, 1400);
+
+    }, 3200);
   }
 
   triggerMassCeremony(duration = 4500) {
@@ -747,7 +758,7 @@ class WishingWellLiveApp {
     }
     if (btnMo) {
       btnMo.addEventListener('click', () => {
-        this.spawnWalkingWishmaker('You', 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face', 'Tossing a lucky coin!', 1, false);
+        this.spawnWalkingWishmaker('You', getChibiAvatar(0), 'Tossing a lucky coin!', 1, false);
       });
     }
     if (btnFortune) {
@@ -809,119 +820,14 @@ class WishingWellLiveApp {
     }
   }
 
-  // ==================== ANIMATED WALKING WISHMAKER (ETHEREAL SPIRIT) ====================
+  // ==================== ANIMATED WALKING WISHMAKER (CENTRAL PROCESSION) ====================
 
   spawnWalkingWishmaker(nickname, avatar, text, coins = 1, isGift = false, onLanded = null) {
     this.totalWishesCount++;
     this.updateWishCounter();
-
-    if (!this.activeWishmakers) this.activeWishmakers = [];
-
-    // Limit concurrent travelers on screen to 3 max to prevent clumping
-    if (!isGift && this.activeWishmakers.length >= 3) {
-      return;
+    if (this.seatsManager) {
+      this.seatsManager.spawnProcessionWalker({ nickname, avatar }, text, coins, isGift, onLanded);
     }
-
-    if (isGift && this.activeWishmakers.length >= 3) {
-      // Dismiss the oldest traveler immediately to give center stage to VIP gift
-      const oldest = this.activeWishmakers.shift();
-      if (oldest && oldest.el) {
-        oldest.el.style.opacity = '0';
-        setTimeout(() => oldest.el.remove(), 400);
-      }
-    }
-
-    // 5 distinct non-overlapping standing positions along the well arc
-    const SLOTS = [
-      { id: 0, startX: 25, targetX: 28, targetY: 57.0 }, // Far Left
-      { id: 1, startX: 37, targetX: 39, targetY: 58.2 }, // Mid Left
-      { id: 2, startX: 50, targetX: 50, targetY: 59.5 }, // Center Front (VIP)
-      { id: 3, startX: 63, targetX: 61, targetY: 58.2 }, // Mid Right
-      { id: 4, startX: 75, targetX: 72, targetY: 57.0 }  // Far Right
-    ];
-
-    const occupiedSlotIds = new Set(this.activeWishmakers.map(w => w.slotId));
-    let slot;
-
-    if (isGift) {
-      // VIP claims Center Front (id: 2). If a casual visitor is there, dismiss them
-      const occupant = this.activeWishmakers.find(w => w.slotId === 2);
-      if (occupant && !occupant.isGift && occupant.el) {
-        occupant.el.style.opacity = '0';
-        setTimeout(() => occupant.el.remove(), 300);
-        const oIdx = this.activeWishmakers.indexOf(occupant);
-        if (oIdx !== -1) this.activeWishmakers.splice(oIdx, 1);
-      }
-      slot = SLOTS[2];
-    } else {
-      // Casual visitors take available flank slots
-      const available = SLOTS.filter(s => s.id !== 2 && !occupiedSlotIds.has(s.id));
-      if (available.length === 0) return; // Avoid clumping when full
-      slot = available[Math.floor(Math.random() * available.length)];
-    }
-
-    const traveler = document.createElement('div');
-    traveler.className = `walking-wishmaker walking ${isGift ? 'vip' : ''}`;
-
-    traveler.style.left = `${slot.startX}%`;
-    traveler.style.top = '78%';
-    traveler.style.transform = 'translate(-50%, -100%) scale(1.05)';
-
-    // Build Ethereal Spirit Traveler DOM
-    traveler.innerHTML = `
-      ${text ? `<div class="wish-speech-bubble">${escapeHtml(text)}</div>` : ''}
-      <div class="wishmaker-badge">${escapeHtml(nickname)}</div>
-      <div class="spirit-traveler-wrap">
-        <div class="spirit-halo"></div>
-        <img src="${escapeHtml(safeImageUrl(avatar))}" class="spirit-avatar" alt="${escapeHtml(nickname)}" />
-        <div class="spirit-robe"></div>
-      </div>
-    `;
-
-    this.stage.appendChild(traveler);
-    const wishmakerObj = { el: traveler, isGift, slotId: slot.id };
-    this.activeWishmakers.push(wishmakerObj);
-
-    const cleanup = () => {
-      const idx = this.activeWishmakers.indexOf(wishmakerObj);
-      if (idx !== -1) this.activeWishmakers.splice(idx, 1);
-      traveler.remove();
-    };
-
-    // 1. Float forward gracefully to the stone well rim
-    setTimeout(() => {
-      traveler.style.top = `${slot.targetY}%`;
-      traveler.style.left = `${slot.targetX}%`;
-      traveler.style.transform = 'translate(-50%, -100%) scale(0.90)';
-    }, 40);
-
-    // 2. Arrive at well, stop walking, and cast celestial coin into water
-    setTimeout(() => {
-      traveler.classList.remove('walking');
-      traveler.classList.add('tossing');
-
-      const travelerRect = traveler.getBoundingClientRect();
-      const viewportRect = document.getElementById('live-viewport').getBoundingClientRect();
-      const scale = viewportRect.width / 1080;
-
-      const handX = (travelerRect.left + travelerRect.width / 2 - viewportRect.left) / scale;
-      const handY = (travelerRect.top + travelerRect.height * 0.45 - viewportRect.top) / scale;
-
-      this.tossCoinFromPoint(handX, handY, nickname, avatar, coins, isGift, () => {
-        traveler.classList.remove('tossing');
-        traveler.classList.add('celebrating');
-
-        if (onLanded) onLanded();
-      });
-
-    }, 1800);
-
-    // 3. Graceful celebration & fade out
-    setTimeout(() => {
-      traveler.style.opacity = '0';
-      traveler.style.transform = 'translate(-50%, -100%) scale(0.78) translateY(-18px)';
-      setTimeout(cleanup, 600);
-    }, 4600);
   }
 
   // ==================== COIN TOSS & PHYSICS ====================
@@ -1086,7 +992,7 @@ class WishingWellLiveApp {
     if (!comment || typeof comment !== 'string' || comment.trim() === '') return;
     // Defense-in-depth safety guard: block any residual vulgarity or URL redirection
     if (/[<>]|\b(fuck|shit|bitch|cunt|dick|pussy|nigger|nigga|kys|porn|telegram|whatsapp)\b/i.test(comment)) return;
-    this.spawnWalkingWishmaker(nickname, avatar, `"${comment.trim()}"`, 1, false);
+    // Chat speech bubbles are rendered directly on the seated pilgrim figure by seatsManager.handleChat
   }
 
   // Anti-OCR Static Scanner Defense: Auto-cycling dynamic blessings on royal banner
@@ -1400,7 +1306,7 @@ class WishingWellLiveApp {
         y: -40,
         progress: 0,
         duration: 0.85 + Math.random() * 0.45,
-        peakHeight: 20 + Math.random() * 30,
+        peakY: -80 - Math.random() * 40,
         scale: 0.75 + Math.random() * 0.35,
         radius: 12 + Math.random() * 6,
         color: '#fef08a',
@@ -1663,14 +1569,23 @@ class WishingWellLiveApp {
   renderTossedCoins(dt = 0.016) {
     for (let i = this.tossedCoins.length - 1; i >= 0; i--) {
       const c = this.tossedCoins[i];
-      c.progress += dt / c.duration;
-      c.spinAngle += c.spinSpeed * (dt / 0.016);
+      const duration = (typeof c.duration === 'number' && c.duration > 0) ? c.duration : 1.1;
+      const spinSpeed = (typeof c.spinSpeed === 'number') ? c.spinSpeed : 0.2;
+      c.progress = (c.progress || 0) + dt / duration;
+      c.spinAngle = (c.spinAngle || 0) + spinSpeed * (dt / 0.016);
 
-      const p = Math.min(1.0, c.progress);
+      const p = Math.min(1.0, Math.max(0, c.progress));
       c.x = c.startX + (c.targetX - c.startX) * p;
       const linearY = c.startY + (c.targetY - c.startY) * p;
-      const arcOffset = 4 * (c.peakY - Math.min(c.startY, c.targetY)) * p * (1 - p);
+      const peakY = (typeof c.peakY === 'number') ? c.peakY : (Math.min(c.startY, c.targetY) - (c.arcHeight || 180));
+      const arcOffset = 4 * (peakY - Math.min(c.startY, c.targetY)) * p * (1 - p);
       c.y = linearY + arcOffset;
+
+      // Defensive guard against corrupted coordinates
+      if (isNaN(c.x) || isNaN(c.y) || isNaN(c.progress)) {
+        this.tossedCoins.splice(i, 1);
+        continue;
+      }
 
       // Soft Ground / Water Reflection Shadow
       const shadowY = linearY + 14;

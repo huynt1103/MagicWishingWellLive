@@ -686,7 +686,27 @@ html, body {
   flex-direction: column;
   align-items: center;
   pointer-events: none;
-  transition: top 3.8s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease;
+  z-index: 40;
+  will-change: top, transform, opacity;
+}
+
+.procession-walker.walking .walker-chibi-body {
+  animation: walkerBodyBob 0.35s ease-in-out infinite alternate;
+}
+
+@keyframes walkerBodyBob {
+  0% { transform: translateY(0) scaleY(1); }
+  100% { transform: translateY(-4px) scaleY(1.04); }
+}
+
+.procession-walker.tossing .walker-chibi-body {
+  animation: walkerTossAction 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes walkerTossAction {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25) translateY(-8px); filter: brightness(1.5); }
+  100% { transform: scale(1); }
 }
 
 .walker-bubble {
@@ -719,45 +739,38 @@ html, body {
   object-fit: cover;
 }
 
-.walker-body {
-  width: 36px;
-  height: 24px;
-  background: linear-gradient(180deg, #1e293b, #0f172a);
-  border: 1.5px solid #38bdf8;
-  border-radius: 6px;
-  margin-top: -6px;
+.walker-chibi-body {
+  width: 48px;
+  height: 38px;
+  margin-top: -8px;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.walker-coin-hand {
-  font-size: 14px;
-  animation: coinSparkle 1.2s infinite alternate;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7));
 }
 
 .walker-feet {
   display: flex;
-  gap: 8px;
-  margin-top: -2px;
+  gap: 12px;
+  margin-top: -4px;
 }
 
 .walker-foot {
-  width: 8px;
+  width: 10px;
   height: 6px;
   background: #38bdf8;
   border-radius: 3px;
-  animation: footStep 0.4s ease-in-out infinite alternate;
+  animation: footStep 0.35s ease-in-out infinite alternate;
 }
 
 .walker-foot.right {
-  animation-delay: 0.2s;
+  animation-delay: 0.17s;
 }
 
 @keyframes footStep {
   0% { transform: translateY(0); }
-  100% { transform: translateY(-4px); }
+  100% { transform: translateY(-5px); }
 }
 
 /* ==================== MASS CEREMONY / GOLDEN HOUR SYNCHRONIZATION ==================== */
