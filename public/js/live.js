@@ -20,10 +20,119 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
-const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face';
+// 8 Distinct, High-Quality Chibi Avatars for 100% Offline & Instant Rendering
+const CHIBI_AVATARS = [
+  // 0: Boy Pilgrim with Cyan Headband
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#0284c7"/><circle cx="32" cy="34" r="22" fill="#fed7aa"/><path d="M 16 26 Q 32 10 48 26 Q 48 14 32 12 Q 16 14 16 26 Z" fill="#1e293b"/><rect x="18" y="23" width="28" height="4.5" rx="2" fill="#38bdf8"/><circle cx="25" cy="33" r="3.2" fill="#0f172a"/><circle cx="39" cy="33" r="3.2" fill="#0f172a"/><circle cx="26" cy="32" r="1" fill="#fff"/><circle cx="40" cy="32" r="1" fill="#fff"/><circle cx="20" cy="38" r="2.8" fill="#f472b6" opacity="0.65"/><circle cx="44" cy="38" r="2.8" fill="#f472b6" opacity="0.65"/><path d="M 28 39 Q 32 43 36 39" stroke="#e11d48" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>`,
+
+  // 1: Maiden with Twin Blossom Buns
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#ec4899"/><circle cx="15" cy="18" r="8.5" fill="#334155"/><circle cx="49" cy="18" r="8.5" fill="#334155"/><circle cx="15" cy="18" r="4" fill="#fb7185"/><circle cx="49" cy="18" r="4" fill="#fb7185"/><circle cx="32" cy="34" r="22" fill="#fed7aa"/><path d="M 14 26 Q 32 12 50 26 Q 48 15 32 14 Q 16 15 14 26 Z" fill="#334155"/><circle cx="25" cy="33" r="3.2" fill="#0f172a"/><circle cx="39" cy="33" r="3.2" fill="#0f172a"/><circle cx="26" cy="32" r="1" fill="#fff"/><circle cx="40" cy="32" r="1" fill="#fff"/><circle cx="20" cy="38" r="3.2" fill="#f43f5e" opacity="0.7"/><circle cx="44" cy="38" r="3.2" fill="#f43f5e" opacity="0.7"/><path d="M 28 39 Q 32 44 36 39" stroke="#be123c" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>`,
+
+  // 2: Jade Sage with Golden Tiara
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#059669"/><circle cx="32" cy="34" r="22" fill="#fed7aa"/><path d="M 14 28 Q 32 12 50 28 L 50 16 Q 32 9 14 16 Z" fill="#064e3b"/><polygon points="32,10 27,17 37,17" fill="#fef08a"/><circle cx="25" cy="33" r="3.2" fill="#064e3b"/><circle cx="39" cy="33" r="3.2" fill="#064e3b"/><circle cx="26" cy="32" r="1" fill="#fff"/><circle cx="40" cy="32" r="1" fill="#fff"/><circle cx="21" cy="38" r="2.8" fill="#f43f5e" opacity="0.55"/><circle cx="43" cy="38" r="2.8" fill="#f43f5e" opacity="0.55"/><path d="M 28 39 Q 32 43 36 39" stroke="#b91c1c" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>`,
+
+  // 3: Wise Master with Serene Eyes
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#7c3aed"/><circle cx="32" cy="34" r="22" fill="#ffedd5"/><circle cx="32" cy="13" r="6.5" fill="#cbd5e1"/><path d="M 16 26 Q 32 14 48 26" fill="none" stroke="#e2e8f0" stroke-width="4.5"/><path d="M 22 32 Q 26 36 30 32" fill="none" stroke="#334155" stroke-width="2.6" stroke-linecap="round"/><path d="M 34 32 Q 38 36 42 32" fill="none" stroke="#334155" stroke-width="2.6" stroke-linecap="round"/><circle cx="21" cy="38" r="2.8" fill="#f87171" opacity="0.5"/><circle cx="43" cy="38" r="2.8" fill="#f87171" opacity="0.5"/><path d="M 29 39 Q 32 43 35 39" stroke="#b91c1c" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 30 43 Q 32 50 34 43" fill="#f1f5f9"/></svg>`,
+
+  // 4: Golden Solar Cultivator
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#d97706"/><circle cx="32" cy="34" r="22" fill="#fed7aa"/><path d="M 12 28 Q 32 8 52 28 L 52 14 Q 32 6 12 14 Z" fill="#92400e"/><rect x="16" y="22" width="32" height="5" rx="2.5" fill="#ef4444"/><circle cx="32" cy="24.5" r="2" fill="#fef08a"/><circle cx="25" cy="33" r="3.2" fill="#1e293b"/><circle cx="39" cy="33" r="3.2" fill="#1e293b"/><circle cx="26" cy="32" r="1" fill="#fff"/><circle cx="40" cy="32" r="1" fill="#fff"/><circle cx="21" cy="38" r="2.8" fill="#fb7185" opacity="0.6"/><circle cx="43" cy="38" r="2.8" fill="#fb7185" opacity="0.6"/><path d="M 28 39 Q 32 44 36 39" stroke="#e11d48" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>`,
+
+  // 5: Mystic Starlight Priestess
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#4338ca"/><circle cx="32" cy="34" r="22" fill="#fed7aa"/><path d="M 14 26 Q 32 10 50 26 Q 48 14 32 12 Q 16 14 14 26 Z" fill="#1e1b4b"/><circle cx="32" cy="15" r="3.5" fill="#38bdf8"/><circle cx="25" cy="33" r="3.2" fill="#0284c7"/><circle cx="39" cy="33" r="3.2" fill="#0284c7"/><circle cx="26" cy="32" r="1" fill="#fff"/><circle cx="40" cy="32" r="1" fill="#fff"/><circle cx="21" cy="38" r="2.8" fill="#ec4899" opacity="0.65"/><circle cx="43" cy="38" r="2.8" fill="#ec4899" opacity="0.65"/><path d="M 28 39 Q 32 43 36 39" stroke="#9333ea" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
+
+  // 6: Blossom Novice with Floral Pin
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#db2777"/><circle cx="32" cy="34" r="22" fill="#fed7aa"/><path d="M 14 28 C 14 12 50 12 50 28 C 52 38 48 42 46 44 L 46 28 C 42 22 22 22 18 28 L 18 44 C 16 42 12 38 14 28 Z" fill="#581c87"/><circle cx="46" cy="22" r="4.5" fill="#a855f7"/><circle cx="46" cy="22" r="2" fill="#fef08a"/><circle cx="25" cy="33" r="3.2" fill="#0f172a"/><circle cx="39" cy="33" r="3.2" fill="#0f172a"/><circle cx="26" cy="32" r="1" fill="#fff"/><circle cx="40" cy="32" r="1" fill="#fff"/><circle cx="20" cy="38" r="3.2" fill="#f43f5e" opacity="0.7"/><circle cx="44" cy="38" r="3.2" fill="#f43f5e" opacity="0.7"/><path d="M 28 39 Q 32 43 36 39" stroke="#be123c" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>`,
+
+  // 7: Earth Hermit with Leaf Hood
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#047857"/><circle cx="32" cy="34" r="22" fill="#ffedd5"/><path d="M 12 32 C 12 12 52 12 52 32 C 54 44 48 48 46 48 L 18 48 C 16 48 10 44 12 32 Z" fill="#78350f" opacity="0.88"/><circle cx="32" cy="34" r="18" fill="#ffedd5"/><path d="M 18 26 Q 32 14 46 26" fill="#451a03"/><circle cx="26" cy="33" r="3.2" fill="#14532d"/><circle cx="38" cy="33" r="3.2" fill="#14532d"/><circle cx="27" cy="32" r="1" fill="#fff"/><circle cx="39" cy="32" r="1" fill="#fff"/><circle cx="22" cy="38" r="2.8" fill="#f87171" opacity="0.6"/><circle cx="42" cy="38" r="2.8" fill="#f87171" opacity="0.6"/><path d="M 28 39 Q 32 43 36 39" stroke="#b91c1c" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>`
+];
+
+function getChibiAvatar(index = 0) {
+  const svg = CHIBI_AVATARS[Math.abs(index) % CHIBI_AVATARS.length];
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+
+const DEFAULT_AVATAR = getChibiAvatar(0);
 
 function safeImageUrl(url) {
-  return typeof url === 'string' && /^(https?:\/\/|\/)/i.test(url) ? url : DEFAULT_AVATAR;
+  return typeof url === 'string' && /^(https?:\/\/|\/|data:image\/)/i.test(url) ? url : DEFAULT_AVATAR;
+}
+
+// Full 2D Chibi Spiritual Body (Integrated High-Detail SVG with Tier Color Palette)
+function buildChibiBodySvg(tier = 1, seatIndex = 0) {
+  let gradTop = '#0284c7';
+  let gradBottom = '#0369a1';
+  let trimColor = '#38bdf8';
+  let sashColor = '#fef08a';
+  let cushionFill = '#0f172a';
+  let cushionBorder = '#38bdf8';
+  let kneesFill = '#075985';
+
+  if (tier >= 8) {
+    gradTop = '#d97706';
+    gradBottom = '#b45309';
+    trimColor = '#fef08a';
+    sashColor = '#f43f5e';
+    cushionFill = '#78350f';
+    cushionBorder = '#fde047';
+    kneesFill = '#92400e';
+  } else if (tier >= 5) {
+    gradTop = '#7c3aed';
+    gradBottom = '#5b21b6';
+    trimColor = '#c084fc';
+    sashColor = '#fbbf24';
+    cushionFill = '#3b0764';
+    cushionBorder = '#c084fc';
+    kneesFill = '#6b21a8';
+  } else if (tier >= 3) {
+    gradTop = '#059669';
+    gradBottom = '#047857';
+    trimColor = '#34d399';
+    sashColor = '#fef08a';
+    cushionFill = '#064e3b';
+    cushionBorder = '#34d399';
+    kneesFill = '#065f46';
+  }
+
+  const gid = `seat_${seatIndex}_${tier}`;
+
+  return `
+    <svg class="chibi-robe-svg" viewBox="0 0 76 46" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bodyGrad_${gid}" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="${gradTop}"/>
+          <stop offset="100%" stop-color="${gradBottom}"/>
+        </linearGradient>
+        <linearGradient id="cushionGrad_${gid}" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="${cushionBorder}" stop-opacity="0.6"/>
+          <stop offset="50%" stop-color="${cushionFill}"/>
+          <stop offset="100%" stop-color="${cushionBorder}" stop-opacity="0.6"/>
+        </linearGradient>
+      </defs>
+
+      <!-- 1. Meditation Lotus Cushion Base (Tọa đài sen / Đệm thiền) -->
+      <ellipse cx="38" cy="40" rx="34" ry="5.5" fill="url(#cushionGrad_${gid})" stroke="${cushionBorder}" stroke-width="1.2" opacity="0.95" />
+
+      <!-- 2. Folded Knees / Lotus Position (Hai chân xếp bằng thiền tọa) -->
+      <path d="M 8 40 C 14 31, 30 32, 38 34 C 46 32, 62 31, 68 40 C 56 44, 20 44, 8 40 Z" fill="${kneesFill}" stroke="${cushionBorder}" stroke-width="1" />
+
+      <!-- 3. Torso & Flowing Spiritual Robe (Thân áo vạt dài phủ kín) -->
+      <path d="M 22 2 C 28 0, 48 0, 54 2 L 64 33 C 50 36, 26 36, 12 33 Z" fill="url(#bodyGrad_${gid})" stroke="${trimColor}" stroke-width="1.2" />
+
+      <!-- 4. V-Neck Embroidered Collar & Golden Sash (Cổ áo đan chéo viền gấm) -->
+      <path d="M 26 2 L 38 18 L 50 2" fill="none" stroke="${sashColor}" stroke-width="2.2" stroke-linecap="round" />
+      <path d="M 32 18 L 38 27 L 44 18" fill="${sashColor}" opacity="0.9" />
+
+      <!-- 5. Sleeves & Clasped Hands (Hai cánh tay áo rộng chắp trước ngực) -->
+      <path d="M 12 6 C 18 20, 28 25, 34 23 C 32 17, 26 10, 22 4 Z" fill="${gradTop}" stroke="${trimColor}" stroke-width="1" />
+      <path d="M 64 6 C 58 20, 48 25, 42 23 C 44 17, 50 10, 54 4 Z" fill="${gradTop}" stroke="${trimColor}" stroke-width="1" />
+
+      <!-- 6. Golden Sacred Offering / Lucky Coin (Đồng xu vàng phúc lộc cầm trên tay) -->
+      <ellipse cx="38" cy="22" rx="7" ry="6.5" fill="#fbbf24" stroke="#fef08a" stroke-width="1.5" />
+      <circle cx="38" cy="22" r="3.2" fill="#d97706" />
+      <rect x="36.5" y="20.5" width="3" height="3" fill="#fef08a" />
+    </svg>
+  `;
 }
 
 // ==================== 36 PILGRIM SEATS & GAME RULES MANAGER ====================
@@ -56,10 +165,10 @@ class PilgrimSeatsManager {
   initSeatPositions() {
     this.seats = [];
     const rowConfigs = [
-      { row: 0, count: 8, y: 1000, startX: 120, endX: 960, scale: 0.82 },
-      { row: 1, count: 9, y: 1170, startX: 90, endX: 990, scale: 0.88 },
-      { row: 2, count: 9, y: 1350, startX: 90, endX: 990, scale: 0.94 },
-      { row: 3, count: 10, y: 1530, startX: 70, endX: 1010, scale: 1.00 }
+      { row: 0, count: 8, y: 990, startX: 120, endX: 960, scale: 0.92 },
+      { row: 1, count: 9, y: 1160, startX: 90, endX: 990, scale: 1.00 },
+      { row: 2, count: 9, y: 1340, startX: 90, endX: 990, scale: 1.08 },
+      { row: 3, count: 10, y: 1530, startX: 70, endX: 1010, scale: 1.16 }
     ];
 
     let seatIdx = 0;
@@ -92,69 +201,57 @@ class PilgrimSeatsManager {
       el.style.top = `${s.y}px`;
       el.style.transform = `translate(-50%, -50%) scale(${s.scale})`;
 
+      const initialAvatar = getChibiAvatar(s.index);
+
       el.innerHTML = `
         <div class="seat-content">
           <div class="seat-figure">
             <div class="seat-halo"></div>
             <div class="seat-avatar-wrap">
-              <img class="seat-avatar" src="${DEFAULT_AVATAR}" alt="Seat ${s.index + 1}" />
+              <img class="seat-avatar" src="${initialAvatar}" alt="Seat ${s.index + 1}" onerror="this.src=getChibiAvatar(${s.index})" />
               <span class="seat-tier-badge" style="display: none;">T1</span>
             </div>
-            <div class="seat-robe tier-apprentice">
-              <div class="robe-torso"></div>
-              <div class="robe-arms">
-                <span class="robe-coin">🪙</span>
-              </div>
-              <div class="robe-knees"></div>
+            <div class="seat-body-wrap">
+              ${buildChibiBodySvg(1, s.index)}
             </div>
           </div>
           <div class="seat-name-pill">Empty</div>
         </div>
         <div class="seat-mat"></div>
       `;
+
+      // Staggered GPU floating animation: organic crowd breathing wave
+      const seatContent = el.querySelector('.seat-content');
+      if (seatContent) {
+        seatContent.style.animationDelay = `${(s.index % 8) * 0.35}s`;
+      }
+
       this.container.appendChild(el);
       s.domEl = el;
     });
   }
 
   seedInitialPilgrims() {
-    const SAMPLE_PILGRIMS = [
-      { nickname: 'Sâu Róm', tier: 3, avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face', score: 45 },
-      { nickname: 'Kẹo Ngọt', tier: 2, avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face', score: 32 },
-      { nickname: 'Mạnh Hùng', tier: 4, avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', score: 68 },
-      { nickname: 'Ngọc Huyền', tier: 5, avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face', score: 89 },
-      { nickname: 'Tiểu Mi', tier: 1, avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face', score: 20 },
-      { nickname: 'Gấu Bông', tier: 3, avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=face', score: 41 },
-      { nickname: 'Hải Yến', tier: 2, avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face', score: 30 },
-      { nickname: 'Tú Anh', tier: 4, avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face', score: 61 },
-      { nickname: 'Phong Vũ', tier: 1, avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=face', score: 18 },
-      { nickname: 'Bảo Ngọc', tier: 3, avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop&crop=face', score: 52 },
-      { nickname: 'Quang Huy', tier: 2, avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&h=100&fit=crop&crop=face', score: 28 },
-      { nickname: 'Đức Anh', tier: 5, avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face', score: 75 },
-      { nickname: 'Nam Pro', tier: 6, avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face', score: 85 },
-      { nickname: 'Thảo Pé', tier: 1, avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=face', score: 14 },
-      { nickname: 'hh3D', tier: 7, avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face', score: 115 },
-      { nickname: 'Tru Tiên', tier: 2, avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', score: 36 },
-      { nickname: 'Minh An', tier: 3, avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face', score: 48 },
-      { nickname: 'Linh Chi', tier: 4, avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face', score: 59 },
-      { nickname: 'Mi mixi', tier: 2, avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face', score: 26 },
-      { nickname: 'lining', tier: 1, avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=face', score: 12 },
-      { nickname: 'Hùnh bí', tier: 4, avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face', score: 64 },
-      { nickname: 'trang', tier: 3, avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop&crop=face', score: 44 },
-      { nickname: 'Gia dụ', tier: 2, avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&h=100&fit=crop&crop=face', score: 33 },
-      { nickname: 'ttg shop', tier: 5, avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face', score: 57 }
+    const SAMPLE_NAMES = [
+      'Sâu Róm', 'Kẹo Ngọt', 'Mạnh Hùng', 'Ngọc Huyền', 'Tiểu Mi', 'Gấu Bông',
+      'Hải Yến', 'Tú Anh', 'Phong Vũ', 'Bảo Ngọc', 'Quang Huy', 'Đức Anh',
+      'Nam Pro', 'Thảo Pé', 'hh3D', 'Tru Tiên', 'Minh An', 'Linh Chi',
+      'Mi mixi', 'lining', 'Hùnh bí', 'trang', 'Gia dụ', 'ttg shop'
     ];
+    const SAMPLE_TIERS = [3, 2, 4, 5, 1, 3, 2, 4, 1, 3, 2, 5, 6, 1, 7, 2, 3, 4, 2, 1, 4, 3, 2, 5];
+    const SAMPLE_SCORES = [45, 32, 68, 89, 20, 41, 30, 61, 18, 52, 28, 75, 85, 14, 115, 36, 48, 59, 26, 12, 64, 44, 33, 57];
 
-    SAMPLE_PILGRIMS.forEach((p, idx) => {
+    SAMPLE_NAMES.forEach((name, idx) => {
       if (idx < this.seats.length) {
+        const tier = SAMPLE_TIERS[idx] || 1;
         this.occupySeat(this.seats[idx], {
           uniqueId: `sample_${idx}`,
-          nickname: p.nickname,
-          avatar: p.avatar,
-          tier: p.tier,
-          score: p.score,
+          nickname: name,
+          avatar: getChibiAvatar(idx),
+          tier: tier,
+          score: SAMPLE_SCORES[idx] || (tier * 15),
           likesCount: 0,
-          seatedAt: Date.now() - (p.tier * 180000),
+          seatedAt: Date.now() - (tier * 180000),
           lastActiveAt: Date.now()
         });
       }
@@ -172,13 +269,19 @@ class PilgrimSeatsManager {
     const avatarImg = seat.domEl.querySelector('.seat-avatar');
     const namePill = seat.domEl.querySelector('.seat-name-pill');
     const tierBadge = seat.domEl.querySelector('.seat-tier-badge');
-    const robeEl = seat.domEl.querySelector('.seat-robe');
+    const bodyWrap = seat.domEl.querySelector('.seat-body-wrap');
     const figureEl = seat.domEl.querySelector('.seat-figure');
 
     const tier = userData.tier || 1;
     const tierClass = this.getTierClass(tier);
 
-    if (avatarImg) avatarImg.src = safeImageUrl(userData.avatar);
+    const fallbackAvatar = getChibiAvatar(seat.index);
+    if (avatarImg) {
+      avatarImg.src = safeImageUrl(userData.avatar || fallbackAvatar);
+      avatarImg.onerror = () => {
+        avatarImg.src = fallbackAvatar;
+      };
+    }
     if (namePill) namePill.innerText = userData.nickname;
     if (tierBadge) {
       tierBadge.style.display = 'block';
@@ -190,8 +293,8 @@ class PilgrimSeatsManager {
       }
     }
 
-    if (robeEl) {
-      robeEl.className = `seat-robe ${tierClass}`;
+    if (bodyWrap) {
+      bodyWrap.innerHTML = buildChibiBodySvg(tier, seat.index);
     }
     if (figureEl) {
       figureEl.className = `seat-figure ${tierClass}`;
@@ -517,7 +620,7 @@ class PilgrimSeatsManager {
         this.occupySeat(s, {
           uniqueId: `seat_guest_${i}`,
           nickname: `Pilgrim #${i + 1}`,
-          avatar: `https://images.unsplash.com/photo-${1535713875000 + (i * 13) % 200}?w=100&h=100&fit=crop&crop=face`,
+          avatar: getChibiAvatar(i),
           tier: Math.floor(Math.random() * 5) + 1,
           score: Math.floor(Math.random() * 80) + 10,
           likesCount: 0,
@@ -537,8 +640,15 @@ class PilgrimSeatsManager {
         s.domEl.className = 'pilgrim-seat-slot empty';
         const namePill = s.domEl.querySelector('.seat-name-pill');
         const tierBadge = s.domEl.querySelector('.seat-tier-badge');
+        const avatarImg = s.domEl.querySelector('.seat-avatar');
+        const bodyWrap = s.domEl.querySelector('.seat-body-wrap');
+        const figureEl = s.domEl.querySelector('.seat-figure');
+
         if (namePill) namePill.innerText = 'Empty';
         if (tierBadge) tierBadge.style.display = 'none';
+        if (avatarImg) avatarImg.src = getChibiAvatar(s.index);
+        if (bodyWrap) bodyWrap.innerHTML = buildChibiBodySvg(1, s.index);
+        if (figureEl) figureEl.className = 'seat-figure tier-apprentice';
       }
     });
     this.updateSeatsBadge();
@@ -1645,6 +1755,10 @@ class WishingWellLiveApp {
 
   renderParticles() {
     this.ctx.save();
+    // Safety clamp to prevent particle explosion on low-end machines
+    if (this.particles.length > 80) {
+      this.particles.splice(0, this.particles.length - 80);
+    }
     for (let i = this.particles.length - 1; i >= 0; i--) {
       const p = this.particles[i];
       p.x += p.vx;
@@ -1663,12 +1777,6 @@ class WishingWellLiveApp {
       this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
       this.ctx.fill();
     }
-    // 100% Anti-Static Screen Dynamics: Full-screen subtle ambient pixel breathing pulse
-    const breatheTime = Date.now() * 0.0008;
-    const breatheAlpha = 0.015 + 0.012 * Math.sin(breatheTime);
-    this.ctx.fillStyle = `rgba(56, 189, 248, ${breatheAlpha})`;
-    this.ctx.fillRect(0, 0, 1080, 1920);
-
     this.ctx.globalAlpha = 1.0;
     this.ctx.restore();
   }
@@ -1853,7 +1961,6 @@ class WishingWellLiveApp {
       if (data.spokenText || data.audioUrl) {
         window.wishingAudio.queueSpeech(data.spokenText, data.audioUrl, false, 0, data.voiceGender);
       }
-      this.spawnWalkingWishmaker(data.nickname, data.avatar, '✨ Welcome to the fountain!', 1, false);
       if (this.seatsManager) {
         this.seatsManager.claimSeatForUser(data);
         this.seatsManager.spawnProcessionWalker(data, '✨ Arrived at Fountain!');
@@ -1866,7 +1973,7 @@ class WishingWellLiveApp {
     });
 
     this.socket.on('tiktok_like', data => {
-      this.spawnWalkingWishmaker(data.nickname, data.avatar, '❤️ Sent love!', 1, false);
+      // Direct high-efficiency like handling: charges personal seat resonance without spawning clunky DOM travelers
       if (this.seatsManager) this.seatsManager.handleLikes(data);
     });
 

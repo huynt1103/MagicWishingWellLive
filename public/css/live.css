@@ -35,13 +35,7 @@ html, body {
   background-size: cover;
   box-shadow: 0 0 70px rgba(0, 0, 0, 0.95);
   backface-visibility: hidden;
-  animation: bgMicroBreathing 26s ease-in-out infinite alternate;
-}
-
-@keyframes bgMicroBreathing {
-  0% { background-size: 100% 100%; background-position: center center; }
-  50% { background-size: 101.4% 101.4%; background-position: 50.2% 49.8%; }
-  100% { background-size: 100.7% 100.7%; background-position: 49.8% 50.2%; }
+  will-change: transform;
 }
 
 #live-viewport::before {
@@ -435,33 +429,37 @@ html, body {
   pointer-events: none;
 }
 
+/* Single GPU-accelerated gentle breathing float */
 .seat-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   z-index: 2;
-  animation: seatBobbing 3.2s ease-in-out infinite alternate;
+  will-change: transform;
+  transform: translateZ(0);
+  animation: seatGentleFloat 4s ease-in-out infinite alternate;
 }
 
-@keyframes seatBobbing {
+@keyframes seatGentleFloat {
   0% { transform: translateY(0); }
-  100% { transform: translateY(-4px); }
+  100% { transform: translateY(-5px); }
 }
 
-/* --- FULL CHIBI PILGRIM FIGURE & SPIRIT ROBES --- */
+/* --- FULL CHIBI PILGRIM FIGURE & VECTOR BODY --- */
 .seat-figure {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  width: 76px;
 }
 
 .seat-halo {
   position: absolute;
   top: -8px;
-  width: 58px;
-  height: 58px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
   opacity: 0;
   pointer-events: none;
@@ -474,22 +472,23 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 3;
+  z-index: 4;
 }
 
 .seat-avatar {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   border: 2px solid #38bdf8;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.85);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.85);
   object-fit: cover;
-  background: #0f172a;
+  background: #1e293b;
+  display: block;
 }
 
 .seat-tier-badge {
   position: absolute;
-  bottom: -3px;
+  bottom: -2px;
   right: -5px;
   background: linear-gradient(135deg, #0284c7, #0369a1);
   border: 1px solid #7dd3fc;
@@ -499,118 +498,7 @@ html, body {
   color: #fff;
   padding: 0 5px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
-  z-index: 4;
-}
-
-/* 2D Chibi Spiritual Body (Torso, Arms holding Coin, Knees) */
-.seat-robe {
-  width: 52px;
-  height: 30px;
-  position: relative;
-  margin-top: -6px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.robe-torso {
-  width: 32px;
-  height: 16px;
-  border-radius: 6px 6px 2px 2px;
-  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-  border: 1.5px solid #38bdf8;
-  border-bottom: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
-  position: relative;
-  z-index: 2;
-}
-
-.robe-arms {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: -8px;
-  position: relative;
-  z-index: 4;
-}
-
-.robe-coin {
-  font-size: 13px;
-  line-height: 1;
-  animation: coinSparkle 2s ease-in-out infinite alternate;
-  filter: drop-shadow(0 0 5px rgba(254, 240, 138, 0.9));
-  transform: scale(1);
-  transition: transform 0.3s ease;
-}
-
-@keyframes coinSparkle {
-  0% { transform: scale(0.9); filter: drop-shadow(0 0 3px #fef08a); }
-  100% { transform: scale(1.15); filter: drop-shadow(0 0 8px #f59e0b); }
-}
-
-.robe-knees {
-  width: 50px;
-  height: 14px;
-  border-radius: 8px 8px 12px 12px;
-  background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
-  border: 1.5px solid #38bdf8;
-  margin-top: -4px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.85);
-  position: relative;
-  z-index: 1;
-}
-
-/* --- TIER STYLING FOR SPIRIT ROBES --- */
-/* Tier 1-2: Apprentice (Sapphire) */
-.seat-robe.tier-apprentice .robe-torso,
-.seat-robe.tier-apprentice .robe-knees {
-  border-color: #38bdf8;
-}
-
-/* Tier 3-4: Adept (Amethyst Violet) */
-.seat-robe.tier-adept .robe-torso {
-  background: linear-gradient(180deg, #3b0764, #1e1b4b);
-  border-color: #c084fc;
-}
-.seat-robe.tier-adept .robe-knees {
-  background: linear-gradient(180deg, #1e1b4b, #0f172a);
-  border-color: #c084fc;
-}
-
-/* Tier 5-7: Mystic (Ruby & Amber) */
-.seat-robe.tier-mystic .robe-torso {
-  background: linear-gradient(180deg, #7c2d12, #451a03);
-  border-color: #f59e0b;
-}
-.seat-robe.tier-mystic .robe-knees {
-  background: linear-gradient(180deg, #451a03, #180902);
-  border-color: #f59e0b;
-}
-.seat-figure.tier-mystic .seat-halo {
-  opacity: 0.6;
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.5) 0%, rgba(245, 158, 11, 0) 70%);
-}
-
-/* Tier 8-10: Archon / Grand Guardian (Radiant Celestial Gold) */
-.seat-robe.tier-archon .robe-torso {
-  background: linear-gradient(180deg, #78350f, #451a03);
-  border-color: #fef08a;
-  box-shadow: 0 0 14px rgba(254, 240, 138, 0.8);
-}
-.seat-robe.tier-archon .robe-knees {
-  background: linear-gradient(180deg, #451a03, #1f0b02);
-  border-color: #fef08a;
-}
-.seat-figure.tier-archon .seat-halo {
-  opacity: 1;
-  background: radial-gradient(circle, rgba(254, 240, 138, 0.75) 0%, rgba(245, 158, 11, 0.2) 50%, rgba(245, 158, 11, 0) 75%);
-  animation: haloPulse 1.8s ease-in-out infinite alternate;
-}
-
-@keyframes haloPulse {
-  0% { transform: scale(0.95); opacity: 0.7; }
-  100% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 10px #fef08a); }
+  z-index: 5;
 }
 
 .seat-tier-badge.tier-gold {
@@ -619,50 +507,63 @@ html, body {
   color: #fffbeb;
 }
 
-/* Lotus / Water Cushion Mat */
-.seat-mat {
-  width: 72px;
-  height: 28px;
-  border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.45) 0%, rgba(2, 132, 199, 0.25) 55%, rgba(0, 0, 0, 0) 100%);
-  border: 1px solid rgba(56, 189, 248, 0.45);
-  box-shadow: 0 0 14px rgba(56, 189, 248, 0.45);
-  margin-top: -8px;
+/* 2D Chibi Spiritual Body (Integrated High-Detail SVG) */
+.seat-body-wrap {
+  width: 76px;
+  height: 46px;
   position: relative;
-  z-index: 1;
-  animation: matRipple 2.6s ease-in-out infinite alternate;
+  margin-top: -12px;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7));
 }
 
-@keyframes matRipple {
-  0% { transform: scale(0.96); opacity: 0.7; }
-  100% { transform: scale(1.04); opacity: 1; box-shadow: 0 0 20px rgba(56, 189, 248, 0.65); }
+.chibi-robe-svg {
+  width: 76px;
+  height: 46px;
+  overflow: visible;
+  display: block;
+}
+
+/* Tier Halo Effects */
+.seat-figure.tier-mystic .seat-halo {
+  opacity: 0.65;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.5) 0%, rgba(245, 158, 11, 0) 70%);
+}
+
+.seat-figure.tier-archon .seat-halo {
+  opacity: 1;
+  background: radial-gradient(circle, rgba(254, 240, 138, 0.75) 0%, rgba(245, 158, 11, 0.2) 50%, rgba(245, 158, 11, 0) 75%);
 }
 
 .seat-name-pill {
-  background: rgba(12, 22, 42, 0.94);
-  border: 1px solid rgba(56, 189, 248, 0.55);
+  background: rgba(10, 19, 36, 0.94);
+  border: 1px solid rgba(56, 189, 248, 0.65);
   border-radius: 11px;
-  padding: 1.5px 8px;
-  font-size: 11px;
-  font-weight: 700;
+  padding: 2px 9px;
+  font-size: 11.5px;
+  font-weight: 800;
   color: #f1f5f9;
-  max-width: 85px;
+  max-width: 95px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-top: 2px;
-  z-index: 3;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
+  z-index: 5;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.3px;
 }
 
 /* Empty Seat Slot */
 .pilgrim-seat-slot.empty .seat-avatar {
-  filter: grayscale(1) opacity(0.3);
+  filter: grayscale(1) opacity(0.35);
   border-color: rgba(148, 163, 184, 0.4);
 }
 
-.pilgrim-seat-slot.empty .seat-robe {
-  opacity: 0.3;
+.pilgrim-seat-slot.empty .seat-body-wrap {
+  opacity: 0.35;
   filter: grayscale(1);
 }
 
@@ -671,26 +572,15 @@ html, body {
   border-color: rgba(100, 116, 139, 0.35);
 }
 
-.pilgrim-seat-slot.empty .seat-mat {
-  background: radial-gradient(ellipse at center, rgba(100, 116, 139, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
-  border-color: rgba(100, 116, 139, 0.3);
-  box-shadow: none;
-}
-
-/* Tossing Coin / Catching Fish Animation on Seat */
-.pilgrim-seat-slot.tossing .seat-avatar {
+/* Tossing Coin Animation on Seat */
+.pilgrim-seat-slot.tossing .seat-figure {
   animation: tossAvatarFlash 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.pilgrim-seat-slot.tossing .robe-coin {
-  transform: translateY(-16px) scale(1.6);
-  filter: drop-shadow(0 0 12px #fef08a);
-}
-
 @keyframes tossAvatarFlash {
-  0% { transform: scale(1); filter: brightness(1); }
-  50% { transform: scale(1.35); filter: brightness(1.8) drop-shadow(0 0 15px #fef08a); border-color: #fef08a; }
-  100% { transform: scale(1); filter: brightness(1); }
+  0% { transform: scale(1); }
+  50% { transform: scale(1.28); filter: brightness(1.7) drop-shadow(0 0 16px #fef08a); }
+  100% { transform: scale(1); }
 }
 
 /* Floating Score Popup (+25 pts) */
@@ -955,12 +845,13 @@ html, body {
   background-size: contain;
   margin-top: -12px;
   filter: drop-shadow(0 0 25px rgba(245, 158, 11, 0.85)) drop-shadow(0 8px 18px rgba(0,0,0,0.95));
-  animation: goldPedestalPulse 2.5s ease-in-out infinite alternate;
+  will-change: transform;
+  animation: goldPedestalGentle 3s ease-in-out infinite alternate;
 }
 
-@keyframes goldPedestalPulse {
-  0% { filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.6)) drop-shadow(0 8px 18px rgba(0,0,0,0.9)); }
-  100% { filter: drop-shadow(0 0 35px rgba(254, 240, 138, 0.95)) drop-shadow(0 10px 22px rgba(0,0,0,0.95)); }
+@keyframes goldPedestalGentle {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
 }
 
 .guardian-pedestal-slot.danger-seat-slot .pedestal-column {
@@ -1360,13 +1251,16 @@ html, body {
 /* ==================== TOP ROYAL BANNER ==================== */
 #top-banner-container {
   position: absolute;
-  top: 185px;
-  left: 28px;
-  right: 28px;
-  z-index: 50;
+  top: 250px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 680px;
+  z-index: 55;
   display: flex;
   flex-direction: column;
   align-items: center;
+  pointer-events: none;
 }
 
 .share-pill {
