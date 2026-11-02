@@ -52,7 +52,7 @@ Trong thư mục dự án:
 ## 📁 Cấu Trúc Thư Mục
 
 ```
-LiveTikTokDiChuaCauAn/
+MagicWishingWellLive/
 ├── README.md               # Tài liệu giới thiệu & hướng dẫn sử dụng
 ├── server.js               # Máy chủ Node.js & Socket.IO xử lý sự kiện TikTok
 ├── package.json            # Danh sách dependencies (Express, Socket.IO, tiktok-live-connector)
