@@ -734,20 +734,20 @@ function disconnectTikTok() {
 // ==================== AUTO SIMULATION MODE ====================
 
 const SAMPLE_NAMES = [
-  'Alexander Miller', 'Sophia Green', 'Liam Walker', 'Olivia Smith',
-  'Ethan Brown', 'Isabella Davis', 'Lucas Martinez', 'Mia Anderson',
-  'Oliver White', 'Charlotte Hall', 'Henry Wilson', 'Amelia Taylor'
+  'Oliver Hughes', 'Amelia Clarke', 'Harry Thompson', 'Isla Roberts',
+  'George Evans', 'Poppy Wright', 'Alfie Turner', 'Freya Davies',
+  'Jack Edwards', 'Charlotte Hall', 'Henry Wilson', 'Amelia Taylor'
 ];
 
 const SAMPLE_COMMENTS = [
-  'Wishing for peace and radiant health for my family! ✨',
-  'May my upcoming exam and interview go brilliantly! 🍀',
-  'Sending love and positive vibrations to everyone! ❤️',
-  'May this week bring unexpected miracles and joy! 🌟',
-  'Tossing a coin for happiness and harmony! 🪙💫',
-  'Make a wish, everyone! Beautiful energy here! 🌊',
-  'Wishing for breakthroughs in my creative projects! 🚀',
-  'Grateful for today and hopeful for tomorrow! 🌸'
+  'Wishing for good health for my mum and dad ✨',
+  'Fingers crossed for my exams next week 🍀',
+  'Sending love to everyone from Manchester ❤️',
+  'Lovely and calming, cheers for this 🌟',
+  'Tossing a penny for a bit of luck this week 🪙',
+  'Such a brilliant stream, proper relaxing 🌊',
+  'Wishing for a cosy home and a happy family 🏡',
+  'Grateful for today and hopeful for tomorrow 🌸'
 ];
 
 function startSimulation() {
