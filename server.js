@@ -1028,7 +1028,33 @@ app.post('/api/test/bow', (req, res) => {
 
 app.post('/api/test/fill-full', (req, res) => {
   io.emit('fill_all_seats');
-  res.json({ success: true, message: 'Fountain surge celebrated' });
+  res.json({ success: true, message: 'Fountain surge celebrated & 36 seats filled' });
+});
+
+// Test 20 Likes (Drop Coin Mechanic - Hồ Câu Vạn Cân Model)
+app.post('/api/test/like', (req, res) => {
+  const count = parseInt(req.body.count || 20, 10);
+  const nickname = sanitizeNickname(req.body.nickname || SAMPLE_NAMES[Math.floor(Math.random() * SAMPLE_NAMES.length)]);
+  const avatar = req.body.avatar || `https://images.unsplash.com/photo-${1535713875000 + Math.floor(Math.random() * 500)}?w=100&h=100&fit=crop&crop=face`;
+  const uniqueId = req.body.uniqueId || `user_${nickname.toLowerCase().replace(/\s+/g, '_')}`;
+
+  addFountainEnergy(Math.floor(count / 2));
+
+  const payload = {
+    uniqueId,
+    nickname,
+    avatar,
+    likeCount: count,
+    totalLikes: count
+  };
+  io.emit('tiktok_like', payload);
+  res.json({ success: true, payload });
+});
+
+// Reset 36 Seats
+app.post('/api/test/reset-seats', (req, res) => {
+  io.emit('reset_all_seats');
+  res.json({ success: true, message: 'All 36 pilgrim seats cleared' });
 });
 
 app.post('/api/test/flower', async (req, res) => {

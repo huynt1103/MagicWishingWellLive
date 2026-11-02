@@ -85,93 +85,811 @@ html, body {
   pointer-events: none;
 }
 
-/* ==================== FEATURE #1: NATURAL WATER RESONANCE METER ==================== */
-#top-status-bar {
+/* ==================== HUD HEADER & 3 STATUS BADGES (HỒ CÂU VẠN CÂN MODEL) ==================== */
+#hud-header-container {
   position: absolute;
-  top: 130px; /* Safe from TikTok Host avatar and viewer count */
-  left: 28px;
-  right: 28px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  font-size: 15px;
-  font-weight: 700;
+  top: 130px; /* Safe from TikTok Live mobile host/viewers header */
+  left: 40px;
+  right: 40px;
   z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
 }
 
-.resonance-pill {
-  background: rgba(15, 23, 42, 0.92);
-  border: 1.5px solid rgba(56, 189, 248, 0.65);
+.hud-main-card {
+  width: 100%;
+  max-width: 960px;
+  background: linear-gradient(180deg, rgba(12, 25, 48, 0.95) 0%, rgba(6, 14, 28, 0.95) 100%);
+  border: 2px solid #38bdf8;
   border-radius: 20px;
-  padding: 5px 16px;
+  padding: 12px 24px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.85), 0 0 24px rgba(56, 189, 248, 0.35);
+  backdrop-filter: blur(12px);
+}
+
+.hud-card-corners .hud-corner {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: #fef08a;
+  border-style: solid;
+}
+.hud-corner.tl { top: 4px; left: 4px; border-width: 2.5px 0 0 2.5px; }
+.hud-corner.tr { top: 4px; right: 4px; border-width: 2.5px 2.5px 0 0; }
+.hud-corner.bl { bottom: 4px; left: 4px; border-width: 0 0 2.5px 2.5px; }
+.hud-corner.br { bottom: 4px; right: 4px; border-width: 0 2.5px 2.5px 0; }
+
+.hud-title-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.6);
-  transition: all 0.4s ease;
+  justify-content: center;
+  gap: 12px;
 }
 
-.resonance-pill.near-awakening {
-  border-color: #f59e0b;
-  box-shadow: 0 0 20px rgba(245, 158, 11, 0.7);
-  animation: pulseResonance 1.4s ease-in-out infinite alternate;
+.hud-ornament {
+  font-size: 22px;
+  animation: ornamentShimmer 2s ease-in-out infinite alternate;
 }
 
-@keyframes pulseResonance {
-  0% { transform: scale(1); border-color: #38bdf8; }
-  100% { transform: scale(1.04); border-color: #fef08a; box-shadow: 0 0 25px rgba(254, 240, 138, 0.8); }
+@keyframes ornamentShimmer {
+  0% { transform: scale(0.85); opacity: 0.7; }
+  100% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 8px #fef08a); }
 }
 
-.rune-icon {
-  font-size: 16px;
-  animation: floatRune 2s ease-in-out infinite alternate;
+.hud-main-title {
+  font-family: 'Cinzel', serif;
+  font-size: 32px;
+  font-weight: 900;
+  color: #fef08a;
+  letter-spacing: 3px;
+  text-shadow: 0 0 16px rgba(254, 240, 138, 0.7), 0 2px 6px rgba(0, 0, 0, 0.9);
 }
 
-@keyframes floatRune {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-3px); }
+.hud-sub-desc {
+  font-size: 17px;
+  font-weight: 700;
+  color: #7dd3fc;
+  margin-top: 3px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
-.resonance-label {
-  color: #e0f2fe;
-  font-size: 14px;
+/* 3 Badges Bar */
+.hud-badges-bar {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 10px;
+  width: 100%;
 }
 
-.resonance-label b {
-  color: #38bdf8;
+.hud-badge {
+  background: rgba(10, 19, 36, 0.94);
+  border: 1.5px solid rgba(56, 189, 248, 0.6);
+  border-radius: 22px;
+  padding: 6px 18px;
+  font-size: 15px;
   font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
 }
 
-.resonance-pill.near-awakening .resonance-label b {
+.live-dot-pulse {
+  color: #ef4444;
+  font-size: 16px;
+  animation: liveDotBlink 1s infinite alternate;
+}
+
+@keyframes liveDotBlink {
+  0% { opacity: 0.4; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 6px #ef4444); }
+}
+
+.hud-badge.seats-badge {
+  color: #e0f2fe;
+  border-color: #38bdf8;
+}
+
+.hud-badge.resonance-badge {
+  color: #bae6fd;
+  border-color: #0284c7;
+}
+
+.hud-badge.timer-badge {
+  color: #fef08a;
+  border-color: #f59e0b;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+}
+
+/* ==================== LEFT HUD: STREAM GUIDE CARD (BẢNG HƯỚNG DẪN) ==================== */
+.hud-panel-card {
+  position: absolute;
+  top: 320px;
+  z-index: 50;
+  background: linear-gradient(180deg, rgba(8, 17, 34, 0.94) 0%, rgba(5, 11, 22, 0.95) 100%);
+  border: 1.5px solid rgba(56, 189, 248, 0.5);
+  border-radius: 18px;
+  padding: 14px 16px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.8), 0 0 18px rgba(56, 189, 248, 0.2);
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+}
+
+#stream-guide-card {
+  left: 36px;
+  width: 340px;
+}
+
+.hud-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  font-weight: 900;
+  color: #fef08a;
+  letter-spacing: 1.5px;
+  border-bottom: 1.5px solid rgba(56, 189, 248, 0.35);
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  text-shadow: 0 0 8px rgba(254, 240, 138, 0.5);
+}
+
+.guide-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.guide-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.guide-item:last-child {
+  border-bottom: none;
+}
+
+.guide-item .item-icon {
+  font-size: 18px;
+  margin-top: 1px;
+}
+
+.guide-item .item-content {
+  flex: 1;
+}
+
+.guide-item .item-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #f1f5f9;
+  line-height: 1.25;
+}
+
+.guide-item .item-sub {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-top: 1px;
+  line-height: 1.2;
+}
+
+.guide-item.bonus-row .item-title {
   color: #fef08a;
 }
 
-.resonance-meter-track {
-  width: 110px;
-  height: 8px;
-  background: rgba(30, 41, 59, 0.85);
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-  border: 1px solid rgba(56, 189, 248, 0.4);
+/* ==================== RIGHT HUD: TOP GUARDIANS LEADERBOARD ==================== */
+#stream-top-card {
+  right: 36px;
+  width: 310px;
 }
 
-.resonance-meter-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #0284c7, #38bdf8, #fef08a);
-  border-radius: 6px;
-  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.4, 1);
-  box-shadow: 0 0 8px #38bdf8;
+.top-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.level-badge {
-  background: rgba(2, 132, 199, 0.35);
-  border: 1px solid #38bdf8;
-  border-radius: 10px;
-  padding: 1px 7px;
-  font-size: 11.5px;
+.top-list-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 14.5px;
+}
+
+.top-list-row:last-child {
+  border-bottom: none;
+}
+
+.top-rank-badge {
+  width: 24px;
+  text-align: center;
   font-weight: 800;
-  color: #7dd3fc;
+  font-size: 15px;
+  color: #94a3b8;
+}
+
+.top-name {
+  flex: 1;
+  margin-left: 8px;
+  font-weight: 700;
+  color: #e2e8f0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.top-score {
+  font-weight: 800;
+  color: #38bdf8;
+  font-size: 14px;
+}
+
+.top-list-row.rank-1 .top-name {
+  color: #fef08a;
+  font-weight: 800;
+}
+
+.top-list-row.rank-1 .top-score {
+  color: #fef08a;
+}
+
+.top-list-row.rank-2 .top-name {
+  color: #e2e8f0;
+}
+
+.top-list-row.rank-2 .top-score {
+  color: #e2e8f0;
+}
+
+.top-list-row.rank-3 .top-name {
+  color: #fcd34d;
+}
+
+.top-list-row.rank-3 .top-score {
+  color: #fcd34d;
+}
+
+/* ==================== 36 PILGRIM SEATS GRID (WATER STAGE) ==================== */
+/* ==================== CENTRAL SACRED PATHWAY (WALKING CORRIDOR) ==================== */
+#sacred-pathway {
+  position: absolute;
+  top: 910px;
+  left: 540px;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 900px;
+  pointer-events: none;
+  z-index: 22;
+  display: flex;
+  justify-content: center;
+}
+
+.pathway-carpet {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, 
+    rgba(56, 189, 248, 0.28) 0%, 
+    rgba(14, 165, 233, 0.16) 35%, 
+    rgba(245, 158, 11, 0.22) 80%,
+    rgba(245, 158, 11, 0.05) 100%
+  );
+  border-left: 2px dashed rgba(56, 189, 248, 0.55);
+  border-right: 2px dashed rgba(56, 189, 248, 0.55);
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.pathway-carpet::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent,
+    transparent 45px,
+    rgba(254, 240, 138, 0.12) 45px,
+    rgba(254, 240, 138, 0.12) 50px
+  );
+  animation: pathwayRuneScroll 12s linear infinite;
+}
+
+@keyframes pathwayRuneScroll {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(50px); }
+}
+
+/* ==================== 36 PILGRIM SEATS GRID (WATER STAGE) ==================== */
+#pilgrim-seats-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1080px;
+  height: 1920px;
+  pointer-events: none;
+  z-index: 35;
+}
+
+.pilgrim-seat-slot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.seat-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  animation: seatBobbing 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes seatBobbing {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+/* --- FULL CHIBI PILGRIM FIGURE & SPIRIT ROBES --- */
+.seat-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.seat-halo {
+  position: absolute;
+  top: -8px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+  z-index: 1;
+}
+
+.seat-avatar-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}
+
+.seat-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #38bdf8;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.85);
+  object-fit: cover;
+  background: #0f172a;
+}
+
+.seat-tier-badge {
+  position: absolute;
+  bottom: -3px;
+  right: -5px;
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  border: 1px solid #7dd3fc;
+  border-radius: 9px;
+  font-size: 9.5px;
+  font-weight: 900;
+  color: #fff;
+  padding: 0 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+  z-index: 4;
+}
+
+/* 2D Chibi Spiritual Body (Torso, Arms holding Coin, Knees) */
+.seat-robe {
+  width: 52px;
+  height: 30px;
+  position: relative;
+  margin-top: -6px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.robe-torso {
+  width: 32px;
+  height: 16px;
+  border-radius: 6px 6px 2px 2px;
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  border: 1.5px solid #38bdf8;
+  border-bottom: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  position: relative;
+  z-index: 2;
+}
+
+.robe-arms {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -8px;
+  position: relative;
+  z-index: 4;
+}
+
+.robe-coin {
+  font-size: 13px;
+  line-height: 1;
+  animation: coinSparkle 2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 5px rgba(254, 240, 138, 0.9));
+  transform: scale(1);
+  transition: transform 0.3s ease;
+}
+
+@keyframes coinSparkle {
+  0% { transform: scale(0.9); filter: drop-shadow(0 0 3px #fef08a); }
+  100% { transform: scale(1.15); filter: drop-shadow(0 0 8px #f59e0b); }
+}
+
+.robe-knees {
+  width: 50px;
+  height: 14px;
+  border-radius: 8px 8px 12px 12px;
+  background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+  border: 1.5px solid #38bdf8;
+  margin-top: -4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.85);
+  position: relative;
+  z-index: 1;
+}
+
+/* --- TIER STYLING FOR SPIRIT ROBES --- */
+/* Tier 1-2: Apprentice (Sapphire) */
+.seat-robe.tier-apprentice .robe-torso,
+.seat-robe.tier-apprentice .robe-knees {
+  border-color: #38bdf8;
+}
+
+/* Tier 3-4: Adept (Amethyst Violet) */
+.seat-robe.tier-adept .robe-torso {
+  background: linear-gradient(180deg, #3b0764, #1e1b4b);
+  border-color: #c084fc;
+}
+.seat-robe.tier-adept .robe-knees {
+  background: linear-gradient(180deg, #1e1b4b, #0f172a);
+  border-color: #c084fc;
+}
+
+/* Tier 5-7: Mystic (Ruby & Amber) */
+.seat-robe.tier-mystic .robe-torso {
+  background: linear-gradient(180deg, #7c2d12, #451a03);
+  border-color: #f59e0b;
+}
+.seat-robe.tier-mystic .robe-knees {
+  background: linear-gradient(180deg, #451a03, #180902);
+  border-color: #f59e0b;
+}
+.seat-figure.tier-mystic .seat-halo {
+  opacity: 0.6;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.5) 0%, rgba(245, 158, 11, 0) 70%);
+}
+
+/* Tier 8-10: Archon / Grand Guardian (Radiant Celestial Gold) */
+.seat-robe.tier-archon .robe-torso {
+  background: linear-gradient(180deg, #78350f, #451a03);
+  border-color: #fef08a;
+  box-shadow: 0 0 14px rgba(254, 240, 138, 0.8);
+}
+.seat-robe.tier-archon .robe-knees {
+  background: linear-gradient(180deg, #451a03, #1f0b02);
+  border-color: #fef08a;
+}
+.seat-figure.tier-archon .seat-halo {
+  opacity: 1;
+  background: radial-gradient(circle, rgba(254, 240, 138, 0.75) 0%, rgba(245, 158, 11, 0.2) 50%, rgba(245, 158, 11, 0) 75%);
+  animation: haloPulse 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes haloPulse {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  100% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 10px #fef08a); }
+}
+
+.seat-tier-badge.tier-gold {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border-color: #fef08a;
+  color: #fffbeb;
+}
+
+/* Lotus / Water Cushion Mat */
+.seat-mat {
+  width: 72px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.45) 0%, rgba(2, 132, 199, 0.25) 55%, rgba(0, 0, 0, 0) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.45);
+  margin-top: -8px;
+  position: relative;
+  z-index: 1;
+  animation: matRipple 2.6s ease-in-out infinite alternate;
+}
+
+@keyframes matRipple {
+  0% { transform: scale(0.96); opacity: 0.7; }
+  100% { transform: scale(1.04); opacity: 1; box-shadow: 0 0 20px rgba(56, 189, 248, 0.65); }
+}
+
+.seat-name-pill {
+  background: rgba(12, 22, 42, 0.94);
+  border: 1px solid rgba(56, 189, 248, 0.55);
+  border-radius: 11px;
+  padding: 1.5px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #f1f5f9;
+  max-width: 85px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 2px;
+  z-index: 3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
+}
+
+/* Empty Seat Slot */
+.pilgrim-seat-slot.empty .seat-avatar {
+  filter: grayscale(1) opacity(0.3);
+  border-color: rgba(148, 163, 184, 0.4);
+}
+
+.pilgrim-seat-slot.empty .seat-robe {
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+.pilgrim-seat-slot.empty .seat-name-pill {
+  color: #64748b;
+  border-color: rgba(100, 116, 139, 0.35);
+}
+
+.pilgrim-seat-slot.empty .seat-mat {
+  background: radial-gradient(ellipse at center, rgba(100, 116, 139, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+  border-color: rgba(100, 116, 139, 0.3);
+  box-shadow: none;
+}
+
+/* Tossing Coin / Catching Fish Animation on Seat */
+.pilgrim-seat-slot.tossing .seat-avatar {
+  animation: tossAvatarFlash 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.pilgrim-seat-slot.tossing .robe-coin {
+  transform: translateY(-16px) scale(1.6);
+  filter: drop-shadow(0 0 12px #fef08a);
+}
+
+@keyframes tossAvatarFlash {
+  0% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.35); filter: brightness(1.8) drop-shadow(0 0 15px #fef08a); border-color: #fef08a; }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* Floating Score Popup (+25 pts) */
+.floating-score-popup {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 900;
+  color: #fef08a;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.9), 0 2px 4px rgba(0, 0, 0, 0.9);
+  animation: scoreFloatUp 1.3s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+  pointer-events: none;
+  z-index: 60;
+  white-space: nowrap;
+}
+
+@keyframes scoreFloatUp {
+  0% { opacity: 0; transform: translate(-50%, 0) scale(0.6); }
+  25% { opacity: 1; transform: translate(-50%, -18px) scale(1.2); }
+  75% { opacity: 1; transform: translate(-50%, -40px) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -60px) scale(0.85); }
+}
+
+/* ==================== CROWD CHATTER MICRO-BUBBLES ==================== */
+.seat-micro-bubble {
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10, 20, 38, 0.94);
+  border: 1px solid rgba(56, 189, 248, 0.65);
+  border-radius: 10px;
+  padding: 2.5px 8px;
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #e0f2fe;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.85);
+  pointer-events: none;
+  z-index: 65;
+  animation: microBubbleFloat 3.4s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+}
+
+@keyframes microBubbleFloat {
+  0% { opacity: 0; transform: translate(-50%, 6px) scale(0.75); }
+  15% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  80% { opacity: 1; transform: translate(-50%, -8px) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -18px) scale(0.85); }
+}
+
+/* Seat Floating Chat Bubble (Real Viewer Chat) */
+.seat-chat-bubble {
+  position: absolute;
+  bottom: 105%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10, 20, 38, 0.96);
+  border: 1.5px solid #38bdf8;
+  border-radius: 12px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.85);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin-bottom: 8px;
+  z-index: 70;
+}
+
+.seat-chat-bubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #38bdf8 transparent transparent transparent;
+}
+
+/* ==================== LIVING PROCESSION STAGE & WALKERS ==================== */
+#procession-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1080px;
+  height: 1920px;
+  pointer-events: none;
+  z-index: 38;
+}
+
+.procession-walker {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  transition: top 3.8s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease;
+}
+
+.walker-bubble {
+  background: rgba(15, 23, 42, 0.95);
+  border: 1.5px solid #f59e0b;
+  border-radius: 12px;
+  padding: 4px 12px;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #fef08a;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.8);
+  margin-bottom: 6px;
+  animation: popIn 0.3s ease;
+}
+
+.walker-head {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.walker-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #fef08a;
+  box-shadow: 0 0 16px rgba(254, 240, 138, 0.8);
+  object-fit: cover;
+}
+
+.walker-body {
+  width: 36px;
+  height: 24px;
+  background: linear-gradient(180deg, #1e293b, #0f172a);
+  border: 1.5px solid #38bdf8;
+  border-radius: 6px;
+  margin-top: -6px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.walker-coin-hand {
+  font-size: 14px;
+  animation: coinSparkle 1.2s infinite alternate;
+}
+
+.walker-feet {
+  display: flex;
+  gap: 8px;
+  margin-top: -2px;
+}
+
+.walker-foot {
+  width: 8px;
+  height: 6px;
+  background: #38bdf8;
+  border-radius: 3px;
+  animation: footStep 0.4s ease-in-out infinite alternate;
+}
+
+.walker-foot.right {
+  animation-delay: 0.2s;
+}
+
+@keyframes footStep {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+/* ==================== MASS CEREMONY / GOLDEN HOUR SYNCHRONIZATION ==================== */
+.pilgrim-seat-slot.mass-ceremony .seat-content {
+  animation: massCeremonyPulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes massCeremonyPulse {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-8px) scale(1.15); }
+}
+
+.pilgrim-seat-slot.mass-ceremony .seat-avatar {
+  border-color: #fef08a;
+  box-shadow: 0 0 25px rgba(254, 240, 138, 0.95);
+  filter: brightness(1.3);
+}
+
+.pilgrim-seat-slot.mass-ceremony .robe-torso,
+.pilgrim-seat-slot.mass-ceremony .robe-knees {
+  border-color: #fef08a;
+  box-shadow: 0 0 18px rgba(254, 240, 138, 0.8);
 }
 
 /* ==================== FEATURE #2 & #6: 8 GUARDIAN PEDESTALS ==================== */

@@ -26,6 +26,525 @@ function safeImageUrl(url) {
   return typeof url === 'string' && /^(https?:\/\/|\/)/i.test(url) ? url : DEFAULT_AVATAR;
 }
 
+// ==================== 36 PILGRIM SEATS & GAME RULES MANAGER ====================
+class PilgrimSeatsManager {
+  constructor(app) {
+    this.app = app;
+    this.container = document.getElementById('pilgrim-seats-grid');
+    this.seatsCountEl = document.getElementById('hud-seats-count');
+    this.timerEl = document.getElementById('hud-timer-count');
+    this.resonanceEl = document.getElementById('hud-resonance-count');
+
+    this.totalSeats = 36;
+    this.seats = [];
+    this.roundRemainingSec = 24 * 60 + 18; // Default 00:24:18
+
+    this.initSeatPositions();
+    this.seedInitialPilgrims();
+    this.startRoundTimer();
+    this.startTierLevelUpLoop();
+    this.startCrowdChatterLoop();
+  }
+
+  getTierClass(tier) {
+    if (tier >= 8) return 'tier-archon';
+    if (tier >= 5) return 'tier-mystic';
+    if (tier >= 3) return 'tier-adept';
+    return 'tier-apprentice';
+  }
+
+  initSeatPositions() {
+    this.seats = [];
+    const rowConfigs = [
+      { row: 0, count: 8, y: 1000, startX: 120, endX: 960, scale: 0.82 },
+      { row: 1, count: 9, y: 1170, startX: 90, endX: 990, scale: 0.88 },
+      { row: 2, count: 9, y: 1350, startX: 90, endX: 990, scale: 0.94 },
+      { row: 3, count: 10, y: 1530, startX: 70, endX: 1010, scale: 1.00 }
+    ];
+
+    let seatIdx = 0;
+    rowConfigs.forEach(rc => {
+      const step = (rc.endX - rc.startX) / (rc.count - 1);
+      for (let i = 0; i < rc.count; i++) {
+        const x = Math.round(rc.startX + step * i);
+        const y = rc.y;
+        this.seats.push({
+          index: seatIdx,
+          x: x,
+          y: y,
+          scale: rc.scale,
+          occupied: false,
+          user: null,
+          domEl: null
+        });
+        seatIdx++;
+      }
+    });
+
+    if (!this.container) return;
+    this.container.innerHTML = '';
+
+    this.seats.forEach(s => {
+      const el = document.createElement('div');
+      el.className = 'pilgrim-seat-slot empty';
+      el.id = `seat-slot-${s.index}`;
+      el.style.left = `${s.x}px`;
+      el.style.top = `${s.y}px`;
+      el.style.transform = `translate(-50%, -50%) scale(${s.scale})`;
+
+      el.innerHTML = `
+        <div class="seat-content">
+          <div class="seat-figure">
+            <div class="seat-halo"></div>
+            <div class="seat-avatar-wrap">
+              <img class="seat-avatar" src="${DEFAULT_AVATAR}" alt="Seat ${s.index + 1}" />
+              <span class="seat-tier-badge" style="display: none;">T1</span>
+            </div>
+            <div class="seat-robe tier-apprentice">
+              <div class="robe-torso"></div>
+              <div class="robe-arms">
+                <span class="robe-coin">🪙</span>
+              </div>
+              <div class="robe-knees"></div>
+            </div>
+          </div>
+          <div class="seat-name-pill">Empty</div>
+        </div>
+        <div class="seat-mat"></div>
+      `;
+      this.container.appendChild(el);
+      s.domEl = el;
+    });
+  }
+
+  seedInitialPilgrims() {
+    const SAMPLE_PILGRIMS = [
+      { nickname: 'Sâu Róm', tier: 3, avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face', score: 45 },
+      { nickname: 'Kẹo Ngọt', tier: 2, avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face', score: 32 },
+      { nickname: 'Mạnh Hùng', tier: 4, avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', score: 68 },
+      { nickname: 'Ngọc Huyền', tier: 5, avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face', score: 89 },
+      { nickname: 'Tiểu Mi', tier: 1, avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face', score: 20 },
+      { nickname: 'Gấu Bông', tier: 3, avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=face', score: 41 },
+      { nickname: 'Hải Yến', tier: 2, avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face', score: 30 },
+      { nickname: 'Tú Anh', tier: 4, avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face', score: 61 },
+      { nickname: 'Phong Vũ', tier: 1, avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=face', score: 18 },
+      { nickname: 'Bảo Ngọc', tier: 3, avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop&crop=face', score: 52 },
+      { nickname: 'Quang Huy', tier: 2, avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&h=100&fit=crop&crop=face', score: 28 },
+      { nickname: 'Đức Anh', tier: 5, avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face', score: 75 },
+      { nickname: 'Nam Pro', tier: 6, avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face', score: 85 },
+      { nickname: 'Thảo Pé', tier: 1, avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=face', score: 14 },
+      { nickname: 'hh3D', tier: 7, avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face', score: 115 },
+      { nickname: 'Tru Tiên', tier: 2, avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', score: 36 },
+      { nickname: 'Minh An', tier: 3, avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face', score: 48 },
+      { nickname: 'Linh Chi', tier: 4, avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face', score: 59 },
+      { nickname: 'Mi mixi', tier: 2, avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face', score: 26 },
+      { nickname: 'lining', tier: 1, avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=face', score: 12 },
+      { nickname: 'Hùnh bí', tier: 4, avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face', score: 64 },
+      { nickname: 'trang', tier: 3, avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop&crop=face', score: 44 },
+      { nickname: 'Gia dụ', tier: 2, avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&h=100&fit=crop&crop=face', score: 33 },
+      { nickname: 'ttg shop', tier: 5, avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face', score: 57 }
+    ];
+
+    SAMPLE_PILGRIMS.forEach((p, idx) => {
+      if (idx < this.seats.length) {
+        this.occupySeat(this.seats[idx], {
+          uniqueId: `sample_${idx}`,
+          nickname: p.nickname,
+          avatar: p.avatar,
+          tier: p.tier,
+          score: p.score,
+          likesCount: 0,
+          seatedAt: Date.now() - (p.tier * 180000),
+          lastActiveAt: Date.now()
+        });
+      }
+    });
+
+    this.updateSeatsBadge();
+  }
+
+  occupySeat(seat, userData) {
+    seat.occupied = true;
+    seat.user = userData;
+    if (!seat.domEl) return;
+
+    seat.domEl.classList.remove('empty');
+    const avatarImg = seat.domEl.querySelector('.seat-avatar');
+    const namePill = seat.domEl.querySelector('.seat-name-pill');
+    const tierBadge = seat.domEl.querySelector('.seat-tier-badge');
+    const robeEl = seat.domEl.querySelector('.seat-robe');
+    const figureEl = seat.domEl.querySelector('.seat-figure');
+
+    const tier = userData.tier || 1;
+    const tierClass = this.getTierClass(tier);
+
+    if (avatarImg) avatarImg.src = safeImageUrl(userData.avatar);
+    if (namePill) namePill.innerText = userData.nickname;
+    if (tierBadge) {
+      tierBadge.style.display = 'block';
+      tierBadge.innerText = `T${tier}`;
+      if (tier >= 5) {
+        tierBadge.classList.add('tier-gold');
+      } else {
+        tierBadge.classList.remove('tier-gold');
+      }
+    }
+
+    if (robeEl) {
+      robeEl.className = `seat-robe ${tierClass}`;
+    }
+    if (figureEl) {
+      figureEl.className = `seat-figure ${tierClass}`;
+    }
+  }
+
+  claimSeatForUser(user) {
+    if (!user) return null;
+    const uid = user.uniqueId || user.nickname;
+
+    // Check if user is already seated
+    const existing = this.seats.find(s => s.occupied && s.user && (s.user.uniqueId === uid || s.user.nickname === user.nickname));
+    if (existing) {
+      existing.user.lastActiveAt = Date.now();
+      if (user.avatar) existing.user.avatar = user.avatar;
+      return existing;
+    }
+
+    // Find first empty seat
+    let targetSeat = this.seats.find(s => !s.occupied);
+
+    // If completely full (36/36), kick least recently active user
+    if (!targetSeat) {
+      let oldestTime = Infinity;
+      let oldestSeat = null;
+      this.seats.forEach(s => {
+        if (s.occupied && s.user && s.user.lastActiveAt < oldestTime) {
+          oldestTime = s.user.lastActiveAt;
+          oldestSeat = s;
+        }
+      });
+      targetSeat = oldestSeat || this.seats[0];
+    }
+
+    this.occupySeat(targetSeat, {
+      uniqueId: uid,
+      nickname: user.nickname,
+      avatar: user.avatar || DEFAULT_AVATAR,
+      tier: 1,
+      score: 0,
+      likesCount: 0,
+      seatedAt: Date.now(),
+      lastActiveAt: Date.now()
+    });
+
+    this.updateSeatsBadge();
+    return targetSeat;
+  }
+
+  handleChat(data) {
+    const seat = this.claimSeatForUser(data);
+    if (!seat || !seat.domEl) return;
+
+    let bubble = seat.domEl.querySelector('.seat-chat-bubble');
+    if (bubble) bubble.remove();
+
+    bubble = document.createElement('div');
+    bubble.className = 'seat-chat-bubble';
+    bubble.innerText = data.comment;
+    seat.domEl.querySelector('.seat-content').prepend(bubble);
+
+    // Living Procession: Avatar walks along sacred pathway up to well!
+    this.spawnProcessionWalker(data, `💬 "${data.comment}"`);
+
+    setTimeout(() => {
+      if (bubble.parentNode) bubble.remove();
+    }, 4000);
+  }
+
+  handleLikes(data) {
+    const seat = this.claimSeatForUser(data);
+    if (!seat || !seat.user) return;
+
+    const likeCount = data.likeCount || 1;
+    seat.user.likesCount = (seat.user.likesCount || 0) + likeCount;
+    seat.user.lastActiveAt = Date.now();
+
+    if (seat.user.likesCount >= 20) {
+      const tosses = Math.floor(seat.user.likesCount / 20);
+      seat.user.likesCount = seat.user.likesCount % 20;
+
+      for (let i = 0; i < tosses; i++) {
+        setTimeout(() => {
+          this.triggerSeatCoinToss(seat);
+        }, i * 300);
+      }
+    }
+  }
+
+  triggerSeatCoinToss(seat) {
+    if (!seat || !seat.domEl || !seat.user) return;
+
+    seat.domEl.classList.add('tossing');
+    setTimeout(() => seat.domEl.classList.remove('tossing'), 700);
+
+    const basePts = Math.floor(Math.random() * 21) + 10;
+    const tierBonus = (seat.user.tier - 1) * 5;
+    const earned = basePts + tierBonus;
+    seat.user.score = (seat.user.score || 0) + earned;
+
+    const popup = document.createElement('div');
+    popup.className = 'floating-score-popup';
+    popup.innerText = `+${earned} pts`;
+    seat.domEl.appendChild(popup);
+    setTimeout(() => {
+      if (popup.parentNode) popup.remove();
+    }, 1300);
+
+    if (this.app && this.app.tossedCoins) {
+      this.app.tossedCoins.push({
+        startX: seat.x,
+        startY: seat.y - 20,
+        x: seat.x,
+        y: seat.y - 20,
+        targetX: 540 + (Math.random() - 0.5) * 60,
+        targetY: 870 + (Math.random() - 0.5) * 30,
+        arcHeight: 220 + Math.random() * 60,
+        spinAngle: 0,
+        spinSpeed: 0.22,
+        progress: 0,
+        speed: 0.022,
+        scale: 0.75,
+        isGolden: (seat.user.tier >= 4),
+        avatarImg: null
+      });
+    }
+
+    if (window.wishingAudio) {
+      window.wishingAudio.playCoinClink();
+    }
+  }
+
+  handleGift(data) {
+    const seat = this.claimSeatForUser(data);
+    if (!seat || !seat.user) return;
+
+    const coins = data.coins || 1;
+    const giftScore = coins * 100;
+    seat.user.score = (seat.user.score || 0) + giftScore;
+    seat.user.lastActiveAt = Date.now();
+
+    // Spawn walking procession for gift giver
+    this.spawnProcessionWalker(data, `🎁 ${data.giftName || 'Sacred Relic'}`);
+
+    const popup = document.createElement('div');
+    popup.className = 'floating-score-popup';
+    popup.style.color = '#38bdf8';
+    popup.style.fontSize = '22px';
+    popup.innerText = `+${giftScore} pts!`;
+    seat.domEl.appendChild(popup);
+    setTimeout(() => {
+      if (popup.parentNode) popup.remove();
+    }, 1800);
+  }
+
+  updateSeatsBadge() {
+    if (!this.seatsCountEl) return;
+    const occupied = this.seats.filter(s => s.occupied).length;
+    this.seatsCountEl.innerText = `${occupied}/36 Seats`;
+  }
+
+  startRoundTimer() {
+    setInterval(() => {
+      if (this.roundRemainingSec > 0) {
+        this.roundRemainingSec--;
+      } else {
+        this.roundRemainingSec = 30 * 60;
+        if (this.app) this.app.triggerFountainSurge(5000);
+        this.triggerMassCeremony(6000);
+      }
+
+      if (this.timerEl) {
+        const mins = Math.floor(this.roundRemainingSec / 60);
+        const secs = this.roundRemainingSec % 60;
+        this.timerEl.innerText = `00:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      }
+    }, 1000);
+  }
+
+  startTierLevelUpLoop() {
+    setInterval(() => {
+      const now = Date.now();
+      this.seats.forEach(s => {
+        if (s.occupied && s.user && s.user.tier < 10) {
+          const duration = now - s.user.seatedAt;
+          const nextTierDuration = s.user.tier * 180000;
+          if (duration >= nextTierDuration) {
+            s.user.tier++;
+            this.occupySeat(s, s.user);
+          }
+        }
+      });
+    }, 30000);
+  }
+
+  startCrowdChatterLoop() {
+    const CHATTER_SAMPLES = [
+      '✨ May fortune smile!',
+      '🙏 Peace & abundance',
+      '🪙 Tossed a prayer!',
+      '🍀 Blessed day to all!',
+      '❤️ Sending love & light',
+      '🌟 Wishing well resonates!',
+      '💎 Sacred energy flows',
+      '🌊 The water sings!',
+      '🔥 Top 1 is rising!',
+      '✨ Radiance and joy!'
+    ];
+
+    setInterval(() => {
+      const occupiedSeats = this.seats.filter(s => s.occupied && s.domEl);
+      if (occupiedSeats.length === 0) return;
+
+      const count = Math.min(occupiedSeats.length, Math.floor(Math.random() * 2) + 1);
+      for (let i = 0; i < count; i++) {
+        const seat = occupiedSeats[Math.floor(Math.random() * occupiedSeats.length)];
+        if (!seat || !seat.domEl) continue;
+        if (seat.domEl.querySelector('.seat-micro-bubble')) continue;
+
+        const msg = CHATTER_SAMPLES[Math.floor(Math.random() * CHATTER_SAMPLES.length)];
+        const bubble = document.createElement('div');
+        bubble.className = 'seat-micro-bubble';
+        bubble.innerText = msg;
+        seat.domEl.querySelector('.seat-content').prepend(bubble);
+
+        setTimeout(() => {
+          if (bubble.parentNode) bubble.remove();
+        }, 3400);
+      }
+    }, 3200);
+  }
+
+  spawnProcessionWalker(user, text = '✨ Making a wish...') {
+    const stage = document.getElementById('procession-stage');
+    if (!stage || !user) return;
+
+    const walker = document.createElement('div');
+    walker.className = 'procession-walker';
+    walker.style.left = '540px';
+    walker.style.top = '1780px';
+
+    const nickname = escapeHtml(user.nickname || 'Pilgrim');
+    const avatar = safeImageUrl(user.avatar);
+    const bubbleText = escapeHtml(String(text).slice(0, 32));
+
+    walker.innerHTML = `
+      <div class="walker-bubble">${bubbleText}</div>
+      <div class="walker-head">
+        <img src="${avatar}" class="walker-avatar" alt="${nickname}" />
+      </div>
+      <div class="walker-body">
+        <span class="walker-coin-hand">🪙</span>
+      </div>
+      <div class="walker-feet">
+        <div class="walker-foot left"></div>
+        <div class="walker-foot right"></div>
+      </div>
+    `;
+
+    stage.appendChild(walker);
+
+    requestAnimationFrame(() => {
+      walker.style.top = '915px';
+    });
+
+    setTimeout(() => {
+      if (this.app && this.app.tossedCoins) {
+        this.app.tossedCoins.push({
+          startX: 540,
+          startY: 915,
+          x: 540,
+          y: 915,
+          targetX: 540 + (Math.random() - 0.5) * 60,
+          targetY: 870 + (Math.random() - 0.5) * 30,
+          arcHeight: 130,
+          spinAngle: 0,
+          spinSpeed: 0.25,
+          progress: 0,
+          speed: 0.03,
+          scale: 0.9,
+          isGolden: true,
+          avatarImg: null
+        });
+      }
+
+      if (window.wishingAudio) {
+        window.wishingAudio.playCoinClink();
+      }
+
+      walker.style.opacity = '0';
+      walker.style.transform = 'translate(-50%, -120%) scale(1.3)';
+      setTimeout(() => {
+        if (walker.parentNode) walker.remove();
+      }, 600);
+    }, 3800);
+  }
+
+  triggerMassCeremony(duration = 4500) {
+    this.seats.forEach((s, idx) => {
+      if (s.occupied && s.domEl) {
+        s.domEl.classList.add('mass-ceremony');
+        setTimeout(() => {
+          this.triggerSeatCoinToss(s);
+        }, idx * 60);
+      }
+    });
+
+    if (window.wishingAudio) {
+      window.wishingAudio.playMagicChime();
+    }
+
+    setTimeout(() => {
+      this.seats.forEach(s => {
+        if (s.domEl) s.domEl.classList.remove('mass-ceremony');
+      });
+    }, duration);
+  }
+
+  fillAllSeats() {
+    for (let i = 0; i < this.seats.length; i++) {
+      const s = this.seats[i];
+      if (!s.occupied) {
+        this.occupySeat(s, {
+          uniqueId: `seat_guest_${i}`,
+          nickname: `Pilgrim #${i + 1}`,
+          avatar: `https://images.unsplash.com/photo-${1535713875000 + (i * 13) % 200}?w=100&h=100&fit=crop&crop=face`,
+          tier: Math.floor(Math.random() * 5) + 1,
+          score: Math.floor(Math.random() * 80) + 10,
+          likesCount: 0,
+          seatedAt: Date.now(),
+          lastActiveAt: Date.now()
+        });
+      }
+    }
+    this.updateSeatsBadge();
+  }
+
+  resetAllSeats() {
+    this.seats.forEach(s => {
+      s.occupied = false;
+      s.user = null;
+      if (s.domEl) {
+        s.domEl.className = 'pilgrim-seat-slot empty';
+        const namePill = s.domEl.querySelector('.seat-name-pill');
+        const tierBadge = s.domEl.querySelector('.seat-tier-badge');
+        if (namePill) namePill.innerText = 'Empty';
+        if (tierBadge) tierBadge.style.display = 'none';
+      }
+    });
+    this.updateSeatsBadge();
+  }
+}
+
 class WishingWellLiveApp {
   constructor() {
     this.stage = document.getElementById('temple-stage');
@@ -55,9 +574,11 @@ class WishingWellLiveApp {
     this.initViewportScale();
     this.initCanvas();
     this.initAmbientParticles();
+    this.initBannerCarousel();
     this.initSocket();
     this.initQuickActions();
     this.setupAudioTrigger();
+    this.seatsManager = new PilgrimSeatsManager(this);
     this.startMainRenderLoop();
   }
 
@@ -458,9 +979,44 @@ class WishingWellLiveApp {
     this.spawnWalkingWishmaker(nickname, avatar, `"${comment.trim()}"`, 1, false);
   }
 
-  updateTopBanner(text) {
+  // Anti-OCR Static Scanner Defense: Auto-cycling dynamic blessings on royal banner
+  initBannerCarousel() {
+    this.bannerBlessings = [
+      '✨ Warmest welcome to the Magic Wishing Well • Cast your penny & make a wish!',
+      '🌟 May peace, radiant health and good fortune honour your home and loved ones.',
+      '💫 A single drop of kindness creates endless ripples of divine abundance.',
+      '🕊️ Quiet your mind, whisper your prayer, and let the sacred waters manifest your wish.',
+      '🪙 Toss a lucky penny into the mystical waters • Every blessing begins with hope.',
+      '🌿 Healing, serenity, and boundless joy to every noble traveller arriving today.',
+      '👑 Top 1 Guardian holds the Golden Crown • May abundance smile upon all.',
+      '🌸 Believe in your journey • What is meant for you will always find its way.'
+    ];
+    this.currentBannerIdx = 0;
+    this.bannerOverrideUntil = 0;
+
+    setInterval(() => {
+      if (Date.now() < this.bannerOverrideUntil) return;
+      this.currentBannerIdx = (this.currentBannerIdx + 1) % this.bannerBlessings.length;
+      this.cycleBannerWithFade(this.bannerBlessings[this.currentBannerIdx]);
+    }, 16000);
+  }
+
+  cycleBannerWithFade(text) {
+    const bannerCard = document.querySelector('.royal-announcement-card');
     const bannerEl = document.getElementById('royal-banner-text');
-    if (bannerEl) bannerEl.textContent = text;
+    if (!bannerEl || !bannerCard) return;
+
+    bannerCard.style.transition = 'opacity 0.6s ease';
+    bannerCard.style.opacity = '0.2';
+    setTimeout(() => {
+      bannerEl.textContent = text;
+      bannerCard.style.opacity = '1.0';
+    }, 600);
+  }
+
+  updateTopBanner(text, holdSeconds = 12) {
+    this.bannerOverrideUntil = Date.now() + (holdSeconds * 1000);
+    this.cycleBannerWithFade(text);
   }
 
   updateRecentWishmaker(nickname, coins) {
@@ -478,6 +1034,26 @@ class WishingWellLiveApp {
   }
 
   updateCompactLeaderboard(list) {
+    if (!list) return;
+
+    // Update Right HUD Top Guardians Panel (Top 5)
+    const hudTopList = document.getElementById('hud-top-list');
+    if (hudTopList) {
+      hudTopList.innerHTML = '';
+      const top5 = list.slice(0, 5);
+      const badges = ['🥇', '🥈', '🥉', '4', '5'];
+      top5.forEach((item, index) => {
+        const row = document.createElement('div');
+        row.className = `top-list-row rank-${index + 1}`;
+        row.innerHTML = `
+          <span class="top-rank-badge">${badges[index] || (index + 1)}</span>
+          <span class="top-name">${escapeHtml(item.nickname)}</span>
+          <span class="top-score">${escapeHtml(item.score)} pts</span>
+        `;
+        hudTopList.appendChild(row);
+      });
+    }
+
     const container = document.getElementById('clb-list-container');
     if (!container) return;
 
@@ -629,6 +1205,12 @@ class WishingWellLiveApp {
     const pillEl = document.getElementById('resonance-pill');
 
     const percent = energy.percent !== undefined ? energy.percent : Math.min(100, Math.floor((energy.current / energy.max) * 100));
+
+    // Update HUD Resonance Badge
+    const hudResonanceEl = document.getElementById('hud-resonance-count');
+    if (hudResonanceEl) {
+      hudResonanceEl.innerText = `${energy.current || 0} / ${energy.max || 1000} Resonance`;
+    }
 
     if (valEl) valEl.innerText = `${percent}%`;
     if (fillEl) fillEl.style.width = `${percent}%`;
@@ -807,6 +1389,9 @@ class WishingWellLiveApp {
       if (this.lightPillarActive) {
         this.renderLightPillar();
       }
+
+      // 2.5 Render Celestial Shifting God Rays (Anti-Static Video Hash Bypass)
+      this.renderGodRays();
 
       // 3. Render Water Ripple Waves
       this.renderRipples();
@@ -1078,7 +1663,43 @@ class WishingWellLiveApp {
       this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
       this.ctx.fill();
     }
+    // 100% Anti-Static Screen Dynamics: Full-screen subtle ambient pixel breathing pulse
+    const breatheTime = Date.now() * 0.0008;
+    const breatheAlpha = 0.015 + 0.012 * Math.sin(breatheTime);
+    this.ctx.fillStyle = `rgba(56, 189, 248, ${breatheAlpha})`;
+    this.ctx.fillRect(0, 0, 1080, 1920);
+
     this.ctx.globalAlpha = 1.0;
+    this.ctx.restore();
+  }
+
+  // Anti-Static God Rays: Constantly shifts pixel values across the entire vertical canvas
+  renderGodRays() {
+    const time = Date.now() * 0.0005;
+    this.ctx.save();
+    this.ctx.globalCompositeOperation = 'screen';
+
+    for (let i = 0; i < 4; i++) {
+      const angle = 0.32 + Math.sin(time + i * 1.5) * 0.07;
+      const startX = 140 + i * 240 + Math.cos(time * 0.7 + i) * 70;
+      const width = 110 + Math.sin(time + i) * 30;
+      const alpha = 0.035 + Math.sin(time * 1.1 + i * 2) * 0.02;
+
+      const grad = this.ctx.createLinearGradient(startX, 0, startX + Math.tan(angle) * 1400, 1400);
+      grad.addColorStop(0, `rgba(254, 240, 138, ${alpha * 1.8})`);
+      grad.addColorStop(0.4, `rgba(56, 189, 248, ${alpha})`);
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+      this.ctx.fillStyle = grad;
+      this.ctx.beginPath();
+      this.ctx.moveTo(startX - width * 0.3, 0);
+      this.ctx.lineTo(startX + width * 0.7, 0);
+      this.ctx.lineTo(startX + Math.tan(angle) * 1500 + width * 2, 1500);
+      this.ctx.lineTo(startX + Math.tan(angle) * 1500 - width * 2, 1500);
+      this.ctx.closePath();
+      this.ctx.fill();
+    }
+
     this.ctx.restore();
   }
 
@@ -1124,7 +1745,43 @@ class WishingWellLiveApp {
       this.ctx.restore();
     }
 
+    // 100% Anti-Static Screen Dynamics: Full-screen subtle ambient pixel breathing pulse
+    const breatheTime = Date.now() * 0.0008;
+    const breatheAlpha = 0.015 + 0.012 * Math.sin(breatheTime);
+    this.ctx.fillStyle = `rgba(56, 189, 248, ${breatheAlpha})`;
+    this.ctx.fillRect(0, 0, 1080, 1920);
+
     this.ctx.globalAlpha = 1.0;
+    this.ctx.restore();
+  }
+
+  // Anti-Static God Rays: Constantly shifts pixel values across the entire vertical canvas
+  renderGodRays() {
+    const time = Date.now() * 0.0005;
+    this.ctx.save();
+    this.ctx.globalCompositeOperation = 'screen';
+
+    for (let i = 0; i < 4; i++) {
+      const angle = 0.32 + Math.sin(time + i * 1.5) * 0.07;
+      const startX = 140 + i * 240 + Math.cos(time * 0.7 + i) * 70;
+      const width = 110 + Math.sin(time + i) * 30;
+      const alpha = 0.035 + Math.sin(time * 1.1 + i * 2) * 0.02;
+
+      const grad = this.ctx.createLinearGradient(startX, 0, startX + Math.tan(angle) * 1400, 1400);
+      grad.addColorStop(0, `rgba(254, 240, 138, ${alpha * 1.8})`);
+      grad.addColorStop(0.4, `rgba(56, 189, 248, ${alpha})`);
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+      this.ctx.fillStyle = grad;
+      this.ctx.beginPath();
+      this.ctx.moveTo(startX - width * 0.3, 0);
+      this.ctx.lineTo(startX + width * 0.7, 0);
+      this.ctx.lineTo(startX + Math.tan(angle) * 1500 + width * 2, 1500);
+      this.ctx.lineTo(startX + Math.tan(angle) * 1500 - width * 2, 1500);
+      this.ctx.closePath();
+      this.ctx.fill();
+    }
+
     this.ctx.restore();
   }
 
@@ -1175,6 +1832,7 @@ class WishingWellLiveApp {
       const leaderName = (data.awakener && data.awakener.nickname) ? data.awakener.nickname : 'Divine Benefactor';
       this.updateTopBanner(`🌊 WATER RESONANCE AWAKENED! Level ${data.level} unlocked by ${leaderName}! ✨`);
       this.showLevelUpCelebration(data.level, leaderName);
+      if (this.seatsManager) this.seatsManager.triggerMassCeremony(8000);
     });
 
     this.socket.on('golden_rush_event', data => {
@@ -1187,6 +1845,7 @@ class WishingWellLiveApp {
 
     this.socket.on('tiktok_chat', data => {
       this.showChatBubble(data.nickname, data.comment, data.avatar);
+      if (this.seatsManager) this.seatsManager.handleChat(data);
     });
 
     this.socket.on('tiktok_join', data => {
@@ -1195,14 +1854,20 @@ class WishingWellLiveApp {
         window.wishingAudio.queueSpeech(data.spokenText, data.audioUrl, false, 0, data.voiceGender);
       }
       this.spawnWalkingWishmaker(data.nickname, data.avatar, '✨ Welcome to the fountain!', 1, false);
+      if (this.seatsManager) {
+        this.seatsManager.claimSeatForUser(data);
+        this.seatsManager.spawnProcessionWalker(data, '✨ Arrived at Fountain!');
+      }
     });
 
     this.socket.on('tiktok_gift', data => {
       this.performCeremony(data);
+      if (this.seatsManager) this.seatsManager.handleGift(data);
     });
 
     this.socket.on('tiktok_like', data => {
       this.spawnWalkingWishmaker(data.nickname, data.avatar, '❤️ Sent love!', 1, false);
+      if (this.seatsManager) this.seatsManager.handleLikes(data);
     });
 
     this.socket.on('tiktok_follow', data => {
@@ -1222,14 +1887,21 @@ class WishingWellLiveApp {
         giftName: '50 Hearts of Love',
         coins: 0
       });
+      if (this.seatsManager) this.seatsManager.triggerMassCeremony(4500);
     });
 
     this.socket.on('trigger_all_bow', data => {
       this.triggerFountainSurge(data.duration || 4000);
+      if (this.seatsManager) this.seatsManager.triggerMassCeremony(data.duration || 4000);
     });
 
     this.socket.on('fill_all_seats', () => {
       this.triggerFountainSurge(6000);
+      if (this.seatsManager) this.seatsManager.fillAllSeats();
+    });
+
+    this.socket.on('reset_all_seats', () => {
+      if (this.seatsManager) this.seatsManager.resetAllSeats();
     });
 
     this.socket.on('toggle_donation_cards', data => {

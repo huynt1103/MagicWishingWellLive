@@ -55,6 +55,7 @@ class WishingWellAudioEngine {
     if (this.ctx && this.ctx.state === 'suspended') {
       this.ctx.resume();
     }
+    this.initAmbientStreamNoise();
     if (this.bgmEnabled) {
       this.playBGM();
     }
@@ -122,6 +123,39 @@ class WishingWellAudioEngine {
     this.isSpeaking = false;
     this.currentIsVIP = false;
     if (this.bgmAudio) this.bgmAudio.volume = this.bgmVolume;
+  }
+
+  // Anti-Audio Fingerprint Engine: Generates subtle natural stream acoustic noise floor
+  initAmbientStreamNoise() {
+    if (!this.ctx || this.hasStreamNoise) return;
+    try {
+      this.hasStreamNoise = true;
+      const bufferSize = this.ctx.sampleRate * 2;
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      let lastOut = 0.0;
+      for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        lastOut = (lastOut * 0.94) + (white * 0.06);
+        data[i] = lastOut * 0.35;
+      }
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = buffer;
+      noise.loop = true;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(600, this.ctx.currentTime);
+      filter.Q.setValueAtTime(0.85, this.ctx.currentTime);
+
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.ctx.destination);
+      noise.start();
+    } catch (e) {}
   }
 
   initWebSpeechVoices() {

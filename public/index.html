@@ -11,24 +11,139 @@
   <!-- 9:16 Live Canvas Container -->
   <div id="live-viewport">
     
-    <!-- Top Status Bar: Natural Water Resonance Energy Bar (#1) -->
-    <div id="top-status-bar">
-      <div id="resonance-pill" class="resonance-pill">
-        <span class="rune-icon">💧</span>
-        <span class="resonance-label">Water Resonance: <b id="resonance-val">74%</b></span>
-        <div class="resonance-meter-track">
-          <div class="resonance-meter-fill" id="resonance-fill" style="width: 74%;"></div>
+    <!-- Top HUD Header: Game Title & Status Indicators (Hồ Câu Vạn Cân Model) -->
+    <div id="hud-header-container">
+      <div class="hud-main-card">
+        <div class="hud-card-corners">
+          <div class="hud-corner tl"></div>
+          <div class="hud-corner tr"></div>
+          <div class="hud-corner bl"></div>
+          <div class="hud-corner br"></div>
         </div>
-        <span class="level-badge" id="resonance-level">Tier 5</span>
+        <div class="hud-title-row">
+          <span class="hud-ornament">✨</span>
+          <span class="hud-main-title">THE SACRED WISHING FOUNTAIN</span>
+          <span class="hud-ornament">✨</span>
+        </div>
+        <div class="hud-sub-desc">Chat to claim a Sacred Seat • Tap 20 likes to drop a Lucky Coin!</div>
+      </div>
+
+      <!-- 3 Status Pills Bar -->
+      <div class="hud-badges-bar">
+        <div class="hud-badge seats-badge" id="hud-seats-badge">
+          <span class="live-dot-pulse">●</span>
+          <span id="hud-seats-count">24/36 Seats</span>
+        </div>
+        <div class="hud-badge resonance-badge" id="hud-resonance-badge">
+          <span class="hud-badge-icon">💧</span>
+          <span id="hud-resonance-count">940 / 1000 Resonance</span>
+        </div>
+        <div class="hud-badge timer-badge" id="hud-timer-badge">
+          <span class="hud-badge-icon">⏱️</span>
+          <span id="hud-timer-count">00:24:18</span>
+        </div>
       </div>
     </div>
 
     <!-- Atmospheric Particle, Water & Light Canvas -->
     <canvas id="fx-canvas"></canvas>
 
-    <!-- 8 Guardian Pedestals & Walking Wishmaker Stage (#2 & #6) -->
+    <!-- Left HUD: Stream Guide & Rules Panel (Bảng Hướng Dẫn) -->
+    <div id="stream-guide-card" class="hud-panel-card">
+      <div class="hud-panel-header">
+        <span class="panel-icon">📜</span>
+        <span class="panel-title">SACRED WELL RULES</span>
+      </div>
+      <div class="guide-items-list">
+        <div class="guide-item">
+          <span class="item-icon">💬</span>
+          <div class="item-content">
+            <div class="item-title">Chat to claim a Seat</div>
+            <div class="item-sub">Join 1 of 36 sacred slots on the lake</div>
+          </div>
+        </div>
+        <div class="guide-item">
+          <span class="item-icon">⚡</span>
+          <div class="item-content">
+            <div class="item-title">Tap 20 likes: Toss 1 Coin</div>
+            <div class="item-sub">Earns 10–30 resonance pts per toss</div>
+          </div>
+        </div>
+        <div class="guide-item">
+          <span class="item-icon">⏳</span>
+          <div class="item-content">
+            <div class="item-title">Stay seated to Level Up</div>
+            <div class="item-sub">+5 pts per toss for each Tier gained</div>
+          </div>
+        </div>
+        <div class="guide-item">
+          <span class="item-icon">⌨️</span>
+          <div class="item-content">
+            <div class="item-title">Type 'wish' to cast prayer</div>
+            <div class="item-sub">Spawns glowing personalized coin</div>
+          </div>
+        </div>
+        <div class="guide-item">
+          <span class="item-icon">🎁</span>
+          <div class="item-content">
+            <div class="item-title">Gift to summon Sacred Relic</div>
+            <div class="item-sub">Massive score jump • Dominate Top 1</div>
+          </div>
+        </div>
+        <div class="guide-item bonus-row">
+          <span class="item-icon">➕</span>
+          <div class="item-content">
+            <div class="item-title">Follow for Good Seat • Share x2</div>
+            <div class="item-sub">Boosts personal blessing resonance</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right HUD: Top Guardians Leaderboard Panel (Top Sản Lượng) -->
+    <div id="stream-top-card" class="hud-panel-card">
+      <div class="hud-panel-header">
+        <span class="panel-icon">🏆</span>
+        <span class="panel-title">TOP GUARDIANS</span>
+      </div>
+      <div class="top-list-container" id="hud-top-list">
+        <div class="top-list-row rank-1">
+          <span class="top-rank-badge">🥇</span>
+          <span class="top-name">Alexander M.</span>
+          <span class="top-score">320 pts</span>
+        </div>
+        <div class="top-list-row rank-2">
+          <span class="top-rank-badge">🥈</span>
+          <span class="top-name">Sophia Green</span>
+          <span class="top-score">265 pts</span>
+        </div>
+        <div class="top-list-row rank-3">
+          <span class="top-rank-badge">🥉</span>
+          <span class="top-name">Liam Walker</span>
+          <span class="top-score">180 pts</span>
+        </div>
+        <div class="top-list-row rank-4">
+          <span class="top-rank-badge">4</span>
+          <span class="top-name">Olivia Smith</span>
+          <span class="top-score">140 pts</span>
+        </div>
+        <div class="top-list-row rank-5">
+          <span class="top-rank-badge">5</span>
+          <span class="top-name">Ethan Brown</span>
+          <span class="top-score">95 pts</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 Guardian Pedestals, 36 Pilgrim Seats & Living Procession Stage -->
     <div id="temple-stage">
+      <div id="sacred-pathway">
+        <div class="pathway-carpet"></div>
+        <div class="pathway-runes"></div>
+      </div>
       <div id="guardians-pedestals"></div>
+      <div id="pilgrim-seats-grid"></div>
+      <div id="procession-stage"></div>
     </div>
 
     <!-- Top Celestial Banner Announcement -->
@@ -48,46 +163,7 @@
     <!-- Real-time Outbid Alert Banner (#2 Dethrone Notification) -->
     <div id="outbid-alert-container"></div>
 
-    <!-- Stream Call-To-Action Ribbon (TikTok Safe Zone - Replaces non-clickable web buttons) -->
-    <div id="stream-cta-ribbon">
-      <div class="cta-pill">💬 Type your wish in chat to toss a lucky coin</div>
-      <div class="cta-sparkle">✨</div>
-      <div class="cta-pill">🎁 Gift to claim a Guardian Pedestal</div>
-    </div>
 
-    <!-- Bottom Action & Donor Panel (Positioned in Safe Zone above TikTok Chat) -->
-    <div id="bottom-action-panel">
-      <!-- Upper row: Top Wishmaker Pill + Compact Leaderboard -->
-      <div class="donor-leaderboard-row">
-        <div class="recent-donor-box" id="recent-donor-pill">
-          <span class="dot-gold"></span>
-          <span class="donor-name" id="recent-donor-name">Alexander M.</span>
-          <span class="donor-score" id="recent-donor-score">Tossed: 320 Coins</span>
-        </div>
-        <div class="compact-leaderboard" id="compact-lb-box">
-          <div class="clb-title">FOUNTAIN GUARDIANS (TOP 8)</div>
-          <div class="clb-list" id="clb-list-container">
-            <!-- Populated dynamically -->
-          </div>
-        </div>
-      </div>
-
-      <!-- 3 Safe Spiritual Action Cards (Bypasses TikTok OCR) -->
-      <div class="donation-cards-row" id="donation-cards-row">
-        <div class="donate-card">
-          <div class="coin-val">MAKE A WISH</div>
-          <div class="action-label">🪙 Lucky Penny</div>
-        </div>
-        <div class="donate-card">
-          <div class="coin-val">ABUNDANCE</div>
-          <div class="action-label">✨ Golden Coin</div>
-        </div>
-        <div class="donate-card">
-          <div class="coin-val">ETERNAL JOY</div>
-          <div class="action-label">💎 Crystal Gem</div>
-        </div>
-      </div>
-    </div>
 
     <!-- Auspicious Wish Floating Banner -->
     <div id="fortune-overlay">

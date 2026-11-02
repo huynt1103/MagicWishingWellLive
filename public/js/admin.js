@@ -310,6 +310,47 @@ document.getElementById('sim-chat').addEventListener('click', async () => {
   });
 });
 
+const btn20Likes = document.getElementById('sim-20likes');
+if (btn20Likes) {
+  btn20Likes.addEventListener('click', async () => {
+    try {
+      const res = await fetch('/api/test/like', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ count: 20 })
+      });
+      const data = await res.json();
+      addLog('like', `⚡ ${escapeHtml(data.payload.nickname)} tapped 20 likes! Dropped a coin into the well.`);
+    } catch (e) {
+      console.error(e);
+    }
+  });
+}
+
+const btnFillSeats = document.getElementById('sim-fill-seats');
+if (btnFillSeats) {
+  btnFillSeats.addEventListener('click', async () => {
+    try {
+      await fetch('/api/test/fill-full', { method: 'POST' });
+      addLog('sys', '🪑 Filled all 36 lake seats with active pilgrims.');
+    } catch (e) {
+      console.error(e);
+    }
+  });
+}
+
+const btnResetSeats = document.getElementById('sim-reset-seats');
+if (btnResetSeats) {
+  btnResetSeats.addEventListener('click', async () => {
+    try {
+      await fetch('/api/test/reset-seats', { method: 'POST' });
+      addLog('sys', '🧹 Cleared all 36 lake seats to empty status.');
+    } catch (e) {
+      console.error(e);
+    }
+  });
+}
+
 const btnDethrone = document.getElementById('sim-dethrone');
 if (btnDethrone) {
   btnDethrone.addEventListener('click', async () => {
